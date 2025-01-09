@@ -41,21 +41,18 @@ struct pair_hash {
 class CNetwork
 {
 public:
-	vector<CNode> m_Node; // 网络节点集合
+	vector<CNode> m_Node;// 网络节点集合
 	vector<CLink> m_Link; // 网络路段集合
 	vector<COrigin> m_Origin; // 网络的起点集合
 	int m_nNode; // 节点数
 	int m_nLink; // 路段数量
 	int m_nOrigin; // 起点数量
 
-
 	vector<double> LinkFlow; // 路段流量
 	vector<double> LinkTravelTime; // 路段走行时间
 	vector<double> ShortestPathCost; // 临时变量，所有节点到起点的最短路
 	vector<int> ShortestPathParent; // 最短路上，所有节点到起点的前继路段
 	unordered_map<std::pair<int, int>, int, pair_hash> LinkIndex; // 起点和终点到边ID的映射
-	unordered_map<int, size_t> NodeID_map; // 节点ID到m_Node索引的映射
-	unordered_map<int, size_t> IDNode_map; // m_Node索引到节点ID的映射
 	// 构造函数
 	CNetwork()
 		: m_nNode(0), m_nLink(0), m_nOrigin(0), m_Node(0) {
@@ -81,7 +78,7 @@ public:
 
 	// 添加路段
 	void AddEdgeFrom(const py::tuple& t);
-
+	void AddEdgeFromC(int first, int second, double travelTime);
 	tuple<double, vector<int>> single_source_dijkstra(int Start, int End);
 	tuple<unordered_map<int, double>, unordered_map<int, vector<int>>> single_source_dijkstra(int Start);
 	void InitializeLinkIndex() {

@@ -164,8 +164,8 @@ void CNetwork::ReadLinkCSV(const std::string& DataPath) {
 			// 单向或双向的正向路段
 			CLink pLink;
 			pLink.ID = m_nLink++;
-			pLink.pInNode = &m_Node[inNodeIndex];
-			pLink.pOutNode = &m_Node[outNodeIndex];
+			pLink.pInNode = make_shared<CNode>(m_Node[inNodeIndex]);
+			pLink.pOutNode = make_shared<CNode>(m_Node[outNodeIndex]);
 			pLink.FreeFlowTravelTime = std::stod(data[AbFftIdx]);
 			pLink.TravelTime = std::stod(data[AbFftIdx]);
 			pLink.Capacity = std::stod(data[AbCpacityIdx]);
@@ -174,7 +174,9 @@ void CNetwork::ReadLinkCSV(const std::string& DataPath) {
 
 			// 更新节点的出向和入向路段
 			pLink.pInNode->OutgoingLink.push_back(pLink.ID);
+			m_Node[pLink.pInNode->ID].OutgoingLink.push_back(pLink.ID);
 			pLink.pOutNode->IncomingLink.push_back(pLink.ID);
+			m_Node[pLink.pOutNode->ID].IncomingLink.push_back(pLink.ID);
 
 			// 添加路段到集合
 			m_Link.push_back(pLink);
@@ -184,8 +186,8 @@ void CNetwork::ReadLinkCSV(const std::string& DataPath) {
 			// 双向路段的反向路段
 			CLink reverseLink;
 			reverseLink.ID = m_nLink++;
-			reverseLink.pInNode = &m_Node[outNodeIndex];
-			reverseLink.pOutNode = &m_Node[inNodeIndex];
+			reverseLink.pInNode = make_shared<CNode>(m_Node[outNodeIndex]);
+			reverseLink.pOutNode = make_shared<CNode>(m_Node[inNodeIndex]);
 			reverseLink.FreeFlowTravelTime = std::stod(data[BaFftIdx]);
 			reverseLink.TravelTime = std::stod(data[BaFftIdx]);
 			reverseLink.Capacity = std::stod(data[BaCpacityIdx]);
@@ -194,7 +196,9 @@ void CNetwork::ReadLinkCSV(const std::string& DataPath) {
 
 			// 更新节点的出向和入向路段
 			reverseLink.pInNode->OutgoingLink.push_back(reverseLink.ID);
+			m_Node[reverseLink.pInNode->ID].OutgoingLink.push_back(reverseLink.ID);
 			reverseLink.pOutNode->IncomingLink.push_back(reverseLink.ID);
+			m_Node[reverseLink.pOutNode->ID].IncomingLink.push_back(reverseLink.ID);
 
 			// 添加路段到集合
 			m_Link.push_back(reverseLink);
@@ -312,44 +316,92 @@ void CNetwork::AddEdgeFrom(const py::tuple& t) {
 		throw std::runtime_error("Dictionary must contain a 'weight' key");
 	}
 	double travelTime = third["weight"].cast<double>();
-
 	// 检查并添加起点节点
-	if (NodeID_map.find(first) == NodeID_map.end()) { // 如果节点ID不在字典中
+	if (find(m_Node.begin(), m_Node.end(), first) == m_Node.end()) {
 		CNode newNode;
 		newNode.ID = first; // 设置节点ID
-		m_Node.push_back(newNode); // 添加节点到m_Node列表
-		NodeID_map[first] = m_Node.size() - 1; // 更新字典：nodeID -> 索引
-		IDNode_map[m_Node.size() - 1] = first; // 更新字典：索引 -> nodeID
+		if (first >= m_Node.size()) {
+			m_Node.resize(first + 1); // 扩展到 nodeID + 1 的大小
+		}
+		m_Node[first] = newNode.ID;
 		m_nNode++; // 更新节点总数
 	}
-
 	// 检查并添加终点节点
-	if (NodeID_map.find(second) == NodeID_map.end()) { // 如果节点ID不在字典中
-		CNode newNode;
-		newNode.ID = second; // 设置节点ID
-		m_Node.push_back(newNode); // 添加节点到m_Node列表
-		NodeID_map[second] = m_Node.size() - 1; // 更新字典：nodeID -> 索引
-		NodeID_map[m_Node.size() - 1] = second; // 更新字典： 索引 -> nodeID
+	if (find(m_Node.begin(), m_Node.end(), second) == m_Node.end()) {
+		CNode newNode1;
+		newNode1.ID = second; // 设置节点ID
+		if (second >= m_Node.size()) {
+			m_Node.resize(second + 1); // 扩展到 nodeID + 1 的大小
+		}
+		m_Node[second] = newNode1.ID;
 		m_nNode++; // 更新节点总数
 	}
 
-	// 打印解析结果（可选）
-	// std::cout << "First: " << first << ", Second: " << second << ", TravelTime: " << travelTime << std::endl;
 
 	// 创建新的 CLink 实例
 	CLink newLink;
 	newLink.ID = m_nLink++;
-	newLink.pInNode = &m_Node[NodeID_map[first]]; // 通过字典找到索引
-	newLink.pOutNode = &m_Node[NodeID_map[second]]; // 通过字典找到索引
+	newLink.pInNode = make_shared<CNode>(m_Node[first]);
+	newLink.pOutNode = make_shared<CNode>(m_Node[second]);
 	newLink.TravelTime = travelTime;
 	newLink.Capacity = 9999;
 
 	// 更新节点的出向和入向路段
 	newLink.pInNode->OutgoingLink.push_back(newLink.ID);
+	m_Node[newLink.pInNode->ID].OutgoingLink.push_back(newLink.ID);
 	newLink.pOutNode->IncomingLink.push_back(newLink.ID);
+	m_Node[newLink.pOutNode->ID].IncomingLink.push_back(newLink.ID);
 
 	// 将新建的路段加入网络集合
 	m_Link.push_back(newLink);
+	for (const CLink& link : m_Link) {
+		LinkIndex[{link.pInNode->ID, link.pOutNode->ID}] = link.ID;
+	}
+}
+
+void CNetwork::AddEdgeFromC(int first,int second,double travelTime) {
+
+	// 检查并添加起点节点
+	if (find(m_Node.begin(), m_Node.end(), first) == m_Node.end()) {
+		CNode newNode;
+		newNode.ID = first; // 设置节点ID
+		if (first >= m_Node.size()) {
+			m_Node.resize(first + 1); // 扩展到 nodeID + 1 的大小
+		}
+		m_Node[first] = newNode.ID;
+		m_nNode++; // 更新节点总数
+	}
+	// 检查并添加终点节点
+	if (find(m_Node.begin(), m_Node.end(), second) == m_Node.end()) {
+		CNode newNode1;
+		newNode1.ID = second; // 设置节点ID
+		if (second >= m_Node.size()) {
+			m_Node.resize(second + 1); // 扩展到 nodeID + 1 的大小
+		}
+		m_Node[second] = newNode1.ID;
+		m_nNode++; // 更新节点总数
+	}
+
+
+	// 创建新的 CLink 实例
+	CLink newLink;
+	newLink.ID = m_nLink++;
+	newLink.pInNode = make_shared<CNode>(m_Node[first]);
+	newLink.pOutNode = make_shared<CNode>(m_Node[second]);
+	newLink.TravelTime = travelTime;
+	newLink.Capacity = 9999;
+
+	// 更新节点的出向和入向路段
+	newLink.pInNode->OutgoingLink.push_back(newLink.ID);
+	m_Node[newLink.pInNode->ID].OutgoingLink.push_back(newLink.ID);
+	newLink.pOutNode->IncomingLink.push_back(newLink.ID);
+	m_Node[newLink.pOutNode->ID].IncomingLink.push_back(newLink.ID);
+
+	// 将新建的路段加入网络集合
+	m_Link.push_back(newLink);
+	for (const CLink& link : m_Link) {
+		LinkIndex[{link.pInNode->ID, link.pOutNode->ID}] = link.ID;
+	}
 }
 
 std::pair<std::vector<double>, std::vector<int>> CNetwork::ComputeShortestPathsFromSource(int Start) {
@@ -411,8 +463,7 @@ std::vector<int> CNetwork::ReconstructPath(int Start, int End, const std::vector
 }
 
 tuple<double,vector<int>> CNetwork::single_source_dijkstra(int Start,int End) {
-	 //tuple<unordered_map<int, double>, unordered_map<int, vector<int>>>
-	 unordered_map<int, double> dist;
+	unordered_map<int, double> dist;
 	unordered_map<int, vector<int>> paths;
 	auto result = CNetwork::ComputeShortestPathsFromSource(Start);
 	const vector<double>& ShortestPathCost = result.first;
@@ -431,6 +482,7 @@ tuple<double,vector<int>> CNetwork::single_source_dijkstra(int Start,int End) {
 	}
 	return make_tuple(dist[End], paths[End]);
 }
+
 tuple<unordered_map<int, double>, unordered_map<int, vector<int>>> CNetwork::single_source_dijkstra(int Start) {
 	unordered_map<int, double> dist;
 	unordered_map<int, vector<int>> paths;
