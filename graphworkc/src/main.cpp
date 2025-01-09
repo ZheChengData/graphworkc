@@ -6,13 +6,18 @@ int main() {
 	CNode Node;
 	CNetwork Network;
 	SelfFile File;
-	Network.ReadNodeCSV(File.node_csv);
-	Network.ReadLinkCSV(File.link_csv);
-	Network.ReadODpairsCSV(File.od_csv);
-	Network.DisplayInfo();
-	tuple<double, vector<int>> a = Network.single_source_dijkstra(1101,8);
-	tuple<unordered_map<int, double>, unordered_map<int, vector<int>>> b = Network.single_source_dijkstra(1101);
-	cout<<1<<endl;
+	//Network.ReadNodeCSV(File.node_csv);
+	//Network.ReadLinkCSV(File.link_csv);
+	//Network.ReadODpairsCSV(File.od_csv);
+	//Network.DisplayInfo();
+	//tuple<double, vector<int>> a = Network.single_source_dijkstra(1101,8);
+	//tuple<unordered_map<int, double>, unordered_map<int, vector<int>>> b = Network.single_source_dijkstra(1101);
+	Network.AddEdgeFromC(1, 2, 3.1);
+	Network.AddEdgeFromC(1, 3, 2.21);
+	Network.AddEdgeFromC(2, 3, 3.5);
+	Network.AddEdgeFromC(2, 4, 2.5);
+	Network.AddEdgeFromC(3, 4, 1.2);
+	tuple<unordered_map<int, double>, unordered_map<int, vector<int>>> b = Network.single_source_dijkstra(1);
 }
 //pybind11 Ä£¿é
 PYBIND11_MODULE(graphworkC, m) {
@@ -46,7 +51,5 @@ PYBIND11_MODULE(graphworkC, m) {
            Returns:
                tuple: A pair containing a map of distances and a map of paths as vectors of integers.
            )pbdoc")
-		.def_readwrite("LinkFlow", &CNetwork::LinkFlow)
-		.def_readwrite("NodeID_map", &CNetwork::NodeID_map)
-		.def_readwrite("IDNode_map", &CNetwork::IDNode_map);
+		.def_readwrite("LinkFlow", &CNetwork::LinkFlow);
 }

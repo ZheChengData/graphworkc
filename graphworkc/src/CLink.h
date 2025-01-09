@@ -3,8 +3,9 @@
 class CLink {
 public:
 	int ID; // 路段的编号，从零开始编号
-	CNode* pInNode; // 使用指针
-	CNode* pOutNode; // 使用指针
+	shared_ptr<CNode> pInNode; // 使用指针
+	shared_ptr<CNode> pOutNode; // 使用指针
+
 	double FreeFlowTravelTime; // AB自由流走行时间
 	double TravelTime; // 走行时间
 	double Capacity; // 路段通行能力
