@@ -58,7 +58,7 @@ Parameters:
 
 ## 
 
-## **CNetwork类方法 -** **SingleSourceDijkstra****：**
+## **CNetwork类方法 -** **SingleSourceDijkstra**：
 
 -  单源最短路径迪杰斯特拉算法
 
