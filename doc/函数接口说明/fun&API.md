@@ -12,6 +12,7 @@
 >| IncomingLink | vector | 进入节点的路段编号集合 | None    |
 >| OutgoingLink | vector | 离开节点的路段编号集合 | None    |
 >
+>
 ># **CLink**
 >
 >## **CLink类初始化**
@@ -28,6 +29,7 @@
 >| Alpha        | double | BPR函数参数             | 0.15    |
 >| Beta         | double | BPR函数参数             | 4.0     |
 >
+>
 ># **pathresult**
 >
 >## **pathresult类初始化**
@@ -38,6 +40,7 @@
 >| --------- | -------------- | ------------------------ | ------- |
 >| dict_cost | unordered_map  | 到所有节点的最短路径花费 | None    |
 >| dict_path | unordered_map> | 到所有节点的最短路径列表 | None    |
+>
 >
 ># **CNetwork**
 >
@@ -56,7 +59,7 @@
 >| ID2Index_linkmap | unordered_map                       | 路段ID与对应路段的列表索引的映射表                           | None    |
 >| dic_cost         | unordered_map                       | 临时存储当前最短路径算法中的最短路径花费                     | None    |
 >| dic_path         | unordered_map>                      | 临时存储当前最短路径算法中的最短路径列表                     | None    |
->| m_path_result    | unordered_map < int, path_result>   | 存储所有计算得到的单源最短路径结果：键为 ：源节点值为 ：最短路径花费和最短路径列表 | None    |
+>| m_path_result    | unordered_map < int, path_result>   | 存储所有计算得到的单源最短路径结果：键为 ：源节点 值为 ：最短路径花费和最短路径列表 | None    |
 >
 >
 >
