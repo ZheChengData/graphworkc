@@ -60,12 +60,12 @@ public:
 	vector<int> ShortestPathParent; // 最短路上，所有节点到起点的前继路段
 
 	unordered_map<std::pair<int, int>, int, pair_hash> LinkIndex; // 起点和终点到边ID的映射
-	std::unordered_map<int, size_t> ID2Index_map; // 节点ID到m_Node索引的映射
-	std::unordered_map<int, size_t> ID2Index_linkmap; // 节点ID到m_Node索引的映射
+	unordered_map<int, size_t> ID2Index_map; // 节点ID到m_Node索引的映射
+	unordered_map<int, size_t> ID2Index_linkmap; // 节点ID到m_Node索引的映射
 
-	std::unordered_map<int, double> dic_cost;
-	std::unordered_map<int, std::vector<int>> dic_path;
-	std::unordered_map < int, path_result> m_path_result;
+	unordered_map<int, double> dic_cost;
+	unordered_map<int, std::vector<int>> dic_path;
+	unordered_map < int, path_result> m_path_result;
 
 
 	CNetwork()
@@ -92,10 +92,10 @@ public:
 	void SingleSourceDijkstra(int Start);
 
 	// 单源最短路径
-	void SingleSourcePath(int Start, string method);
+	void SingleSourcePath(int Start, string method = "Dijkstra");
 
 	// 多源最短路径
-	void MultiSourcePath(const vector<int>& StartNodes, const string& method);
+	void MultiSourcePath( vector<int> StartNodes, string method = "Dijkstra");
 
 	// 最短路径花费矩阵输出
 	void CostMartixToCsv(vector<int> vec_start, vector<int> vec_end, const std::string file_path);

@@ -220,7 +220,7 @@ void CNetwork::SingleSourcePath(int Start, string method) {
 }
 
 // 多源最短路径计算
-void CNetwork::MultiSourcePath(const std::vector<int>& StartNodes, const std::string& method) {
+void CNetwork::MultiSourcePath( vector<int> StartNodes, string method) {
 	// 遍历所有起始节点
 	for (int start : StartNodes) {
 		// 检查起点是否存在

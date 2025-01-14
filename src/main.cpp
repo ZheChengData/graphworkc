@@ -55,7 +55,8 @@ PYBIND11_MODULE(graphworkc, m) {
 		)pbdoc")
 
 		// 生成路径列表
-		.def("PathToCsv", &CNetwork::PathToCsv, R"pbdoc(
+		.def("PathToCsv", &CNetwork::PathToCsv, py::arg("vec_start"), py::arg("vec_end"), py::arg("file_path"),
+			R"pbdoc(
 		A function that create a list relative od shortest path to csv.
 		
 		Args:
@@ -70,7 +71,8 @@ PYBIND11_MODULE(graphworkc, m) {
 
 
 		// 生成花费矩阵
-		.def("CostMartixToCsv", &CNetwork::CostMartixToCsv, R"pbdoc(
+		.def("CostMartixToCsv", &CNetwork::CostMartixToCsv, py::arg("vec_start"), py::arg("vec_end"), py::arg("file_path"),
+			R"pbdoc(
 		A function that create a martix relative od cost to csv.
 
 		Args:
@@ -86,7 +88,8 @@ PYBIND11_MODULE(graphworkc, m) {
 		)pbdoc")
 
 		// 移除多条边
-		.def("RemoveEdges", &CNetwork::RemoveEdges, R"pbdoc(
+		.def("RemoveEdges", &CNetwork::RemoveEdges, py::arg("edges"),
+			R"pbdoc(
 		A function that remove edges.
 
 		Args:
@@ -98,7 +101,8 @@ PYBIND11_MODULE(graphworkc, m) {
 		)pbdoc")
 
 		// 移除一条边
-		.def("RemoveEdge", &CNetwork::RemoveEdge, R"pbdoc(
+		.def("RemoveEdge", &CNetwork::RemoveEdge, py::arg("first"), py::arg("second"),
+			R"pbdoc(
 		A function that remove one edge.
 			
 		Args:
@@ -117,7 +121,7 @@ PYBIND11_MODULE(graphworkc, m) {
 		)pbdoc")
 
 		// 多源最短路径计算
-		.def("MultiSourcePath", &CNetwork::MultiSourcePath,
+		.def("MultiSourcePath", &CNetwork::MultiSourcePath, py::arg("StartNodes"), py::arg("method") = "Dijkstra",
 			R"pbdoc(
         A function that calculates the shortest paths from multiple source nodes to all other nodes.
 
@@ -130,7 +134,7 @@ PYBIND11_MODULE(graphworkc, m) {
      )pbdoc")
 
 		// 单源最短路径计算
-		.def("SingleSourcePath", &CNetwork::SingleSourcePath,
+		.def("SingleSourcePath", &CNetwork::SingleSourcePath, py::arg("Start"), py::arg("method") = "Dijkstra",
 			R"pbdoc(
         A function that calculates the shortest paths from a single source node to all other nodes.
 
@@ -143,7 +147,7 @@ PYBIND11_MODULE(graphworkc, m) {
      )pbdoc")
 
 		// 添加单条边
-		.def("AddEdgeFromTuple", &CNetwork::AddEdgeFromTuple,
+		.def("AddEdgeFromTuple", &CNetwork::AddEdgeFromTuple, py::arg("t"),
 			R"pbdoc(
         A function that adds a single edge to the network from a given tuple.
 
@@ -162,7 +166,7 @@ PYBIND11_MODULE(graphworkc, m) {
      )pbdoc")
 
 		// 添加多条边
-		.def("AddEdgesFromList", &CNetwork::AddEdgesFromList,
+		.def("AddEdgesFromList", &CNetwork::AddEdgesFromList, py::arg("edges"),
 			R"pbdoc(
         A function that adds multiple edges to the network from a list of tuples.
 
