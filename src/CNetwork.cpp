@@ -150,7 +150,6 @@ void CNetwork::AddEdgesFromList(const std::vector<py::tuple>& tupleList) {
 	}
 }
 
-
 // 最短路径 迪杰斯特拉算法
 void CNetwork::SingleSourceDijkstra(int Start) {
 	// 清空容器
@@ -199,7 +198,9 @@ void CNetwork::SingleSourceDijkstra(int Start) {
 
 	for (int i = 0; i < m_Node.size(); i++) {
 		int target_ID = m_Node[i].ID;
-		dic_cost[target_ID] = ShortestPathCost[ID2Index_map[target_ID]];
+		if (ShortestPathCost[ID2Index_map[target_ID]] != std::numeric_limits<double>::max()) {
+			dic_cost[target_ID] = ShortestPathCost[ID2Index_map[target_ID]];
+		}
 	}
 
 	m_path_result[Start].dict_cost = std::move(dic_cost);
