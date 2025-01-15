@@ -118,10 +118,11 @@
 >
 >Parameters:
 >
->| Name   | Type   | Description                              |
->| ------ | ------ | ---------------------------------------- |
->| start  | int    | 源节点，必须参数                         |
->| method | string | 计算最短路径使用的方法，默认使用Dijkstra |
+>| Name    | Type   | Description                              |
+>| ------- | ------ | ---------------------------------------- |
+>| start   | int    | 源节点，必须参数                         |
+>| method  | string | 计算最短路径使用的方法，默认使用Dijkstra |
+>| cut_off | double | 搜索权重半径, 默认9999999                |
 >
 >Returns：计算结果默认保存进m_path_result
 >
@@ -137,6 +138,7 @@
 >| ---------- | --------- | ---------------------------------------- |
 >| StartNodes | list[int] | 列表：元素为节点ID，代表多源节点         |
 >| method     | string    | 计算最短路径使用的方法，默认使用Dijkstra |
+>| cut_off    | double    | 搜索权重半径，默认9999999                |
 >
 >Returns：计算结果默认保存进m_path_result
 >
