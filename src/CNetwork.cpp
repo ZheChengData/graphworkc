@@ -1,11 +1,77 @@
 #include "CNetwork.h"
 
+std::mutex path_result_mutex; // 用于保护 m_path_result 以避免并发修改
+
 // 初始化LinkIndex
 void CNetwork::InitializeLinkIndex() {
 	for (const CLink& link : m_Link) {
 		LinkIndex[{m_Node[link.InNodeIndex].ID, m_Node[link.OutNodeIndex].ID}] = link.ID;
 	}
 }
+
+// 最短路径 迪杰斯特拉算法
+void CNetwork::SingleSourceDijkstra(int Start, double cut_off) {
+	// 清空之前的结果
+	m_path_result[Start].dict_cost.clear();
+	m_path_result[Start].dict_path.clear();
+
+	// 检查起点是否存在
+	if (ID2Index_map.find(Start) == ID2Index_map.end()) {
+		cout << "The start node does not exist: " << Start << endl;
+		return;
+	}
+
+	std::priority_queue<NodeDistancePair, std::vector<NodeDistancePair>, std::greater<NodeDistancePair>> pq;
+	std::vector<double> ShortestPathCost(m_nNode, std::numeric_limits<double>::max());
+	ShortestPathParent.resize(m_nNode, -1);
+
+	ShortestPathCost[ID2Index_map[Start]] = 0.0;
+	pq.push({ Start, 0.0 });
+
+	// 主循环
+	while (!pq.empty()) {
+		int currentNodeID = pq.top().nodeID;
+		double currentDistance = pq.top().distance;
+		pq.pop();
+
+		// 如果当前距离超过 cut_off，则停止对该节点的进一步处理
+		if (currentDistance > cut_off) {
+			continue;
+		}
+
+		// 遍历当前节点的所有出边
+		CNode& node = m_Node[ID2Index_map[currentNodeID]];
+		for (int linkID : node.OutgoingLink) {
+			const CLink& pLink = m_Link[linkID];
+			int nextNodeID = m_Node[pLink.OutNodeIndex].ID;
+			double nextDistance = currentDistance + pLink.TravelTime;
+
+			if (nextDistance > cut_off) {
+				continue;
+			}
+
+			if (nextDistance < ShortestPathCost[ID2Index_map[nextNodeID]]) {
+				ShortestPathCost[ID2Index_map[nextNodeID]] = nextDistance;
+				ShortestPathParent[ID2Index_map[nextNodeID]] = ID2Index_map[currentNodeID];
+				pq.push({ nextNodeID, nextDistance });
+
+				// 实时更新路径
+				m_path_result[Start].dict_path[nextNodeID] = m_path_result[Start].dict_path[currentNodeID];
+				m_path_result[Start].dict_path[nextNodeID].push_back(nextNodeID);
+			}
+		}
+	}
+
+	// 将结果填入到 m_path_result 中
+	for (int i = 0; i < m_Node.size(); i++) {
+		int target_ID = m_Node[i].ID;
+		if (ShortestPathCost[ID2Index_map[target_ID]] != std::numeric_limits<double>::max()) {
+			m_path_result[Start].dict_cost[target_ID] = ShortestPathCost[ID2Index_map[target_ID]];
+		}
+	}
+}
+
+// -----------------------------------------------基本操作----------------------------------------------------------
 
 // 清空
 void CNetwork::ClearAll() {
@@ -150,90 +216,10 @@ void CNetwork::AddEdgesFromList(const std::vector<py::tuple>& tupleList) {
 	}
 }
 
-// 最短路径 迪杰斯特拉算法
-void CNetwork::SingleSourceDijkstra(int Start) {
-	// 清空容器
-	dic_path.clear();
-	dic_cost.clear();
-
-	// 检查起点是否存在
-	if (ID2Index_map.find(Start) == ID2Index_map.end()) {
-		cout << "The start node does not exist: " << Start << endl;
-	}
-
-	std::priority_queue<NodeDistancePair, std::vector<NodeDistancePair>, std::greater<NodeDistancePair>> pq;
-	std::vector<double> ShortestPathCost(m_nNode, std::numeric_limits<double>::max()); // 值为索引
-	ShortestPathParent.resize(m_nNode, -1); // 确保类成员变量大小与节点数匹配 值为索引
-
-	ShortestPathCost[ID2Index_map[Start]] = 0.0; // 起点到自身的代价为 0
-	pq.push({ Start, 0.0 }); // 将起点加入优先队列
+// -----------------------------------------------基本操作----------------------------------------------------------
 
 
-	// 主循环中，实时记录路径
-	while (!pq.empty()) {
-		int currentNodeID = pq.top().nodeID;
-		double currentDistance = pq.top().distance;
-		pq.pop();
-
-		// 遍历当前节点的所有出边
-		CNode& node = m_Node[ID2Index_map[currentNodeID]];
-		for (int linkID : node.OutgoingLink) {
-			const CLink& pLink = m_Link[linkID];
-			int nextNodeID = m_Node[pLink.OutNodeIndex].ID;
-			double nextDistance = currentDistance + pLink.TravelTime;
-
-			if (nextDistance < ShortestPathCost[ID2Index_map[nextNodeID]]) {
-				ShortestPathCost[ID2Index_map[nextNodeID]] = nextDistance;
-				ShortestPathParent[ID2Index_map[nextNodeID]] = ID2Index_map[currentNodeID];
-				pq.push({ nextNodeID, nextDistance });
-
-				// 实时更新路径
-				dic_path[nextNodeID] = dic_path[currentNodeID];
-				dic_path[nextNodeID].push_back(nextNodeID);
-			}
-		}
-	}
-
-
-
-	for (int i = 0; i < m_Node.size(); i++) {
-		int target_ID = m_Node[i].ID;
-		if (ShortestPathCost[ID2Index_map[target_ID]] != std::numeric_limits<double>::max()) {
-			dic_cost[target_ID] = ShortestPathCost[ID2Index_map[target_ID]];
-		}
-	}
-
-	m_path_result[Start].dict_cost = std::move(dic_cost);
-	m_path_result[Start].dict_path = std::move(dic_path);
-}
-
-// 单源最短路径计算
-void CNetwork::SingleSourcePath(int Start, string method) {
-	// 算法方法判定
-	if (method == "Dijkstra") {
-		SingleSourceDijkstra(Start);
-	}
-	else {
-		cout << "There is currently no such method available: " << method << endl;
-	}
-
-
-}
-
-// 多源最短路径计算
-void CNetwork::MultiSourcePath( vector<int> StartNodes, string method) {
-	// 遍历所有起始节点
-	for (int start : StartNodes) {
-		// 检查起点是否存在
-		if (ID2Index_map.find(start) == ID2Index_map.end()) {
-			cout << "The start node does not exist: " << start << endl;
-			continue; // 跳过不存在的起点
-		}
-
-		// 调用单源最短路径算法
-		SingleSourcePath(start, method);
-	}
-}
+// -----------------------------------------------文件输出----------------------------------------------------------
 
 // 生成路径花费矩阵
 void CNetwork::CostMartixToCsv(const std::vector<int> vec_start, const std::vector<int> vec_end, const std::string file_path) {
@@ -350,3 +336,172 @@ void CNetwork::PathToCsv(const std::vector<int> vec_start, const std::vector<int
 	// 关闭文件
 	csv_file.close();
 }
+
+// -----------------------------------------------文件输出----------------------------------------------------------
+
+
+
+// -----------------------------------------------单源最短路径结果返回----------------------------------------------------------
+
+// 仅返回 路径
+unordered_map<int, std::vector<int>> CNetwork::SingleSourcePath(int Start, string method, double cut_off) {
+	// 清空结果
+	m_path_result.clear();
+
+	// 算法方法判定
+	if (method == "Dijkstra") {
+		SingleSourceDijkstra(Start, cut_off);
+	}
+	else {
+		cout << "There is currently no such method available: " << method << endl;
+	}
+
+	return m_path_result[Start].dict_path;
+}
+
+// 仅返回 花费
+unordered_map<int, double> CNetwork::SingleSourceCost(int Start, string method, double cut_off) {
+	// 清空结果
+	m_path_result.clear();
+
+	// 算法方法判定
+	if (method == "Dijkstra") {
+		SingleSourceDijkstra(Start, cut_off);
+	}
+	else {
+		cout << "There is currently no such method available: " << method << endl;
+	}
+
+	return m_path_result[Start].dict_cost;
+}
+
+// 返回所有结果
+pair<unordered_map<int, double>, unordered_map<int, std::vector<int>>> CNetwork::SingleSourceALL(int Start, string method, double cut_off) {
+	//// 清空结果
+	//m_path_result.clear();
+	pair<unordered_map<int, double>, unordered_map<int, std::vector<int>>> result;
+	// 算法方法判定
+	if (method == "Dijkstra") {
+		SingleSourceDijkstra(Start, cut_off);
+	}
+	else {
+		cout << "There is currently no such method available: " << method << endl;
+	}
+	result = { m_path_result[Start].dict_cost, m_path_result[Start].dict_path };
+	return result;
+}
+
+// -----------------------------------------------单源最短路径结果返回----------------------------------------------------------
+
+//------------------------------------------------多源最短路径结果返回---------------------------------------------------------
+
+// 仅返回 路径
+unordered_map <int, unordered_map<int, vector<int>>> CNetwork::MultiSourcePath(vector<int> StartNodes, string method, double cut_off) {
+	unordered_map <int, unordered_map<int, vector<int>>> result;
+
+	std::vector<std::thread> threads; // 用来保存线程对象
+	// 遍历所有起始节点
+	for (int start : StartNodes) {
+		// 检查起点是否存在
+		if (ID2Index_map.find(start) == ID2Index_map.end()) {
+			std::cout << "The start node does not exist: " << start << std::endl;
+			continue; // 跳过不存在的起点
+		}
+
+		// 启动一个线程来计算单源最短路径
+		threads.push_back(std::thread([this, start, method, cut_off]() {
+			// 使用锁保护共享资源 m_path_result
+			{
+				std::lock_guard<std::mutex> lock(path_result_mutex);
+				pair<unordered_map<int, double>, unordered_map<int, std::vector<int>>> temp_result;
+				temp_result = SingleSourceALL(start, method, cut_off);
+			}
+		}));
+	}
+
+	// 等待所有线程完成
+	for (auto& t : threads) {
+		t.join();
+	}
+
+	for (int i : StartNodes) {
+		result[i] = m_path_result[i].dict_path;
+	}
+
+	return result;
+}
+
+// 仅返回 花费
+unordered_map<int, unordered_map<int, double>> CNetwork::MultiSourceCost(vector<int> StartNodes, string method, double cut_off) {
+	unordered_map<int, unordered_map<int, double>> result;
+
+	std::vector<std::thread> threads; // 用来保存线程对象
+	// 遍历所有起始节点
+	for (int start : StartNodes) {
+		// 检查起点是否存在
+		if (ID2Index_map.find(start) == ID2Index_map.end()) {
+			std::cout << "The start node does not exist: " << start << std::endl;
+			continue; // 跳过不存在的起点
+		}
+
+		// 启动一个线程来计算单源最短路径
+		threads.push_back(std::thread([this, start, method, cut_off]() {
+			// 使用锁保护共享资源 m_path_result
+			{
+				std::lock_guard<std::mutex> lock(path_result_mutex);
+				pair<unordered_map<int, double>, unordered_map<int, std::vector<int>>> temp_result;
+				temp_result = SingleSourceALL(start, method, cut_off);
+			}
+		}));
+	}
+
+	// 等待所有线程完成
+	for (auto& t : threads) {
+		t.join();
+	}
+
+	for (int i : StartNodes) {
+		result[i] = m_path_result[i].dict_cost;
+	}
+
+	return result;
+}
+
+// 返回所有结果
+pair<unordered_map <int, unordered_map<int, vector<int>>>, unordered_map<int, unordered_map<int, double>>> CNetwork::MultiSourceAll(vector<int> StartNodes, string method, double cut_off) {
+	unordered_map <int, unordered_map<int, vector<int>>> result1;
+	unordered_map<int, unordered_map<int, double>> result2;
+	std::vector<std::thread> threads; // 用来保存线程对象
+	// 遍历所有起始节点
+	for (int start : StartNodes) {
+		// 检查起点是否存在
+		if (ID2Index_map.find(start) == ID2Index_map.end()) {
+			std::cout << "The start node does not exist: " << start << std::endl;
+			continue; // 跳过不存在的起点
+		}
+
+		// 启动一个线程来计算单源最短路径
+		threads.push_back(std::thread([this, start, method, cut_off]() {
+			// 使用锁保护共享资源 m_path_result
+			{
+				std::lock_guard<std::mutex> lock(path_result_mutex);
+				pair<unordered_map<int, double>, unordered_map<int, std::vector<int>>> temp_result;
+				temp_result = SingleSourceALL(start, method, cut_off);
+			}
+		}));
+	}
+
+	// 等待所有线程完成
+	for (auto& t : threads) {
+		t.join();
+	}
+
+	for (int i : StartNodes) {
+		result1[i] = m_path_result[i].dict_path;
+		result2[i] = m_path_result[i].dict_cost;
+	}
+
+	return { result1, result2 };
+}
+
+//------------------------------------------------多源最短路径结果返回---------------------------------------------------------
