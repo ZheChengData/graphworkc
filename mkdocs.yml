@@ -1,0 +1,42 @@
+site_name: graphworkc
+site_url: https://mydomain.org/graphworkc
+repo_url: https://github.com/ZheChengData/graphworkc
+repo_name: graphworkc
+
+site_description: >-
+    Python Path Engine Library Developed Based on C++
+    
+nav:
+    - 项目主页: index.md
+    - 快速开始: 快速开始.md
+    - 函数接口:
+        - CNetwork: Fun&API/CNetwork.md
+        - CLink: Fun&API/CLink.md
+        - CNode: Fun&API/CNode.md
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.tabs  # 启用横向导航
+  
+on:
+    push:
+        branches:
+            - main  # 监听 main 分支的推送事件
+            
+plugins:
+    - search
+    - mkdocstrings
+    - tags
