@@ -1,17 +1,37 @@
-# Welcome to MkDocs
+## 路网最短路径与花费计算工具
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+**GraphWorkC** 是一个开源项目，旨在为用户提供高效的路网最短路径计算功能，支持在多个路径计算模型中查找最短路径和最少花费。该工具专为运输和网络优化领域设计，帮助用户在复杂的路网中快速获取从一个出发点到目的点的最短路径，同时考虑路径上的花费因素，提供更加灵活和实用的决策支持。
 
-## Commands
+### 主要功能：
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+- **最短路径计算**：基于给定的 OD（Origin-Destination）对，计算并返回最短路径。
+- **最少花费计算**：考虑路网中的花费信息，计算从源点到目的点的最少花费路径。
+- **高效算法**：使用高效的图论算法，确保即使在大规模路网数据下也能快速计算结果。
+- **灵活的配置**：支持用户根据实际需求自定义路网结构和计算模型，便于适应各种应用场景。
 
-## Project layout
+### 使用场景：
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+- **交通运输**：适用于城市交通管理、道路规划等领域，帮助计算最优的行驶路线，优化交通流量。
+- **网络优化**：可以用于计算信息传输的最短路径或最低成本路径，提升网络效率。
+- **智能物流**：为物流公司提供路径优化方案，降低运输成本和时间。
+
+### 特性：
+
+- **开源**：项目完全开源，任何人都可以自由查看和贡献代码。
+- **跨平台**：支持多种操作系统，方便用户在不同环境下使用。
+- **易于集成**：提供简单易用的 API 接口，便于与其他系统集成。
+
+### 安装与使用：
+
+下载包：
+
+```
+pip install graphworkc
+```
+
+### 贡献：
+
+GraphWorkC 是一个社区驱动的开源项目，我们欢迎所有开发者为项目贡献代码、报告 bug 或提出改进建议。请查阅项目的 [贡献指南](https://xio919.aitianhu1.top/CONTRIBUTING.md) 了解更多信息。
+
+
+
