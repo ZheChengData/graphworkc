@@ -18,8 +18,9 @@ Parameters:
 | m_path_result    | unordered_map < int, path_result>             | 存储所有计算得到的单源最短路径结果：键为 ：源节点 值为 ：最短路径花费和最短路径列表 | None    |
 
 
+## CNetwork类方法
 
-### CNetwork类方法 - add_edge_from_tuple：
+### add_edges_from_tuple：
 
 - 加入一条路段
 
@@ -31,7 +32,7 @@ Parameters:
 
 
 
-### CNetwork类方法 - add_edges_from_list：
+### add_edges_from_list：
 
 - 加入多条路段
 
@@ -43,7 +44,7 @@ Parameters：
 
 
 
-### CNetwork类方法 -remove_edge：
+### remove_edge：
 
 - 删除一条路段
 
@@ -56,7 +57,7 @@ Parameters：
 
 
 
-### CNetwork类方法 - remove_edges：
+### remove_edges：
 
 - 删除多条路段
 
@@ -68,7 +69,7 @@ Parameters：
 
 
 
-### CNetwork类方法 -  single_source_path：
+### single_source_path：
 
 -  单源最短路径算法 仅返回OD对的路径
 
@@ -88,7 +89,7 @@ Returns：
 
 
 
-### CNetwork类方法 -  single_source_cost：
+### single_source_cost：
 
 -  单源最短路径算法 仅返回OD对的花费
 
@@ -108,7 +109,7 @@ Returns：
 
 
 
-### CNetwork类方法 - single_source_all：
+### single_source_all：
 
 -  单源最短路径算法 返回OD对的花费和路径
 
@@ -128,7 +129,7 @@ Returns：
 
 
 
-### CNetwork类方法 - multi_source_path：
+### multi_source_path：
 
 -  多源最短路径算法 仅返回各源节点的OD对的路径
 
@@ -148,7 +149,7 @@ Returns：
 
 
 
-### CNetwork类方法 - multi_source_cost：
+### multi_source_cost：
 
 -  多源最短路径算法 仅返回各源节点的OD对的花费
 
@@ -168,7 +169,7 @@ Returns：
 
 
 
-### CNetwork类方法 - multi_source_all：
+### multi_source_all：
 
 -  多源最短路径算法 返回各源节点的OD对的路径和花费
 
@@ -190,7 +191,7 @@ Returns：
 
 
 
-### CNetwork类方法 - CostMartixToCsv：
+### CostMartixToCsv：
 
 -  输出一个最短路径花费矩阵csv文件
 
@@ -204,7 +205,7 @@ Parameters:
 
 
 
-### CNetwork类方法 - CostMartixToCsv：
+### CostMartixToCsv：
 
 -  输出一个最短路径列表csv文件
 
@@ -218,7 +219,7 @@ Parameters:
 
 
 
-### CNetwork类方法 - ClearAll：
+### ClearAll：
 
 -  清空重置网络
 

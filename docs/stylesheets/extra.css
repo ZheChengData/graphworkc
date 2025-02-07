@@ -1,0 +1,9 @@
+/* 隐藏目录中的前缀 */
+nav.md-nav a[href="#add_edge_from_tuple"]::before {
+  content: "" !important;
+}
+
+/* 选择具有特定文本的标题 */
+h3[id="add_edge_from_tuple"]:before {
+  content: "add_edge_from_tuple" !important;
+}

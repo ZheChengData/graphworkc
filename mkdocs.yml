@@ -40,3 +40,14 @@ plugins:
     - search
     - mkdocstrings
     - tags
+    
+
+  
+extra_css:
+  - stylesheets/extra.css 
+ 
+markdown_extensions:
+  - attr_list
+ 
+extra_javascript:
+  - js/custom.js
