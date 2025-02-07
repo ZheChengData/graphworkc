@@ -52,6 +52,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -585,7 +587,58 @@
 <p>数据下载：</p>
 <p>。。。  。。。</p>
 <h2 id="1-">案例1 - 小数据最短路径计算</h2>
-<p>。。。</p>
+<pre><code class="language-python">import graphworkc
+
+# 初始化类
+network = graphworkc.CNetwork()
+
+# 假设python端现有如下路网
+# 路网1
+transnet = [(1, 2, {'weight':      1}),
+            (2, 3, {'weight':     10}),
+            (3, 4, {'weight':    100}),
+            (2, 1, {'weight':   1000}),
+            (3, 2, {'weight':  10000}),
+            (4, 3, {'weight': 100000}),]
+
+# 路网2
+transnet_2 = [(10, 20, {'weight':      1}),
+              (20, 30, {'weight':     10}),
+              (30, 40, {'weight':    100}),
+              (20, 10, {'weight':   1000}),
+              (30, 20, {'weight':  10000}),
+              (40, 30, {'weight': 100000})]
+
+remove_list = [(10, 20),
+               (20, 30),
+               (30, 40),
+               (20, 10),
+               (30, 20),
+               (40, 30)]
+
+method = &quot;Dijkstra&quot;  # 最短路径计算方法
+list_node = [1, 2, 3, 4]
+
+# 基础操作
+network.add_edge_from_tuple((4, 5, {'weight': 20}))  # 添加一条边 
+network.add_edges_from_list(transnet)  # 添加多条边
+network.add_edges_from_list(transnet_2) # 添加多条边
+network.remove_edge(4, 5)  # 移除一条边
+network.remove_edges(remove_list)  # 移除多条边
+
+# 路网计算、结果返回
+result = network.single_source_all(1, method)  # 单源最短路径计算， 返回所有花费和路径
+result_cost = network.single_source_cost(1, method)  # 单源最短路径计算， 返回最少花费
+result_path = network.single_source_path(1, method)  # 单源最短路径计算， 返回最短路径
+ms_result = network.multi_source_all(list_node)  # 多源最短路径计算， 返回所有花费和路径
+ms_result_cost = network.multi_source_cost(list_node)  # 多源最短路径计算， 返回所有花费
+ms_result_path = network.multi_source_path(list_node)  # 多源最短路径计算， 返回所有路径
+
+# 数据生成
+network.costmartix_to_csv(list_node, list_node, &quot;last_cost.csv&quot;)  # 生成最少花费矩阵
+network.path_to_csv(list_node, list_node, &quot;last_paths.csv&quot;)  # 生成最短路径列表
+
+</code></pre>
 <h2 id="2-">案例2 - 大数据最短路径计算</h2>
 <p>。。。</p>
 
@@ -638,6 +691,8 @@
     
     
       <script src="../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+        <script src="../js/custom.js"></script>
       
     
   </body>
