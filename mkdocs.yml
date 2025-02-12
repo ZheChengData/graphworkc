@@ -10,9 +10,7 @@ nav:
     - 项目主页: index.md
     - 快速开始: 快速开始.md
     - 函数接口:
-        - CNetwork: Fun&API/CNetwork.md
-        - CLink: Fun&API/CLink.md
-        - CNode: Fun&API/CNode.md
+        - CGraph: Fun&API/CGraph.md
 
 theme:
   name: material
