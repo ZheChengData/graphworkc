@@ -4,24 +4,60 @@
 
 Parameters:
 
-| Name             | Type                                          | Description                                                  | Default |
-| ---------------- | --------------------------------------------- | ------------------------------------------------------------ | ------- |
-| m_nNode          | int                                           | 节点数量                                                     | 0       |
-| m_nLink          | int                                           | 路段数量                                                     | 0       |
-| m_Node           | vector                                        | 路网节点存储列表                                             | None    |
-| m_Link           | vector                                        | 路网路段存储列表                                             | None    |
-| LinkIndex        | unordered_map<pair<int, int>, int, pair_hash> | 起点和终点到边ID的映射表                                     | None    |
-| ID2Index_map     | unordered_map<int, size_t>                    | 节点ID与对应节点的列表索引的映射表                           | None    |
-| ID2Index_linkmap | unordered_map<int, size_t>                    | 路段ID与对应路段的列表索引的映射表                           | None    |
-| dic_cost         | unordered_map<int, double>                    | 临时存储当前最短路径算法中的最短路径花费                     | None    |
-| dic_path         | unordered_map<int, vector<int>>               | 临时存储当前最短路径算法中的最短路径列表                     | None    |
-| m_path_result    | unordered_map < int, path_result>             | 存储所有计算得到的单源最短路径结果：键为 ：源节点 值为 ：最短路径花费和最短路径列表 | None    |
-
-## CNetwork类方法
+| Name    | Type | Description | Default |
+| ------- | ---- | ----------- | ------- |
+| m_nNode | int  | 节点数量    | 0       |
+| m_nLink | int  | 路段数量    | 0       |
 
 
+
+## CGraph类方法
 
 ### 基本操作：
+
+#### get_graph_info：
+
+-  查看图信息
+
+Parameters:
+
+无需输入
+
+return :
+会展示当前图的一系列信息
+
+
+
+#### get_node_info：
+
+- 查看node信息
+
+Parameters:
+
+| Name | Type | Descriptio |
+| ---- | ---- | ---------- |
+| node | int  | 节点ID     |
+
+return :
+会展示当前节点的一系列信息
+
+
+
+#### get_link_info：
+
+- 查看边信息
+
+Parameters:
+
+| Name       | Type | Descriptio |
+| ---------- | ---- | ---------- |
+| start_node | int  | 起点ID     |
+| end_node   | int  | 终点ID     |
+
+return :
+会展示当前边的一系列信息
+
+
 
 #### add_edge：
 
@@ -33,7 +69,7 @@ Parameters:
 | ---------- | ---- | ---------------- |
 | start_node | int  | 起点ID           |
 | end_node   | int  | 终点ID           |
-| attribute  | dict | 字典，存有边属性 |
+| attribute  | dict | 字典，存储边属性 |
 
 
 
@@ -51,7 +87,7 @@ Parameters：
 
 #### remove_edge：
 
-- 删除一条路段
+- 删除一条有向边
 
 Parameters：
 
@@ -64,23 +100,13 @@ Parameters：
 
 #### remove_edges：
 
-- 删除多条路段
+- 删除多条有向边
 
 Parameters：
 
 | Name  | Type                      | Description                                |
 | ----- | ------------------------- | ------------------------------------------ |
 | edges | list[ tuple(start, end) ] | 列表：元素为包含了路段起点和终点的二元元组 |
-
-
-
-#### clear_all：
-
--  清空重置网络
-
-Parameters:
-
-None（直接使用即可）
 
 
 
@@ -92,11 +118,13 @@ None（直接使用即可）
 
 Parameters:
 
-| Name        | Type      | Description                                                 |
-| ----------- | --------- | ----------------------------------------------------------- |
-| start_nodes | list[int] | 源节点列表，必须参数                                        |
-| method      | string    | 计算最短路径使用的方法，默认使用Dijkstra                    |
-| cutoff_name | string    | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1 |
+| Name        | Type      | Description                                                  |
+| ----------- | --------- | ------------------------------------------------------------ |
+| list_o      | list[int] | 源节点列表，必须参数                                         |
+| method      | string    | 计算最短路径使用的方法，默认使用Dijkstra，（可选）           |
+| weight_name | string    | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选） |
+| target      | int       | 目标节点，默认为-1，（可选）                                 |
+| cutoff      | double    | 搜索长度，默认正无穷，（可选）                               |
 
 Returns：
 
@@ -112,11 +140,13 @@ Returns：
 
 Parameters:
 
-| Name        | Type      | Description                                                 |
-| ----------- | --------- | ----------------------------------------------------------- |
-| start_nodes | list[int] | 源节点，必须参数                                            |
-| method      | string    | 计算最短路径使用的方法，默认使用Dijkstra                    |
-| cutoff_name | string    | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1 |
+| Name        | Type      | Description                                                  |
+| ----------- | --------- | ------------------------------------------------------------ |
+| list_o      | list[int] | 源节点列表，必须参数                                         |
+| method      | string    | 计算最短路径使用的方法，默认使用Dijkstra，（可选）           |
+| weight_name | string    | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选） |
+| target      | int       | 目标节点，默认为-1，（可选）                                 |
+| cutoff      | double    | 搜索长度，默认正无穷，（可选）                               |
 
 Returns：
 
@@ -132,17 +162,19 @@ Returns：
 
 Parameters:
 
-| Name        | Type      | Description                                                 |
-| ----------- | --------- | ----------------------------------------------------------- |
-| start_nodes | list[int] | 源节点，必须参数                                            |
-| method      | string    | 计算最短路径使用的方法，默认使用Dijkstra                    |
-| cutoff_name | string    | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1 |
+| Name        | Type      | Description                                                  |
+| ----------- | --------- | ------------------------------------------------------------ |
+| list_o      | list[int] | 源节点列表，必须参数                                         |
+| method      | string    | 计算最短路径使用的方法，默认使用Dijkstra，（可选）           |
+| weight_name | string    | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选） |
+| target      | int       | 目标节点，默认为-1，（可选）                                 |
+| cutoff      | double    | 搜索长度，默认正无穷，（可选）                               |
 
 Returns：
 
-| type                                         | Description                                                  |
-| -------------------------------------------- | ------------------------------------------------------------ |
-| tuple(dict{int:list[int]}, dist{int:double}) | 多源节点的最短路径计算的花费和路径；一个元组包含两个元素：到所有节点的花费、到所有节点的路径； |
+| type                                                         | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| struct result{<br />cost:dist{int:double},<br /> paths:dict{int:list[int]}<br />} | 多源最短路计算的花费和路径；<br />一个结构体包含两个元素：<br />cost：到所有节点的花费<br />paths:到所有节点的路径； |
 
 
 
@@ -154,11 +186,13 @@ Returns：
 
 Parameters:
 
-| Name        | Type   | Description                                                 |
-| ----------- | ------ | ----------------------------------------------------------- |
-| start       | int    | 源节点，必须参数                                            |
-| method      | string | 计算最短路径使用的方法，默认使用Dijkstra                    |
-| cutoff_name | string | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1 |
+| Name        | Type   | Description                                                  |
+| ----------- | ------ | ------------------------------------------------------------ |
+| o           | lint   | 源节点，必须参数                                             |
+| method      | string | 计算最短路径使用的方法，默认使用Dijkstra，（可选）           |
+| weight_name | string | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选） |
+| target      | int    | 目标节点，默认为-1，（可选）                                 |
+| cutoff      | double | 搜索长度，默认正无穷，（可选）                               |
 
 Returns：
 
@@ -174,11 +208,13 @@ Returns：
 
 Parameters:
 
-| Name        | Type   | Description                                                 |
-| ----------- | ------ | ----------------------------------------------------------- |
-| start       | int    | 源节点，必须参数                                            |
-| method      | string | 计算最短路径使用的方法，默认使用Dijkstra                    |
-| cutoff_name | string | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1 |
+| Name        | Type   | Description                                                  |
+| ----------- | ------ | ------------------------------------------------------------ |
+| o           | lint   | 源节点，必须参数                                             |
+| method      | string | 计算最短路径使用的方法，默认使用Dijkstra，（可选）           |
+| weight_name | string | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选） |
+| target      | int    | 目标节点，默认为-1，（可选）                                 |
+| cutoff      | double | 搜索长度，默认正无穷，（可选）                               |
 
 Returns：
 
@@ -194,17 +230,19 @@ Returns：
 
 Parameters:
 
-| Name        | Type   | Description                                                 |
-| ----------- | ------ | ----------------------------------------------------------- |
-| start       | int    | 源节点，必须参数                                            |
-| method      | string | 计算最短路径使用的方法，默认使用Dijkstra                    |
-| cutoff_name | string | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1 |
+| Name        | Type   | Description                                                  |
+| ----------- | ------ | ------------------------------------------------------------ |
+| o           | lint   | 源节点，必须参数                                             |
+| method      | string | 计算最短路径使用的方法，默认使用Dijkstra，（可选）           |
+| weight_name | string | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选） |
+| target      | int    | 目标节点，默认为-1，（可选）                                 |
+| cutoff      | double | 搜索长度，默认正无穷，（可选）                               |
 
 Returns：
 
-| type                                         | Description                                                  |
-| -------------------------------------------- | ------------------------------------------------------------ |
-| tuple(dict{int:list[int]}, dist{int:double}) | 单源节点的最短路径计算的花费和路径；一个元组包含两个元素：到所有节点的花费、到所有节点的路径； |
+| type                                                         | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| struct result{<br />dict{int:list[int]}, <br />dist{int:double}<br />} | 单源节点的最短路径计算的花费和路径；一个结构体包含两个元素：<br />cost：到所有节点的花费<br />paths:到所有节点的路径； |
 
 
 
@@ -214,17 +252,20 @@ Returns：
 
 Parameters:
 
-| Name        | Type      | Description                                                 |
-| ----------- | --------- | ----------------------------------------------------------- |
-| StartNodes  | list[int] | 列表：元素为节点ID，代表多源节点                            |
-| method      | string    | 计算最短路径使用的方法，默认使用Dijkstra                    |
-| cutoff_name | string    | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1 |
+| Name        | Type      | Description                                                  |
+| ----------- | --------- | ------------------------------------------------------------ |
+| list_o      | list[int] | 列表：元素为节点ID，代表多个**单源节点**                     |
+| method      | string    | 计算最短路径使用的方法，默认使用Dijkstra，（可选）           |
+| weight_name | string    | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选） |
+| target      | int       | 目标节点，默认为-1，（可选）                                 |
+| cutoff      | double    | 搜索长度，默认正无穷，（可选）                               |
+| num_thread  | int       | 多线程计算核心数，默认为1,（可选）                           |
 
 Returns：
 
-| type                              | Description                                                  |
-| --------------------------------- | ------------------------------------------------------------ |
-| dict{int : {dict{int:list[int]}}} | 二维哈希表：一个源节点ID对应一个一维哈希表； 一维哈希表内存有源节点的路径返回结果（与单源算法返回的结果结构相同） |
+| type                        | Description                                                  |
+| --------------------------- | ------------------------------------------------------------ |
+| list[{dict{int:list[int]}}] | 列表[单源节点路径结果]：列表的每一个元素都是一个单源最短路路径结果 |
 
 
 
@@ -234,17 +275,20 @@ Returns：
 
 Parameters:
 
-| Name        | Type      | Description                                                 |
-| ----------- | --------- | ----------------------------------------------------------- |
-| StartNodes  | list[int] | 列表：元素为节点ID，代表多源节点                            |
-| method      | string    | 计算最短路径使用的方法，默认使用Dijkstra                    |
-| cutoff_name | string    | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1 |
+| Name        | Type      | Description                                                  |
+| ----------- | --------- | ------------------------------------------------------------ |
+| list_o      | list[int] | 列表：元素为节点ID，代表多个**单源节点**                     |
+| method      | string    | 计算最短路径使用的方法，默认使用Dijkstra，（可选）           |
+| weight_name | string    | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选） |
+| target      | int       | 目标节点，默认为-1，（可选）                                 |
+| cutoff      | double    | 搜索长度，默认正无穷，（可选）                               |
+| num_thread  | int       | 多线程计算核心数，默认为1,（可选）                           |
 
 Returns：
 
-| type                         | Description                                                  |
-| ---------------------------- | ------------------------------------------------------------ |
-| dict{int:{dist{int:double}}} | 二维哈希表：一个源节点ID对应一个一维哈希表； 一维哈希表内存有源节点的花费返回结果（与单源算法返回的结果结构相同） |
+| type                   | Description                                                  |
+| ---------------------- | ------------------------------------------------------------ |
+| list[dist{int:double}] | 列表[单源节点花费结果]：列表的每一个元素都是一个单源最短路花费结果 |
 
 
 
@@ -254,17 +298,20 @@ Returns：
 
 Parameters:
 
-| Name        | Type      | Description                                                 |
-| ----------- | --------- | ----------------------------------------------------------- |
-| StartNodes  | list[int] | 列表：元素为节点ID，代表多源节点                            |
-| method      | string    | 计算最短路径使用的方法，默认使用Dijkstra                    |
-| cutoff_name | string    | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1 |
+| Name        | Type      | Description                                                  |
+| ----------- | --------- | ------------------------------------------------------------ |
+| list_o      | list[int] | 列表：元素为节点ID，代表多个**单源节点**                     |
+| method      | string    | 计算最短路径使用的方法，默认使用Dijkstra，（可选）           |
+| weight_name | string    | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选） |
+| target      | int       | 目标节点，默认为-1，（可选）                                 |
+| cutoff      | double    | 搜索长度，默认正无穷，（可选）                               |
+| num_thread  | int       | 多线程计算核心数，默认为1,（可选）                           |
 
 Returns：
 
 | type                                                         | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| tuple(dict{int : {dict{int:list[int]}}}, dict{int:{dist{int:double}}}) | 元组：<br />序列0：二维哈希表：一个源节点ID对应一个一维哈希表； 一维哈希表内存有对应源节点的路径返回结果（与单源算法返回的结果结构相同）<br />序列1：二维哈希表：一个源节点ID对应一个一维哈希表； 一维哈希表内存有源节点的花费返回结果（与单源算法返回的结果结构相同） |
+| list[结构体result{<br />dict{int:list[int]}, <br />dist{int:double}<br />}] | 列表[单源最短路计算的花费和路径]:<br /> 每一个元素都是单源最短路的结构体：这个结构体包含两个属性：<br />cost：到所有节点的花费<br />paths:到所有节点的路径； |
 
 
 
@@ -274,17 +321,20 @@ Returns：
 
 Parameters:
 
-| Name        | Type            | Description                                                 |
-| ----------- | --------------- | ----------------------------------------------------------- |
-| StartNodes  | list[list[int]] | 二维列表：[元素为每个多源节点列表：[元素为源节点ID]]        |
-| method      | string          | 计算最短路径使用的方法，默认使用Dijkstra                    |
-| cutoff_name | string          | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1 |
+| Name        | Type            | Description                                                  |
+| ----------- | --------------- | ------------------------------------------------------------ |
+| list_o      | list[list[int]] | 二维列表：元素为list[节点ID]，代表多个**多源节点**           |
+| method      | string          | 计算最短路径使用的方法，默认使用Dijkstra，（可选）           |
+| weight_name | string          | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选） |
+| target      | int             | 目标节点，默认为-1，（可选）                                 |
+| cutoff      | double          | 搜索长度，默认正无穷，（可选）                               |
+| num_thread  | int             | 多线程计算核心数，默认为1,（可选）                           |
 
 Returns：
 
-| type                             | Description                                                  |
-| -------------------------------- | ------------------------------------------------------------ |
-| dict{int: {dict{int:list[int]}}} | 二维哈希表：一个 **StartNodes列表序列** 对应一个一维哈希表； 一维哈希表内存有对应源节点的路径返回结果（与单源算法返回的结果结构相同） |
+| type                        | Description                                                  |
+| --------------------------- | ------------------------------------------------------------ |
+| list[{dict{int:list[int]}}] | 列表[单源节点路径结果]：列表的每一个元素都是一个单源最短路路径结果 |
 
 
 
@@ -294,17 +344,20 @@ Returns：
 
 Parameters:
 
-| Name        | Type            | Description                                                 |
-| ----------- | --------------- | ----------------------------------------------------------- |
-| StartNodes  | list[list[int]] | 二维列表：[元素为每个多源节点列表：[元素为源节点ID]]        |
-| method      | string          | 计算最短路径使用的方法，默认使用Dijkstra                    |
-| cutoff_name | string          | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1 |
+| Name        | Type            | Description                                                  |
+| ----------- | --------------- | ------------------------------------------------------------ |
+| list_o      | list[list[int]] | 二维列表：元素为list[节点ID]，代表多个**多源节点**           |
+| method      | string          | 计算最短路径使用的方法，默认使用Dijkstra，（可选）           |
+| weight_name | string          | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选） |
+| target      | int             | 目标节点，默认为-1，（可选）                                 |
+| cutoff      | double          | 搜索长度，默认正无穷，（可选）                               |
+| num_thread  | int             | 多线程计算核心数，默认为1,（可选）                           |
 
 Returns：
 
-| type                         | Description                                                  |
-| ---------------------------- | ------------------------------------------------------------ |
-| dict{int:{dist{int:double}}} | 二维哈希表：一个 **StartNodes列表序列 **对应一个一维哈希表； 一维哈希表内存有对应源节点的花费返回结果（与单源算法返回的结果结构相同） |
+| type                   | Description                                                  |
+| ---------------------- | ------------------------------------------------------------ |
+| list[dist{int:double}] | 列表[单源节点花费结果]：列表的每一个元素都是一个单源最短路花费结果 |
 
 
 
@@ -314,25 +367,24 @@ Returns：
 
 Parameters:
 
-| Name        | Type            | Description                                                 |
-| ----------- | --------------- | ----------------------------------------------------------- |
-| StartNodes  | list[list[int]] | 二维列表：[元素为每个多源节点列表：[元素为源节点ID]]        |
-| method      | string          | 计算最短路径使用的方法，默认使用Dijkstra                    |
-| cutoff_name | string          | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1 |
+| Name        | Type            | Description                                                  |
+| ----------- | --------------- | ------------------------------------------------------------ |
+| list_o      | list[list[int]] | 二维列表：元素为list[节点ID]，代表多个**多源节点**           |
+| method      | string          | 计算最短路径使用的方法，默认使用Dijkstra，（可选）           |
+| weight_name | string          | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选） |
+| target      | int             | 目标节点，默认为-1，（可选）                                 |
+| cutoff      | double          | 搜索长度，默认正无穷，（可选）                               |
+| num_thread  | int             | 多线程计算核心数，默认为1,（可选）                           |
 
 Returns：
 
 | type                                                         | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| tuple(dict{int : {dict{int:list[int]}}}, dict{int:{dist{int:double}}}) | 元组：<br />序列0：二维哈希表：一个 **StartNodes列表序列 ** 对应一个一维哈希表； 一维哈希表内存有对应源节点的路径返回结果（与单源算法返回的结果结构相同）<br />序列1：二维哈希表：一个 **StartNodes列表序列 ** 对应一个一维哈希表； 一维哈希表内存有对应源节点的花费返回结果（与单源算法返回的结果结构相同） |
+| list[结构体result{<br />dict{int:list[int]}, <br />dist{int:double}<br />}] | 列表[单源最短路计算的花费和路径]:<br /> 每一个元素都是单源最短路的结构体：这个结构体包含两个属性：<br />cost：到所有节点的花费<br />paths:到所有节点的路径； |
 
 
 
-
-
-
-
-### 数据获取：
+### 矩阵数据：
 
 #### cost_martix_to_numpy：
 
@@ -340,16 +392,20 @@ Returns：
 
 Parameters:
 
-| Name       | Type      | Description            |
-| ---------- | --------- | ---------------------- |
-| StartNodes | list[int] | 列表：元素为起始节点ID |
-| EndNodes   | list[int] | 列表：元素为终点节点ID |
+| Name        | Type      | Description                                                  |
+| ----------- | --------- | ------------------------------------------------------------ |
+| starts      | list[int] | 列表：元素为起始节点ID                                       |
+| ends        | list[int] | 列表：元素为终点节点ID                                       |
+| method      | string    | 计算最短路径使用的方法，默认使用Dijkstra，（可选）           |
+| weight_name | string    | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选） |
+| cutoff      | double    | 搜索长度，默认正无穷，（可选）                               |
+| num_thread  | int       | 多线程计算核心数，默认为1,（可选）                           |
 
 Returns：
 
 | type                | Description                                                  |
 | ------------------- | ------------------------------------------------------------ |
-| numpy.array（m, n） | m代表了StartNodes数量，n代表了EndNodes数量，最后获得一个numpy二维数组 |
+| numpy.array（m, n） | m代表了StartNodes数量，n代表了EndNodes数量，最后获得一个numpy二维数组，元素为最短路径花费 |
 
 
 
@@ -359,13 +415,17 @@ Returns：
 
 Parameters:
 
-| Name       | Type      | Description            |
-| ---------- | --------- | ---------------------- |
-| StartNodes | list[int] | 列表：元素为起始节点ID |
-| EndNodes   | list[int] | 列表：元素为终点节点ID |
+| Name        | Type      | Description                                                  |
+| ----------- | --------- | ------------------------------------------------------------ |
+| StartNodes  | list[int] | 列表：元素为起始节点ID                                       |
+| EndNodes    | list[int] | 列表：元素为终点节点ID                                       |
+| method      | string    | 计算最短路径使用的方法，默认使用Dijkstra，（可选）           |
+| weight_name | string    | 搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选） |
+| cutoff      | double    | 搜索长度，默认正无穷，（可选）                               |
+| num_thread  | int       | 多线程计算核心数，默认为1,（可选）                           |
 
 Returns：
 
-| type                              | Description                                          |
-| --------------------------------- | ---------------------------------------------------- |
-| list[startnode, endnode, [path] ] | startnode为起点，endnode为终点，[path]为OD的最短路径 |
+| type                  | Description                                                  |
+| --------------------- | ------------------------------------------------------------ |
+| numpy.array（m*n, 3） | 返回一个二维numpy矩阵，第一列为起点，第二列为终点，第三列为路径 |

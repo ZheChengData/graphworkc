@@ -1,288 +1,230 @@
 #include <iostream>
 #include "CNetwork.h"
+
 using namespace std;
+namespace py = pybind11;
 
-
-
-
+// 声明容器为不透明类型，禁止默认拷贝行为
+//PYBIND11_MAKE_OPAQUE(std::vector<int>);
+//PYBIND11_MAKE_OPAQUE(std::vector<vector<int>>);
+//PYBIND11_MAKE_OPAQUE(std::unordered_map<int, double>);
+PYBIND11_MAKE_OPAQUE(std::unordered_map<int, vector<int>>);
 
 int main() {
-	CNode Node;
-	CNetwork Network;
+	return 0;
 }
+
 
 PYBIND11_MODULE(graphworkc, m) {
 	m.doc() = "module using pybind11";
-	py::class_<path_result>(m, "path_result", "A class representing the shortest path result between nodes.")
-		.def(py::init<>()) 
-		.def_readwrite("dict_cost", &path_result::dict_cost)
-		.def_readwrite("dict_path", &path_result::dict_path);
+	py::bind_vector<std::vector<int>>(m, "ListInt", py::module_local(false))
+		.def("__repr__", [](const std::vector<int>& vec) {
+		std::string repr = "[";
+		for (size_t i = 0; i < vec.size(); ++i) {
+			repr += std::to_string(vec[i]);
+			if (i != vec.size() - 1) repr += ", ";
+		}
+		repr += "]";
+		return repr;
+	});
 
-	py::class_<CLink>(m, "CLink")
+
+	py::bind_vector<std::vector<std::vector<int>>>(
+		m, "ListListInt",
+		py::module_local(false)
+		);
+
+	py::bind_map<std::unordered_map<int, double>>(
+		m, "MapIntToDouble",
+		py::module_local(false)
+		)
+		.def("__repr__", [](const std::unordered_map<int, double>& umap) {
+		std::string repr = "{";
+		for (const std::pair<const int, double>& p : umap) {
+			int key = p.first;
+			double value = p.second;
+			repr += std::to_string(key) + ": " + std::to_string(value) + ", ";
+		}
+		if (!umap.empty()) repr.pop_back();  // 去掉最后的逗号
+		repr += "}";
+		return repr;
+	});
+
+	py::bind_map<std::unordered_map<int, std::vector<int>>>(m, "MapIntToListInt", py::module_local(false))
+		.def("__repr__", [](const std::unordered_map<int, std::vector<int>>& umap) {
+		std::string repr = "{";
+		for (const std::pair<const int, std::vector<int>>& p : umap) {
+			int key = p.first;
+			auto value = p.second;
+			repr += std::to_string(key) + ": [";
+			for (size_t i = 0; i < value.size(); ++i) {
+				repr += std::to_string(value[i]);
+				if (i != value.size() - 1) repr += ", ";
+			}
+			repr += "], ";
+		}
+		if (!umap.empty()) repr.pop_back();  // 去掉最后的逗号
+		repr += "}";
+		return repr;
+	})
+		//.def("__getitem__", [](std::unordered_map<int, std::vector<int>>& umap, int key) {
+		//return umap.at(key);  // 使用 at() 方法来获取元素
+	//})
+	;
+
+
+	py::class_<Dis_and_Path>(m, "Dis_and_Path")
 		.def(py::init<>())
-		.def_readwrite("ID", &CLink::ID)
-		.def_readwrite("InNodeIndex", &CLink::InNodeIndex)
-		.def_readwrite("OutNodeIndex", &CLink::OutNodeIndex)
-		.def_readwrite("TravelTime", &CLink::TravelTime);
+		.def_readwrite("cost", &Dis_and_Path::distances)  
+		.def_readwrite("paths", &Dis_and_Path::paths)          
+		.def("__repr__", [](const Dis_and_Path &a) {
+		return "<Dis_and_Path cost=" + std::to_string(a.distances.size()) +
+			" paths=" + std::to_string(a.paths.size()) + ">";
+	});
 
-	py::class_<CNode>(m, "CNode")
+	py::class_<CGraph>(m, "CGraph")
 		.def(py::init<>())
-		.def_readwrite("ID", &CNode::ID)
-		.def_readwrite("IncomingLink", &CNode::IncomingLink)
-		.def_readwrite("OutgoingLink", &CNode::OutgoingLink);
-	
 
-	py::class_<CNetwork>(m, "CNetwork")
-		.def(py::init<>())
-		.def_readwrite("m_Node", &CNetwork::m_Node)
-		.def_readwrite("m_Link", &CNetwork::m_Link)
-		.def_readwrite("m_nNode", &CNetwork::m_nNode)
-		.def_readwrite("m_nLink", &CNetwork::m_nLink)
-		.def_readwrite("ID2Index_map", &CNetwork::ID2Index_map)
+		.def("get_graph_info", &CGraph::get_graph_info)
 
-		.def("DictToPython", &CNetwork::DictToPython)
+		.def("get_node_info", &CGraph::get_node_info,
+			py::arg("id"))
 
-		// 存储所有源节点最短路径计算结果的变量
-		.def_readwrite("m_path_result", &CNetwork::m_path_result, R"pbdoc(
-		A variable that stores the shortest path cost and shortest path of all source nodes;
-		
-		Args:
-			m_path_result (unordered_map < int, path_result>):
-			dict_cost (unordered_map<int, double>):
-			dict_path (unordered_map<int, std::vector<int>>):
+		.def("get_link_info", &CGraph::get_link_info,
+			py::arg("start"),
+			py::arg("end"))
 
-		Example:
-			// 获取源节点ID为1的花费和路径	
-			ID1_cost = network.m_path_result[1].dict_cost;
-			ID1_path = network.m_path_result[1].dict_path;
-				
-			// 获取源节点ID为2 到 ID为3的花费
-			ID2_to_3_cost = network.m_path_result[2].dict_cost[3];
-		)pbdoc")
+		// 加边去边
+		.def("add_edge", &CGraph::add_edge,
+			py::arg("start_node"), 
+			py::arg("end_node"),
+			py::arg("attribute_dict"))
 
-		// 生成路径列表
-		.def("path_to_csv", &CNetwork::PathToCsv, py::arg("vec_start"), py::arg("vec_end"), py::arg("file_path"),
-			R"pbdoc(
-		A function that create a list relative od shortest path to csv.
-		
-		Args:
-			start_nodes  (vector<int>): all start nodes ;
-			end_nodex    (vector<int>): all end nodes   ;
-			csv_path     (string)     : Generated CSV path; 
+		.def("add_edges", &CGraph::add_edges,
+			py::arg("edges"))
 
-		Example:
-            network.CostMartixToCsv([1,3],[1,2,3,4],"cost.csv")
+		.def("remove_edge", &CGraph::remove_edge,
+			py::arg("start"),
+			py::arg("end"))
 
-		)pbdoc")
+		.def("remove_edges", &CGraph::remove_edges,
+			py::arg("edges"))
 
+		// 多源最短路径
+		.def("multi_source_cost", &CGraph::multi_source_cost,
+			py::arg("list_o"),
+			py::arg("method") = "Dijkstra",
+			py::arg("target") = -1,
+			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("weight_name") = "no_input")
 
-		// 生成花费矩阵
-		.def("costmartix_to_csv", &CNetwork::CostMartixToCsv, py::arg("vec_start"), py::arg("vec_end"), py::arg("file_path"),
-			R"pbdoc(
-		A function that create a martix relative od cost to csv.
+		.def("multi_source_path", &CGraph::multi_source_path,
+			py::arg("list_o"),
+			py::arg("method") = "Dijkstra",
+			py::arg("target") = -1,
+			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("weight_name") = "no_input")
 
-		Args:
-			start_nodes  (vector<int>): all start nodes ;
-			end_nodex    (vector<int>): all end nodes   ;
-			csv_path     (string)     : Generated CSV path; 
+		.def("multi_source_all", &CGraph::multi_source_all,
+			py::arg("list_o"),
+			py::arg("method") = "Dijkstra",
+			py::arg("target") = -1,
+			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("weight_name") = "no_input")
+
+		// 单源最短路径
+		.def("single_source_cost", &CGraph::single_source_cost,
+			py::arg("o"),
+			py::arg("method") = "Dijkstra",
+			py::arg("target") = -1,
+			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("weight_name") = "no_input")
+
+		.def("single_source_path", &CGraph::single_source_path,
+			py::arg("o"),
+			py::arg("method") = "Dijkstra",
+			py::arg("target") = -1,
+			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("weight_name") = "no_input")
+
+		.def("single_source_all", &CGraph::single_source_all,
+			py::arg("o"),
+			py::arg("method") = "Dijkstra",
+			py::arg("target") = -1,
+			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("weight_name") = "no_input")
+
+		// 多个单源最短路径
+		.def("multi_single_source_cost", &CGraph::multi_single_source_cost,
+			py::arg("list_o"),
+			py::arg("method") = "Dijkstra",
+			py::arg("target") = -1,
+			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("weight_name") = "no_input",
+			py::arg("num_thread") = 1)
+
+		.def("multi_single_source_path", &CGraph::multi_single_source_path,
+			py::arg("list_o"),
+			py::arg("method") = "Dijkstra",
+			py::arg("target") = -1,
+			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("weight_name") = "no_input",
+			py::arg("num_thread") = 1)
+
+		.def("multi_single_source_all", &CGraph::multi_single_source_all,
+			py::arg("list_o"),
+			py::arg("method") = "Dijkstra",
+			py::arg("target") = -1,
+			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("weight_name") = "no_input",
+			py::arg("num_thread") = 1)
+
+		// 多个多源最短路径
+		.def("multi_multi_source_cost", &CGraph::multi_multi_source_cost,
+			py::arg("list_o"),
+			py::arg("method") = "Dijkstra",
+			py::arg("target") = -1,
+			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("weight_name") = "no_input",
+			py::arg("num_thread") = 1,
+			py::return_value_policy::move)
+
+		.def("multi_multi_source_path", &CGraph::multi_multi_source_path,
+			py::arg("list_o"),
+			py::arg("method") = "Dijkstra",
+			py::arg("target") = -1,
+			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("weight_name") = "no_input",
+			py::arg("num_thread") = 1,
+			py::return_value_policy::move)
+
+		.def("multi_multi_source_all", &CGraph::multi_multi_source_all,
+			py::arg("list_o"),
+			py::arg("method") = "Dijkstra",
+			py::arg("target") = -1,
+			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("weight_name") = "no_input",
+			py::arg("num_thread") = 1)
+
+		.def("cost_matrix_to_numpy", &CGraph::cost_matrix_to_numpy,
+			py::arg("starts"),
+			py::arg("ends"),
+			py::arg("method") = "Dijkstra",
+			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("weight_name") = "no_input",
+			py::arg("num_thread") = 1)
+
+		.def("path_list_to_numpy", &CGraph::path_list_to_numpy,
+			py::arg("starts"),
+			py::arg("ends"),
+			py::arg("method") = "Dijkstra",
+			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("weight_name") = "no_input",
+			py::arg("num_thread") = 1)
 			
-		Example:
-            network.CostMartixToCsv([1,3],[1,2,3,4],"cost.csv")
-								
-
-
-		)pbdoc")
-
-		// 移除多条边
-		.def("remove_edges", &CNetwork::RemoveEdges, py::arg("edges"),
-			R"pbdoc(
-		A function that remove edges.
-
-		Args:
-			edges (vector<pair<int, int>>): (starting node,ending node) pair of edges 
-
-		Example:
-            network.RemoveEdge([(1, 2),(2, 3),(4, 5)])		
-
-		)pbdoc")
-
-		// 移除一条边
-		.def("remove_edge", &CNetwork::RemoveEdge, py::arg("first"), py::arg("second"),
-			R"pbdoc(
-		A function that remove one edge.
-			
-		Args:
-			Start (int): The starting node.
-			End (int): The ending node.
-
-		Example:
-            network.RemoveEdge(1, 2)
-
-		)pbdoc")
-
-		.def("clear_all", &CNetwork::ClearAll,
-			R"pbdoc(
-		A function that clear all network.
-
-		)pbdoc")
-
-		// 多源最短路径计算 返回路径
-		.def("multi_source_path", &CNetwork::MultiSourcePath, py::arg("StartNodes"), py::arg("method") = "Dijkstra", py::arg("cut_off") = 9999999,
-			R"pbdoc(
-        A function that calculates the shortest paths from multiple source nodes to all other nodes.
-
-        Args:
-            StartNodes (list of int): A list of starting nodes.
-            method (str): The method to use for the shortest path algorithm (e.g., "Dijkstra", "Bellman-Ford").
-			cut_off (double): Stop searching when the distance reaches the specified number.
-
-		Returns:
-			dict: A nested dictionary representing the shortest paths. The outer dictionary's keys are source nodes, 
-			and the inner dictionary's keys are target nodes. Each target node maps to a list of integers, 
-			representing the shortest path from the source node to the target node.
-
-        Example:
-            network.MultiSourcePath([1, 2, 3], "Dijkstra", 100)
-     )pbdoc")
-
-		// 多源最短路径计算 返回花费
-		.def("multi_source_cost", &CNetwork::MultiSourceCost, py::arg("StartNodes"), py::arg("method") = "Dijkstra", py::arg("cut_off") = 9999999,
-		R"pbdoc(
-			A function that calculates the shortest paths from multiple source nodes to all other nodes.
-
-			Args:
-				StartNodes (list of int): A list of starting nodes.
-				method (str): The method to use for the shortest path algorithm (e.g., "Dijkstra", "Bellman-Ford").
-				cut_off (double): Stop searching when the distance reaches the specified number.
-
-			Returns:
-				dict: A nested dictionary representing the shortest path costs. The outer dictionary's keys are source nodes, 
-					  and the inner dictionary's keys are target nodes. Each target node maps to a float (double in C++), 
-					  representing the shortest path cost from the source node to the target node.
-
-			Example:
-				network.MultiSourcePath([1, 2, 3], "Dijkstra", 100)
-		)pbdoc")
-
-		// 多源最短路径计算 返回所有结果
-		.def("multi_source_all", &CNetwork::MultiSourceAll, py::arg("StartNodes"), py::arg("method") = "Dijkstra", py::arg("cut_off") = 9999999,
-		R"pbdoc(
-			A function that calculates the shortest paths from multiple source nodes to all other nodes.
-
-			Args:
-				StartNodes (list of int): A list of starting nodes.
-				method (str): The method to use for the shortest path algorithm (e.g., "Dijkstra", "Bellman-Ford").
-				cut_off (double): Stop searching when the distance reaches the specified number.
-			
-			Returns:
-				tuple: A tuple containing two dictionaries:
-					1. A dictionary representing the shortest paths, where the outer dictionary's keys are source nodes, 
-					   and the inner dictionary's keys are target nodes. Each target node maps to a list of integers 
-					   representing the shortest path from the source node to the target node.
-					2. A dictionary representing the shortest path costs, where the outer dictionary's keys are source nodes, 
-					   and the inner dictionary's keys are target nodes. Each target node maps to a float (double in C++), 
-					   representing the shortest path cost from the source node to the target node.
-
-			Example:
-				network.MultiSourcePath([1, 2, 3], "Dijkstra", 100)
-		)pbdoc")
-
-
-		// 单源最短路径计算 返回路径
-		.def("single_source_path", &CNetwork::SingleSourcePath, py::arg("Start"), py::arg("method") = "Dijkstra", py::arg("cut_off") = 9999999,
-		R"pbdoc(
-			A function that calculates the shortest paths from a single source node to all other nodes.
-
-			Args:
-				Start (int): The starting node.
-				method (str): The method to use for the shortest path algorithm (e.g., "Dijkstra", "Bellman-Ford").
-				cut_off (double): Stop searching when the distance reaches the specified number.
-		
-			Returns:
-				unordered_map[int, List[int]]: A mapping from each node to a list of nodes representing the shortest path from the start node to that node.
-			The key is the destination node, and the value is a list of nodes in the path, including the start node.
-        
-			Example:
-				network.SingleSourcePath(1, "Dijkstra", 100)
-		 )pbdoc")
-
-		 // 单源最短路径计算 返回花费
-		 .def("single_source_cost", &CNetwork::SingleSourceCost, py::arg("Start"), py::arg("method") = "Dijkstra", py::arg("cut_off") = 9999999,
-		 R"pbdoc(
-			A function that calculates the shortest paths from a single source node to all other nodes.
-
-			Args:
-				Start (int): The starting node.
-				method (str): The method to use for the shortest path algorithm (e.g., "Dijkstra", "Bellman-Ford").
-				cut_off (double): Stop searching when the distance reaches the specified number.
-
-			Returns:
-				unordered_map[int, float]: A mapping from each node to the shortest path cost from the start node to that node.
-			The key is the destination node, and the value is the cost (distance) of the shortest path.
-
-			Example:
-				network.SingleSourcePath(1, "Dijkstra", 100)
-		 )pbdoc")
-
-		 // 单源最短路径计算 返回所有
-		 .def("single_source_all", &CNetwork::SingleSourceALL, py::arg("Start"), py::arg("method") = "Dijkstra", py::arg("cut_off") = 9999999,
-		 R"pbdoc(
-			A function that calculates the shortest paths from a single source node to all other nodes.
-
-			Args:
-				Start (int): The starting node.
-				method (str): The method to use for the shortest path algorithm (e.g., "Dijkstra", "Bellman-Ford").
-				cut_off (double): Stop searching when the distance reaches the specified number.
-
-			Returns:
-				tuple: A pair of two unordered maps:
-					1. unordered_map[int, float]: A mapping from each node to the shortest path cost (distance) from the start node to that node.
-					2. unordered_map[int, List[int]]: A mapping from each node to a list of nodes representing the shortest path from the start node to that node.
-
-			Example:
-				network.SingleSourcePath(1, "Dijkstra", 100)
-		 )pbdoc")
-
-		// 添加单条边
-		.def("add_edge_from_tuple", &CNetwork::AddEdgeFromTuple, py::arg("t"),
-		R"pbdoc(
-			A function that adds a single edge to the network from a given tuple.
-
-			Args:
-				t (tuple): A tuple with exactly 3 elements:
-						   - t[0] (int): The ID of the starting node.
-						   - t[1] (int): The ID of the ending node.
-						   - t[2] (dict): A dictionary containing the edge attributes, 
-										  including a "weight" key for the edge's weight.
-
-			Raises:
-				RuntimeError: If the tuple does not have exactly 3 elements or if the dictionary does not contain the "weight" key.
-
-			Example:
-				network.AddEdgeFromTuple((1, 2, {"weight": 10.5}))
-		)pbdoc")
-
-		// 添加多条边
-		.def("add_edges_from_list", &CNetwork::AddEdgesFromList, py::arg("edges"),
-		R"pbdoc(
-			A function that adds multiple edges to the network from a list of tuples.
-
-			Args:
-				tupleList (list of tuple): A list of tuples where each tuple contains:
-											- t[0] (int): The ID of the starting node.
-											- t[1] (int): The ID of the ending node.
-											- t[2] (dict): A dictionary containing the edge attributes, 
-															including a "weight" key for the edge's weight.
-
-			Raises:
-				RuntimeError: If any tuple in the list does not have exactly 3 elements or if the dictionary does not contain the "weight" key.
-
-			Example:
-				edges = [
-					(1, 2, {"weight": 10.5}),
-					(2, 3, {"weight": 7.2}),
-					(3, 4, {"weight": 15.3})
-				]
-				network.AddEdgesFromList(edges)
-		)pbdoc");
+		.def("shortest_simple_paths", &CGraph::shortest_simple_paths,
+			py::arg("start"),
+			py::arg("end"),
+			py::arg("weight_name") = "no_input")
+		;
 }
