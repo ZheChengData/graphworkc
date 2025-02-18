@@ -10,13 +10,11 @@
       
       
       
-        <link rel="canonical" href="https://ZheChengData.github.io/graphworkc/Fun%26API/CNetwork/">
+        <link rel="canonical" href="https://ZheChengData.github.io/graphworkc/Fun%26API/CGraph/">
       
       
         <link rel="prev" href="../../%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B/">
       
-      
-        <link rel="next" href="../CLink/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +22,7 @@
     
     
       
-        <title>CNetwork - graphworkc</title>
+        <title>CGraph - graphworkc</title>
       
     
     
@@ -80,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#cnetwork" class="md-skip">
+        <a href="#cgraph" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              CNetwork
+              CGraph
             
           </span>
         </div>
@@ -418,7 +416,7 @@
           
   
   <span class="md-ellipsis">
-    CNetwork
+    CGraph
   </span>
   
 
@@ -429,7 +427,7 @@
         
   
   <span class="md-ellipsis">
-    CNetwork
+    CGraph
   </span>
   
 
@@ -451,37 +449,74 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#cnetwork_1" class="md-nav__link">
+  <a href="#cgraph_1" class="md-nav__link">
     <span class="md-ellipsis">
-      CNetwork类初始化
+      CGraph类初始化
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#cnetwork_2" class="md-nav__link">
+  <a href="#cgraph_2" class="md-nav__link">
     <span class="md-ellipsis">
-      CNetwork类方法
+      CGraph类方法
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="CNetwork类方法">
+    <nav class="md-nav" aria-label="CGraph类方法">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#add_edges_from_tuple" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      add_edges_from_tuple：
+      基本操作：
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="基本操作：">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_graph_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_graph_info：
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#add_edges_from_list" class="md-nav__link">
+  <a href="#get_node_info" class="md-nav__link">
     <span class="md-ellipsis">
-      add_edges_from_list：
+      get_node_info：
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_link_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_link_info：
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add_edge" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_edge：
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add_edges" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_edges：
     </span>
   </a>
   
@@ -500,6 +535,48 @@
   <a href="#remove_edges" class="md-nav__link">
     <span class="md-ellipsis">
       remove_edges：
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      计算方法：
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="计算方法：">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi_source_path" class="md-nav__link">
+    <span class="md-ellipsis">
+      multi_source_path：
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi_source_cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      multi_source_cost：
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi_source_all" class="md-nav__link">
+    <span class="md-ellipsis">
+      multi_source_all：
     </span>
   </a>
   
@@ -533,56 +610,94 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#multi_source_path" class="md-nav__link">
+  <a href="#multi_single_source_path" class="md-nav__link">
     <span class="md-ellipsis">
-      multi_source_path：
+      multi_single_source_path：
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#multi_source_cost" class="md-nav__link">
+  <a href="#multi_single_source_cost" class="md-nav__link">
     <span class="md-ellipsis">
-      multi_source_cost：
+      multi_single_source_cost：
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#multi_source_all" class="md-nav__link">
+  <a href="#multi_single_source_all" class="md-nav__link">
     <span class="md-ellipsis">
-      multi_source_all：
+      multi_single_source_all：
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#costmartixtocsv" class="md-nav__link">
+  <a href="#multi_multi_source_path" class="md-nav__link">
     <span class="md-ellipsis">
-      CostMartixToCsv：
+      multi_multi_source_path：
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#costmartixtocsv_1" class="md-nav__link">
+  <a href="#multi_multi_source_cost" class="md-nav__link">
     <span class="md-ellipsis">
-      CostMartixToCsv：
+      multi_multi_source_cost：
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#clearall" class="md-nav__link">
+  <a href="#multi_multi_source_all" class="md-nav__link">
     <span class="md-ellipsis">
-      ClearAll：
+      multi_multi_source_all：
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      矩阵数据：
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="矩阵数据：">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cost_martix_to_numpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      cost_martix_to_numpy：
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#path_list_to_numpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      path_list_to_numpy：
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -595,48 +710,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../CLink/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    CLink
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../CNode/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    CNode
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -676,37 +749,74 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#cnetwork_1" class="md-nav__link">
+  <a href="#cgraph_1" class="md-nav__link">
     <span class="md-ellipsis">
-      CNetwork类初始化
+      CGraph类初始化
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#cnetwork_2" class="md-nav__link">
+  <a href="#cgraph_2" class="md-nav__link">
     <span class="md-ellipsis">
-      CNetwork类方法
+      CGraph类方法
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="CNetwork类方法">
+    <nav class="md-nav" aria-label="CGraph类方法">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#add_edges_from_tuple" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      add_edges_from_tuple：
+      基本操作：
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="基本操作：">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_graph_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_graph_info：
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#add_edges_from_list" class="md-nav__link">
+  <a href="#get_node_info" class="md-nav__link">
     <span class="md-ellipsis">
-      add_edges_from_list：
+      get_node_info：
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_link_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_link_info：
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add_edge" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_edge：
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add_edges" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_edges：
     </span>
   </a>
   
@@ -725,6 +835,48 @@
   <a href="#remove_edges" class="md-nav__link">
     <span class="md-ellipsis">
       remove_edges：
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      计算方法：
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="计算方法：">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi_source_path" class="md-nav__link">
+    <span class="md-ellipsis">
+      multi_source_path：
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi_source_cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      multi_source_cost：
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi_source_all" class="md-nav__link">
+    <span class="md-ellipsis">
+      multi_source_all：
     </span>
   </a>
   
@@ -758,56 +910,94 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#multi_source_path" class="md-nav__link">
+  <a href="#multi_single_source_path" class="md-nav__link">
     <span class="md-ellipsis">
-      multi_source_path：
+      multi_single_source_path：
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#multi_source_cost" class="md-nav__link">
+  <a href="#multi_single_source_cost" class="md-nav__link">
     <span class="md-ellipsis">
-      multi_source_cost：
+      multi_single_source_cost：
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#multi_source_all" class="md-nav__link">
+  <a href="#multi_single_source_all" class="md-nav__link">
     <span class="md-ellipsis">
-      multi_source_all：
+      multi_single_source_all：
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#costmartixtocsv" class="md-nav__link">
+  <a href="#multi_multi_source_path" class="md-nav__link">
     <span class="md-ellipsis">
-      CostMartixToCsv：
+      multi_multi_source_path：
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#costmartixtocsv_1" class="md-nav__link">
+  <a href="#multi_multi_source_cost" class="md-nav__link">
     <span class="md-ellipsis">
-      CostMartixToCsv：
+      multi_multi_source_cost：
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#clearall" class="md-nav__link">
+  <a href="#multi_multi_source_all" class="md-nav__link">
     <span class="md-ellipsis">
-      ClearAll：
+      multi_multi_source_all：
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      矩阵数据：
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="矩阵数据：">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cost_martix_to_numpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      cost_martix_to_numpy：
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#path_list_to_numpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      path_list_to_numpy：
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -834,8 +1024,8 @@
   
 
 
-<h1 id="cnetwork">CNetwork</h1>
-<h2 id="cnetwork_1">CNetwork类初始化</h2>
+<h1 id="cgraph">CGraph</h1>
+<h2 id="cgraph_1">CGraph类初始化</h2>
 <p>Parameters:</p>
 <table>
 <thead>
@@ -859,60 +1049,21 @@
 <td>路段数量</td>
 <td>0</td>
 </tr>
-<tr>
-<td>m_Node</td>
-<td>vector</td>
-<td>路网节点存储列表</td>
-<td>None</td>
-</tr>
-<tr>
-<td>m_Link</td>
-<td>vector</td>
-<td>路网路段存储列表</td>
-<td>None</td>
-</tr>
-<tr>
-<td>LinkIndex</td>
-<td>unordered_map<pair\<int, int>, int, pair_hash></td>
-<td>起点和终点到边ID的映射表</td>
-<td>None</td>
-</tr>
-<tr>
-<td>ID2Index_map</td>
-<td>unordered_map<int, size_t></td>
-<td>节点ID与对应节点的列表索引的映射表</td>
-<td>None</td>
-</tr>
-<tr>
-<td>ID2Index_linkmap</td>
-<td>unordered_map<int, size_t></td>
-<td>路段ID与对应路段的列表索引的映射表</td>
-<td>None</td>
-</tr>
-<tr>
-<td>dic_cost</td>
-<td>unordered_map<int, double></td>
-<td>临时存储当前最短路径算法中的最短路径花费</td>
-<td>None</td>
-</tr>
-<tr>
-<td>dic_path</td>
-<td>unordered_map<int, vector\<int>></td>
-<td>临时存储当前最短路径算法中的最短路径列表</td>
-<td>None</td>
-</tr>
-<tr>
-<td>m_path_result</td>
-<td>unordered_map &lt; int, path_result&gt;</td>
-<td>存储所有计算得到的单源最短路径结果：键为 ：源节点 值为 ：最短路径花费和最短路径列表</td>
-<td>None</td>
-</tr>
 </tbody>
 </table>
-<h2 id="cnetwork_2">CNetwork类方法</h2>
-<h3 id="add_edges_from_tuple">add_edges_from_tuple：</h3>
+<h2 id="cgraph_2">CGraph类方法</h2>
+<h3 id="_1">基本操作：</h3>
+<h4 id="get_graph_info">get_graph_info：</h4>
 <ul>
-<li>加入一条路段</li>
+<li>查看图信息</li>
+</ul>
+<p>Parameters:</p>
+<p>无需输入</p>
+<p>return :
+会展示当前图的一系列信息</p>
+<h4 id="get_node_info">get_node_info：</h4>
+<ul>
+<li>查看node信息</li>
 </ul>
 <p>Parameters:</p>
 <table>
@@ -920,20 +1071,81 @@
 <tr>
 <th>Name</th>
 <th>Type</th>
-<th>Description</th>
+<th>Descriptio</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>input_tuple</td>
-<td>tuple( int, int, dict{{"weight":double} )</td>
-<td>三元元组：（起点，终点, 字典(内有权重) }），必须参数</td>
+<td>node</td>
+<td>int</td>
+<td>节点ID</td>
 </tr>
 </tbody>
 </table>
-<h3 id="add_edges_from_list">add_edges_from_list：</h3>
+<p>return :
+会展示当前节点的一系列信息</p>
+<h4 id="get_link_info">get_link_info：</h4>
 <ul>
-<li>加入多条路段</li>
+<li>查看边信息</li>
+</ul>
+<p>Parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Descriptio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>start_node</td>
+<td>int</td>
+<td>起点ID</td>
+</tr>
+<tr>
+<td>end_node</td>
+<td>int</td>
+<td>终点ID</td>
+</tr>
+</tbody>
+</table>
+<p>return :
+会展示当前边的一系列信息</p>
+<h4 id="add_edge">add_edge：</h4>
+<ul>
+<li>加入一条有向边</li>
+</ul>
+<p>Parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Descriptio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>start_node</td>
+<td>int</td>
+<td>起点ID</td>
+</tr>
+<tr>
+<td>end_node</td>
+<td>int</td>
+<td>终点ID</td>
+</tr>
+<tr>
+<td>attribute</td>
+<td>dict</td>
+<td>字典，存储边属性</td>
+</tr>
+</tbody>
+</table>
+<h4 id="add_edges">add_edges：</h4>
+<ul>
+<li>加入多条有向边</li>
 </ul>
 <p>Parameters：</p>
 <table>
@@ -952,9 +1164,9 @@
 </tr>
 </tbody>
 </table>
-<h3 id="remove_edge">remove_edge：</h3>
+<h4 id="remove_edge">remove_edge：</h4>
 <ul>
-<li>删除一条路段</li>
+<li>删除一条有向边</li>
 </ul>
 <p>Parameters：</p>
 <table>
@@ -978,9 +1190,9 @@
 </tr>
 </tbody>
 </table>
-<h3 id="remove_edges">remove_edges：</h3>
+<h4 id="remove_edges">remove_edges：</h4>
 <ul>
-<li>删除多条路段</li>
+<li>删除多条有向边</li>
 </ul>
 <p>Parameters：</p>
 <table>
@@ -999,9 +1211,10 @@
 </tr>
 </tbody>
 </table>
-<h3 id="single_source_path">single_source_path：</h3>
+<h3 id="_2">计算方法：</h3>
+<h4 id="multi_source_path">multi_source_path：</h4>
 <ul>
-<li>单源最短路径算法 仅返回OD对的路径</li>
+<li>多源最短路径算法 仅返回OD对的路径</li>
 </ul>
 <p>Parameters:</p>
 <table>
@@ -1014,19 +1227,29 @@
 </thead>
 <tbody>
 <tr>
-<td>start</td>
-<td>int</td>
-<td>源节点，必须参数</td>
+<td>list_o</td>
+<td>list[int]</td>
+<td>源节点列表，必须参数</td>
 </tr>
 <tr>
 <td>method</td>
 <td>string</td>
-<td>计算最短路径使用的方法，默认使用Dijkstra</td>
+<td>计算最短路径使用的方法，默认使用Dijkstra，（可选）</td>
 </tr>
 <tr>
-<td>cut_off</td>
+<td>weight_name</td>
+<td>string</td>
+<td>搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选）</td>
+</tr>
+<tr>
+<td>target</td>
+<td>int</td>
+<td>目标节点，默认为-1，（可选）</td>
+</tr>
+<tr>
+<td>cutoff</td>
 <td>double</td>
-<td>搜索权重半径, 默认9999999</td>
+<td>搜索长度，默认正无穷，（可选）</td>
 </tr>
 </tbody>
 </table>
@@ -1040,14 +1263,14 @@
 </thead>
 <tbody>
 <tr>
-<td>unordered_map&lt;int, std::vector&lt;int&gt;&gt;</td>
+<td>dict{int:list[int]}</td>
 <td>哈希表：一个终点ID对应一个路径</td>
 </tr>
 </tbody>
 </table>
-<h3 id="single_source_cost">single_source_cost：</h3>
+<h4 id="multi_source_cost">multi_source_cost：</h4>
 <ul>
-<li>单源最短路径算法 仅返回OD对的花费</li>
+<li>多源最短路径算法 仅返回OD对的花费</li>
 </ul>
 <p>Parameters:</p>
 <table>
@@ -1060,19 +1283,29 @@
 </thead>
 <tbody>
 <tr>
-<td>start</td>
-<td>int</td>
-<td>源节点，必须参数</td>
+<td>list_o</td>
+<td>list[int]</td>
+<td>源节点列表，必须参数</td>
 </tr>
 <tr>
 <td>method</td>
 <td>string</td>
-<td>计算最短路径使用的方法，默认使用Dijkstra</td>
+<td>计算最短路径使用的方法，默认使用Dijkstra，（可选）</td>
 </tr>
 <tr>
-<td>cut_off</td>
+<td>weight_name</td>
+<td>string</td>
+<td>搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选）</td>
+</tr>
+<tr>
+<td>target</td>
+<td>int</td>
+<td>目标节点，默认为-1，（可选）</td>
+</tr>
+<tr>
+<td>cutoff</td>
 <td>double</td>
-<td>搜索权重半径, 默认9999999</td>
+<td>搜索长度，默认正无穷，（可选）</td>
 </tr>
 </tbody>
 </table>
@@ -1086,14 +1319,14 @@
 </thead>
 <tbody>
 <tr>
-<td>unordered_map&lt;int, double&gt;</td>
+<td>dist{int:double}</td>
 <td>哈希表：一个终点ID对应一个花费</td>
 </tr>
 </tbody>
 </table>
-<h3 id="single_source_all">single_source_all：</h3>
+<h4 id="multi_source_all">multi_source_all：</h4>
 <ul>
-<li>单源最短路径算法 返回OD对的花费和路径</li>
+<li>多源最短路径算法 返回OD对的花费和路径</li>
 </ul>
 <p>Parameters:</p>
 <table>
@@ -1106,19 +1339,85 @@
 </thead>
 <tbody>
 <tr>
-<td>start</td>
+<td>list_o</td>
+<td>list[int]</td>
+<td>源节点列表，必须参数</td>
+</tr>
+<tr>
+<td>method</td>
+<td>string</td>
+<td>计算最短路径使用的方法，默认使用Dijkstra，（可选）</td>
+</tr>
+<tr>
+<td>weight_name</td>
+<td>string</td>
+<td>搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选）</td>
+</tr>
+<tr>
+<td>target</td>
 <td>int</td>
+<td>目标节点，默认为-1，（可选）</td>
+</tr>
+<tr>
+<td>cutoff</td>
+<td>double</td>
+<td>搜索长度，默认正无穷，（可选）</td>
+</tr>
+</tbody>
+</table>
+<p>Returns：</p>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>struct result{<br />cost:dist{int:double},<br /> paths:dict{int:list[int]}<br />}</td>
+<td>多源最短路计算的花费和路径；<br />一个结构体包含两个元素：<br />cost：到所有节点的花费<br />paths:到所有节点的路径；</td>
+</tr>
+</tbody>
+</table>
+<h4 id="single_source_path">single_source_path：</h4>
+<ul>
+<li>单源最短路径算法 仅返回路径</li>
+</ul>
+<p>Parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>o</td>
+<td>lint</td>
 <td>源节点，必须参数</td>
 </tr>
 <tr>
 <td>method</td>
 <td>string</td>
-<td>计算最短路径使用的方法，默认使用Dijkstra</td>
+<td>计算最短路径使用的方法，默认使用Dijkstra，（可选）</td>
 </tr>
 <tr>
-<td>cut_off</td>
+<td>weight_name</td>
+<td>string</td>
+<td>搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选）</td>
+</tr>
+<tr>
+<td>target</td>
+<td>int</td>
+<td>目标节点，默认为-1，（可选）</td>
+</tr>
+<tr>
+<td>cutoff</td>
 <td>double</td>
-<td>搜索权重半径, 默认9999999</td>
+<td>搜索长度，默认正无穷，（可选）</td>
 </tr>
 </tbody>
 </table>
@@ -1132,14 +1431,14 @@
 </thead>
 <tbody>
 <tr>
-<td>pair&lt;unordered_map&lt;int, double&gt;, unordered_map&lt;int, std::vector&lt;int&gt;&gt;</td>
-<td>单源节点的最短路径计算的花费和路径；一个元组包含两个元素：单源节点及其到所有节点的花费、所有单源节点及其到所有节点的路径；</td>
+<td>dict{int:list[int]}</td>
+<td>哈希表：一个终点ID对应一个路径</td>
 </tr>
 </tbody>
 </table>
-<h3 id="multi_source_path">multi_source_path：</h3>
+<h4 id="single_source_cost">single_source_cost：</h4>
 <ul>
-<li>多源最短路径算法 仅返回各源节点的OD对的路径</li>
+<li>单源最短路径算法 仅返回花费</li>
 </ul>
 <p>Parameters:</p>
 <table>
@@ -1152,19 +1451,29 @@
 </thead>
 <tbody>
 <tr>
-<td>StartNodes</td>
-<td>list[int]</td>
-<td>列表：元素为节点ID，代表多源节点</td>
+<td>o</td>
+<td>lint</td>
+<td>源节点，必须参数</td>
 </tr>
 <tr>
 <td>method</td>
 <td>string</td>
-<td>计算最短路径使用的方法，默认使用Dijkstra</td>
+<td>计算最短路径使用的方法，默认使用Dijkstra，（可选）</td>
 </tr>
 <tr>
-<td>cut_off</td>
+<td>weight_name</td>
+<td>string</td>
+<td>搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选）</td>
+</tr>
+<tr>
+<td>target</td>
+<td>int</td>
+<td>目标节点，默认为-1，（可选）</td>
+</tr>
+<tr>
+<td>cutoff</td>
 <td>double</td>
-<td>搜索权重半径，默认9999999</td>
+<td>搜索长度，默认正无穷，（可选）</td>
 </tr>
 </tbody>
 </table>
@@ -1178,14 +1487,14 @@
 </thead>
 <tbody>
 <tr>
-<td>unordered_map &lt;int, unordered_map&lt;int, vector&lt;int&gt;&gt;&gt;</td>
-<td>二维哈希表：一个源节点ID对应一个一维哈希表； 一维哈希表内存有对应源节点的路径返回结果（与单源算法返回的结果结构相同）</td>
+<td>dist{int:double}</td>
+<td>哈希表：一个终点ID对应一个花费</td>
 </tr>
 </tbody>
 </table>
-<h3 id="multi_source_cost">multi_source_cost：</h3>
+<h4 id="single_source_all">single_source_all：</h4>
 <ul>
-<li>多源最短路径算法 仅返回各源节点的OD对的花费</li>
+<li>单源最短路径算法 返回花费和路径</li>
 </ul>
 <p>Parameters:</p>
 <table>
@@ -1198,19 +1507,29 @@
 </thead>
 <tbody>
 <tr>
-<td>StartNodes</td>
-<td>list[int]</td>
-<td>列表：元素为节点ID，代表多源节点</td>
+<td>o</td>
+<td>lint</td>
+<td>源节点，必须参数</td>
 </tr>
 <tr>
 <td>method</td>
 <td>string</td>
-<td>计算最短路径使用的方法，默认使用Dijkstra</td>
+<td>计算最短路径使用的方法，默认使用Dijkstra，（可选）</td>
 </tr>
 <tr>
-<td>cut_off</td>
+<td>weight_name</td>
+<td>string</td>
+<td>搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选）</td>
+</tr>
+<tr>
+<td>target</td>
+<td>int</td>
+<td>目标节点，默认为-1，（可选）</td>
+</tr>
+<tr>
+<td>cutoff</td>
 <td>double</td>
-<td>搜索权重半径，默认9999999</td>
+<td>搜索长度，默认正无穷，（可选）</td>
 </tr>
 </tbody>
 </table>
@@ -1224,14 +1543,14 @@
 </thead>
 <tbody>
 <tr>
-<td>unordered_map&lt;int, unordered_map&lt;int, double&gt;&gt;</td>
-<td>二维哈希表：一个源节点ID对应一个一维哈希表； 一维哈希表内存有对应源节点的花费返回结果（与单源算法返回的结果结构相同）</td>
+<td>struct result{<br />dict{int:list[int]}, <br />dist{int:double}<br />}</td>
+<td>单源节点的最短路径计算的花费和路径；一个结构体包含两个元素：<br />cost：到所有节点的花费<br />paths:到所有节点的路径；</td>
 </tr>
 </tbody>
 </table>
-<h3 id="multi_source_all">multi_source_all：</h3>
+<h4 id="multi_single_source_path">multi_single_source_path：</h4>
 <ul>
-<li>多源最短路径算法 返回各源节点的OD对的路径和花费</li>
+<li>多个单源最短路径算法 仅返回路径</li>
 </ul>
 <p>Parameters:</p>
 <table>
@@ -1244,19 +1563,34 @@
 </thead>
 <tbody>
 <tr>
-<td>StartNodes</td>
+<td>list_o</td>
 <td>list[int]</td>
-<td>列表：元素为节点ID，代表多源节点</td>
+<td>列表：元素为节点ID，代表多个<strong>单源节点</strong></td>
 </tr>
 <tr>
 <td>method</td>
 <td>string</td>
-<td>计算最短路径使用的方法，默认使用Dijkstra</td>
+<td>计算最短路径使用的方法，默认使用Dijkstra，（可选）</td>
 </tr>
 <tr>
-<td>cut_off</td>
+<td>weight_name</td>
+<td>string</td>
+<td>搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选）</td>
+</tr>
+<tr>
+<td>target</td>
+<td>int</td>
+<td>目标节点，默认为-1，（可选）</td>
+</tr>
+<tr>
+<td>cutoff</td>
 <td>double</td>
-<td>搜索权重半径，默认9999999</td>
+<td>搜索长度，默认正无穷，（可选）</td>
+</tr>
+<tr>
+<td>num_thread</td>
+<td>int</td>
+<td>多线程计算核心数，默认为1,（可选）</td>
 </tr>
 </tbody>
 </table>
@@ -1270,14 +1604,381 @@
 </thead>
 <tbody>
 <tr>
-<td>pair&lt;unordered_map &lt;int, unordered_map&lt;int, vector&lt;int&gt;&gt;&gt;, unordered_map&lt;int, unordered_map&lt;int, double&gt;&gt;&gt;</td>
-<td>元组：<br />序列0：二维哈希表：一个源节点ID对应一个一维哈希表； 一维哈希表内存有对应源节点的路径返回结果（与单源算法返回的结果结构相同）<br />序列1：二维哈希表：一个源节点ID对应一个一维哈希表； 一维哈希表内存有对应源节点的花费返回结果（与单源算法返回的结果结构相同）</td>
+<td>list[{dict{int:list[int]}}]</td>
+<td>列表[单源节点路径结果]：列表的每一个元素都是一个单源最短路路径结果</td>
 </tr>
 </tbody>
 </table>
-<h3 id="costmartixtocsv">CostMartixToCsv：</h3>
+<h4 id="multi_single_source_cost">multi_single_source_cost：</h4>
 <ul>
-<li>输出一个最短路径花费矩阵csv文件</li>
+<li>多个单源最短路径算法 仅返回花费</li>
+</ul>
+<p>Parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>list_o</td>
+<td>list[int]</td>
+<td>列表：元素为节点ID，代表多个<strong>单源节点</strong></td>
+</tr>
+<tr>
+<td>method</td>
+<td>string</td>
+<td>计算最短路径使用的方法，默认使用Dijkstra，（可选）</td>
+</tr>
+<tr>
+<td>weight_name</td>
+<td>string</td>
+<td>搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选）</td>
+</tr>
+<tr>
+<td>target</td>
+<td>int</td>
+<td>目标节点，默认为-1，（可选）</td>
+</tr>
+<tr>
+<td>cutoff</td>
+<td>double</td>
+<td>搜索长度，默认正无穷，（可选）</td>
+</tr>
+<tr>
+<td>num_thread</td>
+<td>int</td>
+<td>多线程计算核心数，默认为1,（可选）</td>
+</tr>
+</tbody>
+</table>
+<p>Returns：</p>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>list[dist{int:double}]</td>
+<td>列表[单源节点花费结果]：列表的每一个元素都是一个单源最短路花费结果</td>
+</tr>
+</tbody>
+</table>
+<h4 id="multi_single_source_all">multi_single_source_all：</h4>
+<ul>
+<li>多个单源最短路径算法 返回路径和花费</li>
+</ul>
+<p>Parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>list_o</td>
+<td>list[int]</td>
+<td>列表：元素为节点ID，代表多个<strong>单源节点</strong></td>
+</tr>
+<tr>
+<td>method</td>
+<td>string</td>
+<td>计算最短路径使用的方法，默认使用Dijkstra，（可选）</td>
+</tr>
+<tr>
+<td>weight_name</td>
+<td>string</td>
+<td>搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选）</td>
+</tr>
+<tr>
+<td>target</td>
+<td>int</td>
+<td>目标节点，默认为-1，（可选）</td>
+</tr>
+<tr>
+<td>cutoff</td>
+<td>double</td>
+<td>搜索长度，默认正无穷，（可选）</td>
+</tr>
+<tr>
+<td>num_thread</td>
+<td>int</td>
+<td>多线程计算核心数，默认为1,（可选）</td>
+</tr>
+</tbody>
+</table>
+<p>Returns：</p>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>list[结构体result{<br />dict{int:list[int]}, <br />dist{int:double}<br />}]</td>
+<td>列表[单源最短路计算的花费和路径]:<br /> 每一个元素都是单源最短路的结构体：这个结构体包含两个属性：<br />cost：到所有节点的花费<br />paths:到所有节点的路径；</td>
+</tr>
+</tbody>
+</table>
+<h4 id="multi_multi_source_path">multi_multi_source_path：</h4>
+<ul>
+<li>多个多源最短路径算法 仅返回路径</li>
+</ul>
+<p>Parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>list_o</td>
+<td>list[list[int]]</td>
+<td>二维列表：元素为list[节点ID]，代表多个<strong>多源节点</strong></td>
+</tr>
+<tr>
+<td>method</td>
+<td>string</td>
+<td>计算最短路径使用的方法，默认使用Dijkstra，（可选）</td>
+</tr>
+<tr>
+<td>weight_name</td>
+<td>string</td>
+<td>搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选）</td>
+</tr>
+<tr>
+<td>target</td>
+<td>int</td>
+<td>目标节点，默认为-1，（可选）</td>
+</tr>
+<tr>
+<td>cutoff</td>
+<td>double</td>
+<td>搜索长度，默认正无穷，（可选）</td>
+</tr>
+<tr>
+<td>num_thread</td>
+<td>int</td>
+<td>多线程计算核心数，默认为1,（可选）</td>
+</tr>
+</tbody>
+</table>
+<p>Returns：</p>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>list[{dict{int:list[int]}}]</td>
+<td>列表[单源节点路径结果]：列表的每一个元素都是一个单源最短路路径结果</td>
+</tr>
+</tbody>
+</table>
+<h4 id="multi_multi_source_cost">multi_multi_source_cost：</h4>
+<ul>
+<li>多个多源最短路径算法 仅返回花费</li>
+</ul>
+<p>Parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>list_o</td>
+<td>list[list[int]]</td>
+<td>二维列表：元素为list[节点ID]，代表多个<strong>多源节点</strong></td>
+</tr>
+<tr>
+<td>method</td>
+<td>string</td>
+<td>计算最短路径使用的方法，默认使用Dijkstra，（可选）</td>
+</tr>
+<tr>
+<td>weight_name</td>
+<td>string</td>
+<td>搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选）</td>
+</tr>
+<tr>
+<td>target</td>
+<td>int</td>
+<td>目标节点，默认为-1，（可选）</td>
+</tr>
+<tr>
+<td>cutoff</td>
+<td>double</td>
+<td>搜索长度，默认正无穷，（可选）</td>
+</tr>
+<tr>
+<td>num_thread</td>
+<td>int</td>
+<td>多线程计算核心数，默认为1,（可选）</td>
+</tr>
+</tbody>
+</table>
+<p>Returns：</p>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>list[dist{int:double}]</td>
+<td>列表[单源节点花费结果]：列表的每一个元素都是一个单源最短路花费结果</td>
+</tr>
+</tbody>
+</table>
+<h4 id="multi_multi_source_all">multi_multi_source_all：</h4>
+<ul>
+<li>多个多源最短路径算法 返回路径和花费</li>
+</ul>
+<p>Parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>list_o</td>
+<td>list[list[int]]</td>
+<td>二维列表：元素为list[节点ID]，代表多个<strong>多源节点</strong></td>
+</tr>
+<tr>
+<td>method</td>
+<td>string</td>
+<td>计算最短路径使用的方法，默认使用Dijkstra，（可选）</td>
+</tr>
+<tr>
+<td>weight_name</td>
+<td>string</td>
+<td>搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选）</td>
+</tr>
+<tr>
+<td>target</td>
+<td>int</td>
+<td>目标节点，默认为-1，（可选）</td>
+</tr>
+<tr>
+<td>cutoff</td>
+<td>double</td>
+<td>搜索长度，默认正无穷，（可选）</td>
+</tr>
+<tr>
+<td>num_thread</td>
+<td>int</td>
+<td>多线程计算核心数，默认为1,（可选）</td>
+</tr>
+</tbody>
+</table>
+<p>Returns：</p>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>list[结构体result{<br />dict{int:list[int]}, <br />dist{int:double}<br />}]</td>
+<td>列表[单源最短路计算的花费和路径]:<br /> 每一个元素都是单源最短路的结构体：这个结构体包含两个属性：<br />cost：到所有节点的花费<br />paths:到所有节点的路径；</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_3">矩阵数据：</h3>
+<h4 id="cost_martix_to_numpy">cost_martix_to_numpy：</h4>
+<ul>
+<li>输出一个花费矩阵</li>
+</ul>
+<p>Parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>starts</td>
+<td>list[int]</td>
+<td>列表：元素为起始节点ID</td>
+</tr>
+<tr>
+<td>ends</td>
+<td>list[int]</td>
+<td>列表：元素为终点节点ID</td>
+</tr>
+<tr>
+<td>method</td>
+<td>string</td>
+<td>计算最短路径使用的方法，默认使用Dijkstra，（可选）</td>
+</tr>
+<tr>
+<td>weight_name</td>
+<td>string</td>
+<td>搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选）</td>
+</tr>
+<tr>
+<td>cutoff</td>
+<td>double</td>
+<td>搜索长度，默认正无穷，（可选）</td>
+</tr>
+<tr>
+<td>num_thread</td>
+<td>int</td>
+<td>多线程计算核心数，默认为1,（可选）</td>
+</tr>
+</tbody>
+</table>
+<p>Returns：</p>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>numpy.array（m, n）</td>
+<td>m代表了StartNodes数量，n代表了EndNodes数量，最后获得一个numpy二维数组，元素为最短路径花费</td>
+</tr>
+</tbody>
+</table>
+<h4 id="path_list_to_numpy">path_list_to_numpy：</h4>
+<ul>
+<li>输出一个路径列表</li>
 </ul>
 <p>Parameters:</p>
 <table>
@@ -1292,7 +1993,7 @@
 <tr>
 <td>StartNodes</td>
 <td>list[int]</td>
-<td>列表：元素为起始点节点ID</td>
+<td>列表：元素为起始节点ID</td>
 </tr>
 <tr>
 <td>EndNodes</td>
@@ -1300,49 +2001,42 @@
 <td>列表：元素为终点节点ID</td>
 </tr>
 <tr>
-<td>file_path</td>
+<td>method</td>
 <td>string</td>
-<td>结果保存文件路径:" ***.csv  "</td>
+<td>计算最短路径使用的方法，默认使用Dijkstra，（可选）</td>
+</tr>
+<tr>
+<td>weight_name</td>
+<td>string</td>
+<td>搜索半径所需的权重对应的字段名称, 如无输入，默认搜索半径为1，（可选）</td>
+</tr>
+<tr>
+<td>cutoff</td>
+<td>double</td>
+<td>搜索长度，默认正无穷，（可选）</td>
+</tr>
+<tr>
+<td>num_thread</td>
+<td>int</td>
+<td>多线程计算核心数，默认为1,（可选）</td>
 </tr>
 </tbody>
 </table>
-<h3 id="costmartixtocsv_1">CostMartixToCsv：</h3>
-<ul>
-<li>输出一个最短路径列表csv文件</li>
-</ul>
-<p>Parameters:</p>
+<p>Returns：</p>
 <table>
 <thead>
 <tr>
-<th>Name</th>
-<th>Type</th>
+<th>type</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>StartNodes</td>
-<td>list[int]</td>
-<td>列表：元素为起始点节点ID</td>
-</tr>
-<tr>
-<td>EndNodes</td>
-<td>list[int]</td>
-<td>列表：元素为终点节点ID</td>
-</tr>
-<tr>
-<td>file_path</td>
-<td>string</td>
-<td>结果保存文件路径:" ***.csv  "</td>
+<td>numpy.array（m*n, 3）</td>
+<td>返回一个二维numpy矩阵，第一列为起点，第二列为终点，第三列为路径</td>
 </tr>
 </tbody>
 </table>
-<h3 id="clearall">ClearAll：</h3>
-<ul>
-<li>清空重置网络</li>
-</ul>
-<p>Parameters:</p>
-<p>None（直接使用即可）</p>
 
 
 

@@ -16,7 +16,7 @@
         <link rel="prev" href="..">
       
       
-        <link rel="next" href="../Fun%26API/CNetwork/">
+        <link rel="next" href="../Fun%26API/CGraph/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -259,7 +259,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../Fun%26API/CNetwork/" class="md-tabs__link">
+        <a href="../Fun%26API/CGraph/" class="md-tabs__link">
           
   
   函数接口
@@ -506,53 +506,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../Fun%26API/CNetwork/" class="md-nav__link">
+      <a href="../Fun%26API/CGraph/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    CNetwork
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../Fun%26API/CLink/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    CLink
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../Fun%26API/CNode/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    CNode
+    CGraph
   </span>
   
 
@@ -686,98 +644,205 @@
 <h3 id="_2">构建路网对象</h3>
 <pre><code class="language-python">import graphworkc
 
-# 初始化类
-network = graphworkc.CNetwork()
+G = graphworkc.CGraph()
 
-# 假设python端现有如下路网
-# 路网1
-transnet = [(1, 2, {'weight':      1}),
-            (2, 3, {'weight':     10}),
-            (3, 4, {'weight':    100}),
-            (2, 1, {'weight':   1000}),
-            (3, 2, {'weight':  10000}),
-            (4, 3, {'weight': 100000}),]
+# 构建一个从1到100的有向图
+for i in range(100):
+    G.add_edge(i, i+1, {&quot;weight&quot;: 2})
 
-# 路网2
-transnet_2 = [(10, 20, {'weight':      1}),
-              (20, 30, {'weight':     10}),
-              (30, 40, {'weight':    100}),
-              (20, 10, {'weight':   1000}),
-              (30, 20, {'weight':  10000}),
-              (40, 30, {'weight': 100000})]
+# 增删改查
+G.get_link_info(40, 41)  # 查点，边，图
+G.get_node_info(40)
+G.get_graph_info()
 
-remove_list = [(10, 20),
-               (20, 30),
-               (30, 40),
-               (20, 10),
-               (30, 20),
-               (40, 30)]
+G.add_edge(199, 200, {&quot;weight&quot;: 2})  # 新增边
+G.add_edges([(200, 201, {&quot;weight&quot;: 2}),
+             (201, 202, {&quot;weight&quot;: 2}),
+             (202, 203, {&quot;weight&quot;: 2})])
 
-method = &quot;Dijkstra&quot;  # 最短路径计算方法
-list_node = [1, 2, 3, 4]
+G.add_edge(40, 41, {&quot;weight&quot;: 3})  # 修改已有的边
+G.add_edge(41, 42, {&quot;weight&quot;: 3})
 
-# 基础操作
-network.add_edge_from_tuple((4, 5, {'weight': 20}))  # 添加一条边 
-network.add_edges_from_list(transnet)  # 添加多条边
-network.add_edges_from_list(transnet_2) # 添加多条边
-network.remove_edge(4, 5)  # 移除一条边
-network.remove_edges(remove_list)  # 移除多条边
-
+G.remove_edge(199, 200)  # 删除边
+G.remove_edges([(200, 201),
+             (201, 202),
+             (202, 203)])
 </code></pre>
 <h3 id="_3">进行最短路径计算</h3>
-<pre><code class="language-python"># 路网计算、结果返回
-result = network.single_source_all(1, method)  # 单源最短路径计算， 返回所有花费和路径
-result_cost = network.single_source_cost(1, method)  # 单源最短路径计算， 返回最少花费
-result_path = network.single_source_path(1, method)  # 单源最短路径计算， 返回最短路径
-ms_result = network.multi_source_all(list_node)  # 多源最短路径计算， 返回所有花费和路径
-ms_result_cost = network.multi_source_cost(list_node)  # 多源最短路径计算， 返回所有花费
-ms_result_path = network.multi_source_path(list_node)  # 多源最短路径计算， 返回所有路径
+<pre><code class="language-python"># 最短路计算
+# 多源最短路
+multi_result_path = G.multi_source_path([1, 10, 20],
+                                  cutoff=100,
+                                  weight_name=&quot;weight&quot;)
+print(f&quot;multi_result_path: {multi_result_path},\n&quot;
+      f&quot;multi_result_path[50]: {multi_result_path[50]}&quot;)
 
-# 数据生成
-network.costmartix_to_csv(list_node, list_node, &quot;last_cost.csv&quot;)  # 生成最少花费矩阵
-network.path_to_csv(list_node, list_node, &quot;last_paths.csv&quot;)  # 生成最短路径列表
+single_result_cost = G.multi_source_cost([1, 10, 20],
+                                  cutoff=100,
+                                  weight_name=&quot;weight&quot;)
+print(f&quot;multi_result_cost: {single_result_cost},\n&quot;
+      f&quot;multi_result_cost[50]: {single_result_cost[50]}&quot;)
+
+single_result_all = G.multi_source_all([1, 10, 20],
+                                  cutoff=100,
+                                  weight_name=&quot;weight&quot;)
+test_path = single_result_all.paths
+test_cost = single_result_all.cost
+print(f&quot;multi_result_all_cost: {test_cost},\n&quot;
+      f&quot;multi_result_all_paths: {test_path},\n&quot;
+      f&quot;multi_result_all_cost[30]: {test_cost[30]},\n&quot;
+      f&quot;multi_result_all_paths[30]: {test_path[30]}&quot;)
+
+# 单源最短路
+multi_result_path = G.single_source_path(1,
+                                  cutoff=100,
+                                  weight_name=&quot;weight&quot;)
+print(f&quot;single_result_path: {multi_result_path},\n&quot;
+      f&quot;single_result_path[50]: {multi_result_path[50]}&quot;)
+
+
+single_result_cost = G.single_source_cost(1,
+                                  cutoff=100,
+                                  weight_name=&quot;weight&quot;)
+print(f&quot;single_result_cost: {single_result_cost},\n&quot;
+      f&quot;single_result_cost[10]: {single_result_cost[50]}&quot;)
+
+single_result_all = G.single_source_all(1,
+                                  cutoff=100,
+                                  weight_name=&quot;weight&quot;)
+test_path = single_result_all.paths
+test_cost = single_result_all.cost
+print(f&quot;single_result_all_cost: {test_cost},\n&quot;
+      f&quot;single_result_all_paths: {test_path},\n&quot;
+      f&quot;single_result_all_cost[30]: {test_cost[30]},\n&quot;
+      f&quot;single_result_all_paths[30]: {test_path[30]}&quot;)
+
+# 多个多源最短路
+list_o = [[1, 10], [10, 30], [20, 40]]
+multi_single_result_paths = G.multi_multi_source_path(list_o, num_thread=16)
+print(f&quot;multi_single_result_paths[0]: {multi_single_result_paths[0]}&quot;)
+
+multi_single_result_cost = G.multi_multi_source_cost(list_o, num_thread=16)
+print(f&quot;multi_single_result_cost[0]: {multi_single_result_cost[0]}&quot;)
+
+multi_single_result_all = G.multi_multi_source_all(list_o, num_thread=16)
+print(f&quot;multi_single_result_all[0]: {multi_single_result_all[0]}&quot;)
+
+# 花费矩阵、路径列表 
+starts = [1, 2]
+ends = [10, 11, 12]
+result = G.cost_matrix_to_numpy(starts, ends, num_thread=16)
+print(f&quot;cost_matrix: \n {result}&quot;)
+
+result1 = G.path_list_to_numpy(starts, ends, num_thread=16)
+print(&quot;path_list: \n&quot;)
+for pair in result1.items():
+    print(pair)
 </code></pre>
 <h2 id="2-">案例2 - 大数据最短路径计算</h2>
 <h3 id="_4">构建路网对象</h3>
-<pre><code class="language-python">import os
+<pre><code class="language-python">import graphworkc
 import pandas as pd
-import graphworkc
+import time
+import os
 
-od_df = pd.read_csv(&quot;od.csv&quot;)
-link_df = pd.read_csv(&quot;link.csv&quot;)
+G = graphworkc.CGraph()
 # C++ 端数据读入
-transnet = graphworkc.CNetwork()
-# link列表
 if 1:
-    list_o = []
-    # 添加边及其属性到图
+    link_df = pd.read_csv(&quot;data/link.csv&quot;)
+    od_df = pd.read_csv(&quot;data/od.csv&quot;)
+    # 4. 添加边及其属性到图
     for _, row in link_df.iterrows():
         from_node = row[&quot;FROM_NODE&quot;]
         to_node = row[&quot;TO_NODE&quot;]
+        ab_capac = row[&quot;AB_CAPACIT&quot;]  # 容量（A到B方向）
+        ba_capac = row[&quot;BA_CAPACIT&quot;]  # 容量（B到A方向）
         ab_fft = row[&quot;AB_FFT&quot;]  # 最短时间（A到B方向）
         ba_fft = row[&quot;BA_FFT&quot;]  # 最短时间（B到A方向）
         direction = row[&quot;DIR&quot;]  # 方向性，假设1表示单向，0表示双向
         # 根据方向性添加边
         if direction == 1:  # 单向 (A -&gt; B)
-        list_o.append((from_node, to_node, {'weight': ab_fft}))
+            G.add_edge(from_node, to_node, {'weight': ab_fft})
         elif direction == 0:  # 双向 (A &lt;-&gt; B)
-        list_o.append((from_node, to_node, {'weight': ab_fft}))
-        list_o.append((to_node, from_node, {'weight': ba_fft}))
+            G.add_edge(from_node, to_node, {'weight': ab_fft})
+            G.add_edge(to_node, from_node, {'weight': ba_fft})
         elif direction == -1:
-        list_o.append((to_node, from_node, {'weight': ba_fft}))
-
-transnet.add_edges_from_list(list_o)
+            G.add_edge(to_node, from_node, {'weight': ba_fft})
 </code></pre>
 <h3 id="_5">计算多源最短路径</h3>
-<pre><code class="language-python">method = &quot;Dijkstra&quot;
-list_node = []
+<pre><code class="language-python"># 启动列表：0：不启用函数；1：启用函数
+# 1：多花费 2：多路径 3：多所有 4：单花费 5：单路径 6：单所有
+# 7：多单花费 8：多单路径 9：多所有 10：多多花费 11：多多路径 12：多多所有
+start_list = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1]
+method_list = [&quot;multi_source_cost&quot;,
+               &quot;multi_source_path&quot;,
+               &quot;multi_source_all&quot;,
+               &quot;single_source_cost&quot;,
+               &quot;single_source_path&quot;,
+               &quot;single_source_all&quot;,
+               &quot;multi_single_source_cost&quot;,
+               &quot;multi_single_source_path&quot;,
+               &quot;multi_single_source_all&quot;,
+               &quot;multi_multi_source_cost&quot;,
+               &quot;multi_multi_source_path&quot;,
+               &quot;multi_multi_source_all&quot;]
 
-for o_node_id in od_df['o_node_id'].unique():
-    list_node.append(o_node_id)
-transnet.multi_source_all(list_node, method, cut_off=20)
+for i in range(len(start_list)):
+    if start_list[i] == 1 and 0 &lt;= i &lt;= 2:
+        # 获取对象的方法
+        method = getattr(G, method_list[i], None)
+        if callable(method):  # 确保该属性是一个方法
+            start = time.time()
+            for o_node_id in od_df['o_node_id'].unique():
+                result = method([o_node_id], weight_name=&quot;weight&quot;)
+            end = time.time()
+            print(f&quot;{method_list[i]} 消耗时间: {end - start}&quot;)
 
-transnet.costmartix_to_csv(list_node, list_node, &quot;last_cost.csv&quot;)
-transnet.path_to_csv(list_node, list_node, &quot;last_paths.csv&quot;)
+        else:
+            print(f&quot;方法 {method_list[i]} 不存在&quot;)
+
+    if start_list[i] == 1 and 3 &lt;= i &lt;= 5:
+        # 获取对象的方法
+        method = getattr(G, method_list[i], None)
+        if callable(method):  # 确保该属性是一个方法
+            start = time.time()
+            for o_node_id in od_df['o_node_id'].unique():
+                result = method(o_node_id, weight_name=&quot;weight&quot;)
+            end = time.time()
+            print(f&quot;{method_list[i]} 消耗时间: {end - start}&quot;)
+
+        else:
+            print(f&quot;方法 {method_list[i]} 不存在&quot;)
+
+    if start_list[i] == 1 and 6 &lt;= i &lt;= 8:
+        # 获取对象的方法
+        method = getattr(G, method_list[i], None)
+        if callable(method):  # 确保该属性是一个方法
+            list_a = []
+            for o_node_id in od_df['o_node_id'].unique():
+                list_a.append(o_node_id)
+            start_1 = time.time()
+            result = method(list_a, num_thread=16, weight_name=&quot;weight&quot;)
+            end_1 = time.time()
+            print(f&quot;{method_list[i]} 消耗时间: {end_1 - start_1}&quot;)
+
+        else:
+            print(f&quot;方法 {method_list[i]} 不存在&quot;)
+
+    if start_list[i] == 1 and 9 &lt;= i &lt;= 11:
+        # 获取对象的方法
+        method = getattr(G, method_list[i], None)
+        if callable(method):  # 确保该属性是一个方法
+            list_a = []
+            for o_node_id in od_df['o_node_id'].unique():
+                list_a.append([o_node_id])
+            start_1 = time.time()
+            result = method(list_a, num_thread=16, weight_name=&quot;weight&quot;)
+            end_1 = time.time()
+            print(f&quot;{method_list[i]} 消耗时间: {end_1 - start_1}&quot;)
+
+        else:
+            print(f&quot;方法 {method_list[i]} 不存在&quot;)
 </code></pre>
 
 
