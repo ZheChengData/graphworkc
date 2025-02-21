@@ -844,63 +844,28 @@ method_list = [&quot;multi_source_cost&quot;,
                &quot;multi_multi_source_cost&quot;,
                &quot;multi_multi_source_path&quot;,
                &quot;multi_multi_source_all&quot;]
+# 测试并观察多源最短路计算结果与速度
+start = time.time()
+# 循环计算多源最短路
+for o_node_id in od_df['o_node_id'].unique():
+    result = method([o_node_id], weight_name=&quot;weight&quot;)
+end = time.time()
+print(f&quot;multi_source_cost 消耗时间: {end - start}&quot;)
+print(f&quot;结果打印：{result}&quot;)
 
-for i in range(len(start_list)):
-    if start_list[i] == 1 and 0 &lt;= i &lt;= 2:
-        # 获取对象的方法
-        method = getattr(G, method_list[i], None)
-        if callable(method):  # 确保该属性是一个方法
-            start = time.time()
-            for o_node_id in od_df['o_node_id'].unique():
-                result = method([o_node_id], weight_name=&quot;weight&quot;)
-            end = time.time()
-            print(f&quot;{method_list[i]} 消耗时间: {end - start}&quot;)
-
-        else:
-            print(f&quot;方法 {method_list[i]} 不存在&quot;)
-
-    if start_list[i] == 1 and 3 &lt;= i &lt;= 5:
-        # 获取对象的方法
-        method = getattr(G, method_list[i], None)
-        if callable(method):  # 确保该属性是一个方法
-            start = time.time()
-            for o_node_id in od_df['o_node_id'].unique():
-                result = method(o_node_id, weight_name=&quot;weight&quot;)
-            end = time.time()
-            print(f&quot;{method_list[i]} 消耗时间: {end - start}&quot;)
-
-        else:
-            print(f&quot;方法 {method_list[i]} 不存在&quot;)
-
-    if start_list[i] == 1 and 6 &lt;= i &lt;= 8:
-        # 获取对象的方法
-        method = getattr(G, method_list[i], None)
-        if callable(method):  # 确保该属性是一个方法
-            list_a = []
-            for o_node_id in od_df['o_node_id'].unique():
+# 测试并观察多个单源最短路计算结果与速度
+list_a = []
+for o_node_id in od_df['o_node_id'].unique():
                 list_a.append(o_node_id)
-            start_1 = time.time()
-            result = method(list_a, num_thread=16, weight_name=&quot;weight&quot;)
-            end_1 = time.time()
-            print(f&quot;{method_list[i]} 消耗时间: {end_1 - start_1}&quot;)
 
-        else:
-            print(f&quot;方法 {method_list[i]} 不存在&quot;)
+start = time.time()
+# 计算多个单源最短路径
+multi_result = multi_single_source_all(list_a, num_thread=16, weight_name=&quot;weight&quot;)
+end = time.time()
+print(f&quot;multi_single_source_all 消耗时间: {end - start}&quot;)
+print(f&quot;结果打印：{result}&quot;)
 
-    if start_list[i] == 1 and 9 &lt;= i &lt;= 11:
-        # 获取对象的方法
-        method = getattr(G, method_list[i], None)
-        if callable(method):  # 确保该属性是一个方法
-            list_a = []
-            for o_node_id in od_df['o_node_id'].unique():
-                list_a.append([o_node_id])
-            start_1 = time.time()
-            result = method(list_a, num_thread=16, weight_name=&quot;weight&quot;)
-            end_1 = time.time()
-            print(f&quot;{method_list[i]} 消耗时间: {end_1 - start_1}&quot;)
 
-        else:
-            print(f&quot;方法 {method_list[i]} 不存在&quot;)
 </code></pre>
 
 
