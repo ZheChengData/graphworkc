@@ -1,0 +1,1821 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Python Path Engine Library Developed Based on C++">
+      
+      
+      
+        <link rel="canonical" href="https://ZheChengData.github.io/graphworkc/Fun%26API/CGraphBase/">
+      
+      
+        <link rel="prev" href="../../%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B/">
+      
+      
+        <link rel="next" href="../GraphAlgorithms/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>CGraphBase - graphworkc</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#src.graphworkc.CGraph.__init__" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="graphworkc" class="md-header__button md-logo" aria-label="graphworkc" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            graphworkc
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CGraphBase
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ZheChengData/graphworkc" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    graphworkc
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  项目主页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B/" class="md-tabs__link">
+        
+  
+    
+  
+  快速开始
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  函数接口
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="graphworkc" class="md-nav__button md-logo" aria-label="graphworkc" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    graphworkc
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ZheChengData/graphworkc" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    graphworkc
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    项目主页
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    快速开始
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    函数接口
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            函数接口
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    CGraphBase
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    CGraphBase
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.get_graph_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_graph_info
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.get_node_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_node_info
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.get_link_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_link_info
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.add_edge" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_edge
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.add_edges" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_edges
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.remove_edge" class="md-nav__link">
+    <span class="md-ellipsis">
+      remove_edge
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.remove_edges" class="md-nav__link">
+    <span class="md-ellipsis">
+      remove_edges
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GraphAlgorithms/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GraphAlgorithms
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.get_graph_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_graph_info
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.get_node_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_node_info
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.get_link_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_link_info
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.add_edge" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_edge
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.add_edges" class="md-nav__link">
+    <span class="md-ellipsis">
+      add_edges
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.remove_edge" class="md-nav__link">
+    <span class="md-ellipsis">
+      remove_edge
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.remove_edges" class="md-nav__link">
+    <span class="md-ellipsis">
+      remove_edges
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>CGraphBase</h1>
+
+<p><a id="init"></a>
+</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="src.graphworkc.CGraph.__init__"></a>
+    <div class="doc doc-contents first">
+
+            <details class="quote">
+              <summary>Source code in <code>src\graphworkc.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># 创建 C++ 图算法对象</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">graphwork</span><span class="o">.</span><span class="n">GraphAlgorithms</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div><p><a id="get_graph_info"></a>
+</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="src.graphworkc.CGraph.get_graph_info"></a>
+    <div class="doc doc-contents first">
+
+        <p><strong>类方法 - get_graph_info:</strong> <br>
+- 获取图信息</p>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <p>Getting graph information <br>
+graph.get_graph_info()</p>
+</details>
+            <details class="quote">
+              <summary>Source code in <code>src\graphworkc.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_graph_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - get_graph_info:** &lt;br&gt;</span>
+<span class="sd">    - 获取图信息</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        Getting graph information &lt;br&gt;</span>
+<span class="sd">        graph.get_graph_info()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get_graph_info</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div><p><a id="get_node_info"></a>
+</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="src.graphworkc.CGraph.get_node_info"></a>
+    <div class="doc doc-contents first">
+
+        <p><strong>类方法 - get_node_info:</strong> <br>
+- 获取节点信息</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>id</code>
+            </td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>节点的标识符。必须是一个整数，表示图中节点的唯一标识符。</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>ValueError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>如果“id”不是整数。</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>AttributeError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>如果图形对象没有<code>get_node_info</code>方法。</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <p>Getting information about node 1 <br>
+graph.get_node_info(1)</p>
+</details>
+            <details class="quote">
+              <summary>Source code in <code>src\graphworkc.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_node_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - get_node_info:** &lt;br&gt;</span>
+<span class="sd">    - 获取节点信息</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        id (int): 节点的标识符。必须是一个整数，表示图中节点的唯一标识符。</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: 如果“id”不是整数。</span>
+<span class="sd">        AttributeError: 如果图形对象没有`get_node_info`方法。</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        Getting information about node 1 &lt;br&gt;</span>
+<span class="sd">        graph.get_node_info(1)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 参数检查：确保 id 是有效的节点（假设它们是整数）</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;start&#39;: </span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">. It must be an integer.&quot;</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get_node_info</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div><p><a id="get_link_info"></a>
+</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="src.graphworkc.CGraph.get_link_info"></a>
+    <div class="doc doc-contents first">
+
+        <p><strong>类方法 - get_link_info:</strong> <br>
+- 获取边信息</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>start</code>
+            </td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>边的起始节点。必须是整数。</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>end</code>
+            </td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>边的结束节点。必须是整数。</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>ValueError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>如果“start”或“end”不是整数。</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>AttributeError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>如果图对象没有<code>get_link_info</code>方法。</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <p>Getting information about the link between node 1 and node 2<br>
+graph.get_link_info(1, 2)</p>
+</details>
+            <details class="quote">
+              <summary>Source code in <code>src\graphworkc.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_link_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - get_link_info:** &lt;br&gt;</span>
+<span class="sd">    - 获取边信息</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        start (int): 边的起始节点。必须是整数。</span>
+<span class="sd">        end (int): 边的结束节点。必须是整数。</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: 如果“start”或“end”不是整数。</span>
+<span class="sd">        AttributeError: 如果图对象没有`get_link_info`方法。</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        Getting information about the link between node 1 and node 2&lt;br&gt;</span>
+<span class="sd">        graph.get_link_info(1, 2)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 参数检查：确保 start 和 end 是有效的节点（假设它们是整数）</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;start&#39;: </span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">. It must be an integer.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;end&#39;: </span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">. It must be an integer.&quot;</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get_link_info</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div><p><a id="add_edge"></a>
+</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="src.graphworkc.CGraph.add_edge"></a>
+    <div class="doc doc-contents first">
+
+        <p><strong>类方法 - add_edge:</strong><br>
+ - 加一条边</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>start</code>
+            </td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>边的起始节点。必须是整数。</p>
+              </div>
+            </td>
+            <td>
+                  <code>int</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>end</code>
+            </td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>边的结束节点。必须是整数或浮点数。</p>
+              </div>
+            </td>
+            <td>
+                  <code>int</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>attribute_dict</code>
+            </td>
+            <td>
+                  <code>dict</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>包含边缘属性的字典，例如权重或其他属性。不能为空。</p>
+              </div>
+            </td>
+            <td>
+                  <code>dict</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>ValueError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>如果“start”或“end”不是整数或浮点数。</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>ValueError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>如果“attribute_dict_”不是字典。</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>ValueError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>如果“attribute_dict_”是空字典。</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <p>Adding an edge from node 1 to node 2 with attributes<br>
+edge_attributes = {"weight": 10, "color": "blue"}<br>
+graph.add_edge(1, 2, edge_attributes)</p>
+</details>
+            <details class="quote">
+              <summary>Source code in <code>src\graphworkc.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">attribute_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - add_edge:**&lt;br&gt;</span>
+<span class="sd">     - 加一条边</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        start (int): 边的起始节点。必须是整数。</span>
+<span class="sd">        end (int): 边的结束节点。必须是整数或浮点数。</span>
+<span class="sd">        attribute_dict (dict): 包含边缘属性的字典，例如权重或其他属性。不能为空。</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: 如果“start”或“end”不是整数或浮点数。</span>
+<span class="sd">        ValueError: 如果“attribute_dict_”不是字典。</span>
+<span class="sd">        ValueError: 如果“attribute_dict_”是空字典。</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        Adding an edge from node 1 to node 2 with attributes&lt;br&gt;</span>
+<span class="sd">        edge_attributes = {&quot;weight&quot;: 10, &quot;color&quot;: &quot;blue&quot;}&lt;br&gt;</span>
+<span class="sd">        graph.add_edge(1, 2, edge_attributes)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 参数检查：确保 start 和 v_ 是有效的节点（假设它们是整数）</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;start&#39;: </span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">. It must be an integer.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;end&#39;: </span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">. It must be an integer.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 参数检查：确保 attribute_dict_ 是一个字典</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attribute_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;attribute_dict&#39;: </span><span class="si">{</span><span class="n">attribute_dict</span><span class="si">}</span><span class="s2">. It must be a dictionary.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 参数检查：确保字典为空时不要传入</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">attribute_dict</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The &#39;attribute_dict&#39; cannot be an empty dictionary.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 假设 self.graph 是一个已定义的图对象</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">attribute_dict</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div><p><a id="add_edges"></a>
+</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="src.graphworkc.CGraph.add_edges"></a>
+    <div class="doc doc-contents first">
+
+        <p><strong>类方法 - add_edges:</strong><br>
+- 加多条边</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>edges</code>
+            </td>
+            <td>
+                  <code>list of tuple</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>要添加的边列表。每条边都应该是一个元组。</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>containing</code>
+            </td>
+            <td>
+                  <code>three elements</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <ul>
+<li>start (int): 边的起始节点。</li>
+<li>end (int): 边的结束节点。</li>
+<li>attribute_dict_ (dict): 一个包含边缘属性的字典，例如权重或其他属性。</li>
+</ul>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>ValueError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>如果“边”不是列表。</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>ValueError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>如果'edges'中的任何元素不是元组。</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>ValueError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>如果任何元组都没有3个元素。</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>ValueError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>如果“start”或“end”不是整数。</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>ValueError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>如果“attribute_dict_”不是字典。</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <p>edges = [<br>
+    (1, 2, {"weight": 5}),<br>
+    (2, 3, {"weight": 10}),<br>
+    (3, 4, {"weight": 15})<br>
+]<br>
+graph_instance.add_edges(edges)</p>
+</details>
+            <details class="quote">
+              <summary>Source code in <code>src\graphworkc.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - add_edges:**&lt;br&gt;</span>
+<span class="sd">     - 加多条边</span>
+
+<span class="sd">     Args:</span>
+<span class="sd">         edges (list of tuple): 要添加的边列表。每条边都应该是一个元组。</span>
+<span class="sd">         containing three elements:</span>
+<span class="sd">             - start (int): 边的起始节点。</span>
+<span class="sd">             - end (int): 边的结束节点。</span>
+<span class="sd">             - attribute_dict_ (dict): 一个包含边缘属性的字典，例如权重或其他属性。</span>
+
+<span class="sd">     Raises:</span>
+<span class="sd">         ValueError: 如果“边”不是列表。</span>
+<span class="sd">         ValueError: 如果&#39;edges&#39;中的任何元素不是元组。</span>
+<span class="sd">         ValueError: 如果任何元组都没有3个元素。</span>
+<span class="sd">         ValueError: 如果“start”或“end”不是整数。</span>
+<span class="sd">         ValueError: 如果“attribute_dict_”不是字典。</span>
+
+<span class="sd">     Example:</span>
+<span class="sd">         edges = [&lt;br&gt;</span>
+<span class="sd">             (1, 2, {&quot;weight&quot;: 5}),&lt;br&gt;</span>
+<span class="sd">             (2, 3, {&quot;weight&quot;: 10}),&lt;br&gt;</span>
+<span class="sd">             (3, 4, {&quot;weight&quot;: 15})&lt;br&gt;</span>
+<span class="sd">         ]&lt;br&gt;</span>
+<span class="sd">         graph_instance.add_edges(edges)</span>
+<span class="sd">     &quot;&quot;&quot;</span>
+    <span class="c1"># 确保 edges 是一个列表</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;edges&#39; to be a list, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 遍历列表中的每个元素，确保每个元素是一个元组，并且有三个元素</span>
+    <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Each element in &#39;edges&#39; should be a tuple, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Each tuple in &#39;edges&#39; should have exactly 3 elements, but got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># 检查 start 和 end 是否是有效的节点（例如整数或字符串）</span>
+        <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">attribute_dict_</span> <span class="o">=</span> <span class="n">edge</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;start&#39; to be an integer, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">start</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;end&#39; to be an integer, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">end</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># 检查 attribute_dict_ 是否是一个字典</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attribute_dict_</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;attribute_dict_&#39; to be a dictionary, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">attribute_dict_</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 如果所有检查通过，调用 graph.add_edges</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_edges</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div><p><a id="remove_edge"></a>
+</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="src.graphworkc.CGraph.remove_edge"></a>
+    <div class="doc doc-contents first">
+
+        <p><strong>类方法 - remove_edge:</strong><br>
+ - 移除一条边</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>start</code>
+            </td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>边的起始节点。必须是整数。</p>
+              </div>
+            </td>
+            <td>
+                  <code>int</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>end</code>
+            </td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>边的结束节点。必须是整数。</p>
+              </div>
+            </td>
+            <td>
+                  <code>int</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>ValueError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>如果“start”或“end”不是整数。</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <p>Removing an edge between node 1 and node 2<br>
+graph.remove_edge(1, 2)</p>
+</details>
+            <details class="quote">
+              <summary>Source code in <code>src\graphworkc.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">remove_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - remove_edge:**&lt;br&gt;</span>
+<span class="sd">     - 移除一条边</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        start (int): 边的起始节点。必须是整数。</span>
+<span class="sd">        end (int): 边的结束节点。必须是整数。</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: 如果“start”或“end”不是整数。</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        Removing an edge between node 1 and node 2&lt;br&gt;</span>
+<span class="sd">        graph.remove_edge(1, 2)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 参数检查：确保 start 和 v_ 是有效的节点（假设它们是整数）</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;start&#39;: </span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">. It must be an integer.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;end&#39;: </span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">. It must be an integer.&quot;</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div><p><a id="remove_edges"></a>
+</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="src.graphworkc.CGraph.remove_edges"></a>
+    <div class="doc doc-contents first">
+
+        <p><strong>类方法 - remove_edges：</strong><br>
+ - 移除多条边</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>edges</code>
+            </td>
+            <td>
+                  <code>list of tuples</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>要删除的边列表，其中每条边表示为两个整数的元组
+                    （开始、结束）表示边的节点。</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>ValueError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>如果“edges”不是列表。</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>ValueError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>如果'edges'中的任何元素不是元组或不包含正好有两个元素。</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <p>Removing multiple edges<br>
+edges_to_remove = [(1, 2), (3, 4), (5, 6)]<br>
+graph_instance.remove_edges(edges_to_remove)</p>
+</details>
+            <details class="quote">
+              <summary>Source code in <code>src\graphworkc.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">remove_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - remove_edges：**&lt;br&gt;</span>
+<span class="sd">     - 移除多条边</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        edges (list of tuples): 要删除的边列表，其中每条边表示为两个整数的元组</span>
+<span class="sd">                                （开始、结束）表示边的节点。</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: 如果“edges”不是列表。</span>
+<span class="sd">        ValueError: 如果&#39;edges&#39;中的任何元素不是元组或不包含正好有两个元素。</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        Removing multiple edges&lt;br&gt;</span>
+<span class="sd">        edges_to_remove = [(1, 2), (3, 4), (5, 6)]&lt;br&gt;</span>
+<span class="sd">        graph_instance.remove_edges(edges_to_remove)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 确保 edges 是一个列表</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;edges&#39; to be a list, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 遍历列表中的每个元素，确保每个元素是一个元组，并且有三个元素</span>
+    <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Each element in &#39;edges&#39; should be a tuple, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Each tuple in &#39;edges&#39; should have exactly 2 elements, but got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">remove_edges</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+        <script src="../../js/custom.js"></script>
+      
+    
+  </body>
+</html>
