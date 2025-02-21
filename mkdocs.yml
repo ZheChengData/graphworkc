@@ -12,7 +12,7 @@ nav:
     - 函数接口:
         - CGraphBase: Fun&API/CGraphBase.md
         - GraphAlgorithms: Fun&API/GraphAlgorithms.md
-    - 函数教程: 函数教程.md
+    - 函数教程: 案例展示.md
         
 
 theme:
