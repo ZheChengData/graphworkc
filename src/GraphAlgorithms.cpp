@@ -1,12 +1,7 @@
-#include "CNetwork.h"
+#include "GraphAlgorithms.h"
 
-// 定义一个互斥锁
-mutex result_mutex;
-
-
-// 基础算法 ---------------------------------------------------------------------------------------
 // 多源最短路算法
-Dis_and_Path CGraph::multi_source_dijkstra(
+dis_and_path GraphAlgorithms::multi_source_dijkstra(
 	const vector<int>& sources,
 	int target,
 	double cutoff,
@@ -126,7 +121,7 @@ Dis_and_Path CGraph::multi_source_dijkstra(
 }
 
 // Dijkstra 算法（单源最短路径）
-double CGraph::shortest_path_dijkstra(
+double GraphAlgorithms::shortest_path_dijkstra(
 	int source,
 	int target,
 	vector<int>& path,
@@ -183,222 +178,8 @@ double CGraph::shortest_path_dijkstra(
 	return dist[target];
 }
 
-
-// 基础算法 ---------------------------------------------------------------------------------------
-
-// 基本操作 ---------------------------------------------------------------------------------------
-
-// 获取基本信息
-void CGraph::get_graph_info() {
-	cout << "number of node: " << G.size() << endl;
-	cout << "number of link: " << number_link << endl;
-}
-
-// 获取点的基本信息
-void CGraph::get_node_info(const py::object& id)
-{
-	// 检查机制
-
-	// 检查 id 是否为整数类型
-	if (!py::isinstance<py::int_>(id)) {
-		// 抛出自定义的 TypeError
-		throw py::type_error("Error: Expected an integer for the 'id' argument, but got: " + std::string(py::str(id.get_type().attr("__name__"))));
-	}
-
-	int id_new = id.cast<int>();
-	// 检查 start 节点是否存在
-	if (G.find(id_new) == G.end()) {
-		cout << "Error: Node with id " << id_new << " does not exist in the graph." << endl;
-		return;
-	}
-
-	// 逻辑执行
-	cout << "Number of output degree: " << G[id_new].size() << endl;
-}
-
-// 获取边的基本信息
-void CGraph::get_link_info(const py::object& start_, const py::object& end_) {
-	// 检查机制
-	// 检查 start 和 end 是否是整数类型
-	if (!py::isinstance<py::int_>(start_) || !py::isinstance<py::int_>(end_)) {
-		cout << "Error: Node IDs must be of type 'int'." << endl;
-		return;
-	}
-
-	int start = start_.cast<int>();
-	int end = end_.cast<int>();
-	// 检查 start 节点是否存在
-	if (G.find(start) == G.end()) {
-		cout << "Error: Node " << start << " does not exist in the graph." << endl;
-		return;
-	}
-
-	// 检查 end 节点是否存在
-	if (G.find(end) == G.end()) {
-		cout << "Error: Node " << end << " does not exist in the graph." << endl;
-		return;
-	}
-
-	// 检查 start -> end 边是否存在
-	if (G[start].find(end) == G[start].end()) {
-		cout << "Error: No edge exists between nodes " << start << " and " << end << "." << endl;
-		return;
-	}
-
-	// 逻辑执行
-	for (const auto& pair : G[start][end]) {
-		cout << pair.first << ": " << pair.second << endl;
-	}
-}
-
-// 加一条边
-void CGraph::add_edge(const py::object& u_, const py::object& v_, const py::object& attribute_dict_) {
-	// 检查机制
-	// 检查 u 和 v 是否是整数类型
-	if (!py::isinstance<py::int_>(u_) || !py::isinstance<py::int_>(v_)) {
-		cout << "Error: Node IDs must be of type 'int'." << endl;
-		return;
-	}
-
-	// 尝试转换 attribute_dict_
-	try {
-		auto attribute_dict = attribute_dict_.cast<std::unordered_map<std::string, double>>();
-	}
-	catch (const py::cast_error& e) {
-		std::cout << "Error: Attribute dictionary must be of type 'dict{string, float}'." << std::endl;
-		return;
-	}
-	
-	int u = u_.cast<int>();
-	int v = v_.cast<int>();
-	auto attribute_dict = attribute_dict_.cast<std::unordered_map<std::string, double>>();
-	// 逻辑执行
-	G[u][v] = attribute_dict;
-	number_link += 1;
-}
-
-// 加多条边
-void CGraph::add_edges(const py::list& edges_) {
-	// 遍历每个边的三元组
-	for (const auto& edge : edges_) {
-		try {
-			// 提取边的信息
-			auto edge_tuple = edge.cast<py::tuple>();
-			if (edge_tuple.size() != 3) {
-				std::cout << "Error: Each edge must be a tuple of (u, v, attribute_dict)." << std::endl;
-				return;
-			}
-
-			// 获取节点 u, v 和属性字典
-			auto u_ = edge_tuple[0];
-			auto v_ = edge_tuple[1];
-			auto attribute_dict_ = edge_tuple[2];
-
-			// 检查 u 和 v 是否是整数类型
-			if (!py::isinstance<py::int_>(u_) || !py::isinstance<py::int_>(v_)) {
-				std::cout << "Error: Node IDs must be of type 'int'." << std::endl;
-				return;
-			}
-
-			// 尝试转换 attribute_dict_
-			std::unordered_map<std::string, double> attribute_dict;
-			try {
-				attribute_dict = attribute_dict_.cast<std::unordered_map<std::string, double>>();
-			}
-			catch (const py::cast_error& e) {
-				std::cout << "Error: Attribute dictionary must be of type 'dict{string, float}'." << std::endl;
-				return;
-			}
-
-			// 转换节点 u 和 v 为整数类型
-			int u = u_.cast<int>();
-			int v = v_.cast<int>();
-
-			// 逻辑执行：添加边
-			G[u][v] = attribute_dict;
-			number_link += 1;
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: Invalid edge format." << std::endl;
-			return;
-		}
-	}
-}
-
-// 删除一条边
-void CGraph::remove_edge(const py::object& u_, const py::object& v_) {
-	// 检查 u 和 v 是否是整数类型
-	if (!py::isinstance<py::int_>(u_) || !py::isinstance<py::int_>(v_)) {
-		std::cout << "Error: Node IDs must be of type 'int'." << std::endl;
-		return;
-	}
-
-	// 转换 u 和 v 为整数类型
-	int u = u_.cast<int>();
-	int v = v_.cast<int>();
-
-	// 检查图中是否存在这条边
-	if (G.find(u) != G.end() && G[u].find(v) != G[u].end()) {
-		// 删除边
-		G[u].erase(v);
-		number_link -= 1;
-		std::cout << "Edge (" << u << ", " << v << ") removed successfully." << std::endl;
-	}
-	else {
-		std::cout << "Error: Edge (" << u << ", " << v << ") does not exist." << std::endl;
-	}
-}
-
-// 删除多条边
-void CGraph::remove_edges(const py::list& edges_) {
-	// 遍历每个二元元组（起点，终点）
-	for (const auto& edge : edges_) {
-		try {
-			// 提取边的信息
-			auto edge_tuple = edge.cast<py::tuple>();
-			if (edge_tuple.size() != 2) {
-				std::cout << "Error: Each edge must be a tuple of (u, v)." << std::endl;
-				return;
-			}
-
-			// 获取节点 u 和 v
-			auto u_ = edge_tuple[0];
-			auto v_ = edge_tuple[1];
-
-			// 检查 u 和 v 是否是整数类型
-			if (!py::isinstance<py::int_>(u_) || !py::isinstance<py::int_>(v_)) {
-				std::cout << "Error: Node IDs must be of type 'int'." << std::endl;
-				return;
-			}
-
-			// 转换 u 和 v 为整数类型
-			int u = u_.cast<int>();
-			int v = v_.cast<int>();
-
-			// 检查图中是否存在这条边
-			if (G.find(u) != G.end() && G[u].find(v) != G[u].end()) {
-				// 删除边
-				G[u].erase(v);
-				number_link -= 1;
-				std::cout << "Edge (" << u << ", " << v << ") removed successfully." << std::endl;
-			}
-			else {
-				std::cout << "Error: Edge (" << u << ", " << v << ") does not exist." << std::endl;
-			}
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: Invalid edge format." << std::endl;
-			return;
-		}
-	}
-}
-
-// 基本操作 ---------------------------------------------------------------------------------------
-
-// 结果计算 ---------------------------------------------------------------------------------------
-
 // 多源最短路径计算：返回花费
-unordered_map<int, double> CGraph::multi_source_cost(
+unordered_map<int, double> GraphAlgorithms::multi_source_cost(
 	const py::object& list_o_,
 	const py::object& method_,
 	const py::object& target_,
@@ -459,7 +240,7 @@ unordered_map<int, double> CGraph::multi_source_cost(
 
 	// 逻辑执行
 	if (method == "Dijkstra") {
-		Dis_and_Path result = multi_source_dijkstra(list_o, target, cutoff, weight_name);
+		dis_and_path result = multi_source_dijkstra(list_o, target, cutoff, weight_name);
 		return result.distances;
 	}
 	else {
@@ -469,7 +250,7 @@ unordered_map<int, double> CGraph::multi_source_cost(
 
 }
 
-unordered_map<int, vector<int>> CGraph::multi_source_path(
+unordered_map<int, vector<int>> GraphAlgorithms::multi_source_path(
 	const py::object& list_o_,
 	const py::object& method_,
 	const py::object& target_,
@@ -529,11 +310,11 @@ unordered_map<int, vector<int>> CGraph::multi_source_path(
 	auto weight_name = weight_name_.cast<string>();
 
 	// 逻辑执行
-	Dis_and_Path result = multi_source_dijkstra(list_o, target, cutoff, weight_name);
+	dis_and_path result = multi_source_dijkstra(list_o, target, cutoff, weight_name);
 	return result.paths;
 }
 
-Dis_and_Path CGraph::multi_source_all(
+dis_and_path GraphAlgorithms::multi_source_all(
 	const py::object& list_o_,
 	const py::object& method_,
 	const py::object& target_,
@@ -547,7 +328,7 @@ Dis_and_Path CGraph::multi_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: list_o must be of type 'list[int]'." << std::endl;
-		return Dis_and_Path();
+		return dis_and_path();
 	}
 
 	// 尝试转换 method_
@@ -556,7 +337,7 @@ Dis_and_Path CGraph::multi_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: method must be of type 'string'." << std::endl;
-		return Dis_and_Path();
+		return dis_and_path();
 	}
 
 	// 尝试转换 target_
@@ -565,7 +346,7 @@ Dis_and_Path CGraph::multi_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: target must be of type 'int'." << std::endl;
-		return Dis_and_Path();
+		return dis_and_path();
 	}
 
 	// 尝试转换 cutoff_
@@ -574,7 +355,7 @@ Dis_and_Path CGraph::multi_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: cutoff must be of type 'double'." << std::endl;
-		return Dis_and_Path();
+		return dis_and_path();
 	}
 
 	// 尝试转换 weight_name_
@@ -583,7 +364,7 @@ Dis_and_Path CGraph::multi_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: weight_name must be of type 'string'." << std::endl;
-		return Dis_and_Path();
+		return dis_and_path();
 	}
 	auto list_o = list_o_.cast<vector<int>>();
 	auto method = method_.cast<string>();
@@ -593,17 +374,17 @@ Dis_and_Path CGraph::multi_source_all(
 
 
 	// 逻辑执行
-	Dis_and_Path result = multi_source_dijkstra(list_o, target, cutoff, weight_name);
+	dis_and_path result = multi_source_dijkstra(list_o, target, cutoff, weight_name);
 	return result;
 }
 
 // 单源最短路径计算
-unordered_map<int, double> CGraph::single_source_cost(
+unordered_map<int, double> GraphAlgorithms::single_source_cost(
 	const py::object& o_,
 	const py::object& method_,
 	const py::object& target_,
 	const py::object& cutoff_,
-	const py::object& weight_name_) 
+	const py::object& weight_name_)
 {
 	// 检查机制
 	// 尝试转换 list_o_
@@ -671,7 +452,7 @@ unordered_map<int, double> CGraph::single_source_cost(
 	}
 }
 
-unordered_map<int, std::vector<int>> CGraph::single_source_path(
+unordered_map<int, std::vector<int>> GraphAlgorithms::single_source_path(
 	const py::object& o_,
 	const py::object& method_,
 	const py::object& target_,
@@ -744,7 +525,7 @@ unordered_map<int, std::vector<int>> CGraph::single_source_path(
 	}
 }
 
-Dis_and_Path CGraph::single_source_all(
+dis_and_path GraphAlgorithms::single_source_all(
 	const py::object& o_,
 	const py::object& method_,
 	const py::object& target_,
@@ -758,7 +539,7 @@ Dis_and_Path CGraph::single_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: list_o must be of type 'list[int]'." << std::endl;
-		return Dis_and_Path();
+		return dis_and_path();
 	}
 
 	// 尝试转换 method_
@@ -767,7 +548,7 @@ Dis_and_Path CGraph::single_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: method must be of type 'string'." << std::endl;
-		return Dis_and_Path();
+		return dis_and_path();
 	}
 
 	// 尝试转换 target_
@@ -776,7 +557,7 @@ Dis_and_Path CGraph::single_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: target must be of type 'int'." << std::endl;
-		return Dis_and_Path();
+		return dis_and_path();
 	}
 
 	// 尝试转换 cutoff_
@@ -785,7 +566,7 @@ Dis_and_Path CGraph::single_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: cutoff must be of type 'double'." << std::endl;
-		return Dis_and_Path();
+		return dis_and_path();
 	}
 
 	// 尝试转换 weight_name_
@@ -794,7 +575,7 @@ Dis_and_Path CGraph::single_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: weight_name must be of type 'string'." << std::endl;
-		return Dis_and_Path();
+		return dis_and_path();
 	}
 
 	auto o = o_.cast<int>();
@@ -807,17 +588,17 @@ Dis_and_Path CGraph::single_source_all(
 
 	// 逻辑执行
 	if (method == "Dijkstra") {
-		Dis_and_Path result = multi_source_dijkstra(list_o, target, cutoff, weight_name);
+		dis_and_path result = multi_source_dijkstra(list_o, target, cutoff, weight_name);
 		return result;
 	}
 	else {
 		std::cout << "not have this method now." << std::endl;
-		return Dis_and_Path();
+		return dis_and_path();
 	}
 }
 
 // 多个单源最短路径计算
-vector<unordered_map<int, double>> CGraph::multi_single_source_cost(
+vector<unordered_map<int, double>> GraphAlgorithms::multi_single_source_cost(
 	const py::object& list_o_,
 	const py::object& method_,
 	const py::object& target_,
@@ -932,7 +713,7 @@ vector<unordered_map<int, double>> CGraph::multi_single_source_cost(
 	return final_result;
 }
 
-vector<unordered_map<int, vector<int>>> CGraph::multi_single_source_path(
+vector<unordered_map<int, vector<int>>> GraphAlgorithms::multi_single_source_path(
 	const py::object& list_o_,
 	const py::object& method_,
 	const py::object& target_,
@@ -1043,7 +824,7 @@ vector<unordered_map<int, vector<int>>> CGraph::multi_single_source_path(
 	return final_result;
 }
 
-vector<Dis_and_Path> CGraph::multi_single_source_all(
+vector<dis_and_path> GraphAlgorithms::multi_single_source_all(
 	const py::object& list_o_,
 	const py::object& method_,
 	const py::object& target_,
@@ -1058,7 +839,7 @@ vector<Dis_and_Path> CGraph::multi_single_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: list_o must be of type 'list[int]'." << std::endl;
-		return vector<Dis_and_Path>();
+		return vector<dis_and_path>();
 	}
 
 	// 尝试转换 method_
@@ -1067,7 +848,7 @@ vector<Dis_and_Path> CGraph::multi_single_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: method must be of type 'string'." << std::endl;
-		return vector<Dis_and_Path>();
+		return vector<dis_and_path>();
 	}
 
 	// 尝试转换 target_
@@ -1076,7 +857,7 @@ vector<Dis_and_Path> CGraph::multi_single_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: target must be of type 'int'." << std::endl;
-		return vector<Dis_and_Path>();
+		return vector<dis_and_path>();
 	}
 
 	// 尝试转换 cutoff_
@@ -1085,7 +866,7 @@ vector<Dis_and_Path> CGraph::multi_single_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: cutoff must be of type 'double'." << std::endl;
-		return vector<Dis_and_Path>();
+		return vector<dis_and_path>();
 	}
 
 	// 尝试转换 weight_name_
@@ -1094,7 +875,7 @@ vector<Dis_and_Path> CGraph::multi_single_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: weight_name must be of type 'string'." << std::endl;
-		return vector<Dis_and_Path>();
+		return vector<dis_and_path>();
 	}
 
 	// 尝试转换 num_thread_
@@ -1103,7 +884,7 @@ vector<Dis_and_Path> CGraph::multi_single_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: num_thread must be of type 'int'." << std::endl;
-		return vector<Dis_and_Path>();
+		return vector<dis_and_path>();
 	}
 
 	auto list_o = list_o_.cast<vector<int>>();
@@ -1114,7 +895,7 @@ vector<Dis_and_Path> CGraph::multi_single_source_all(
 	auto num_thread = num_thread_.cast<int>();
 
 	// 逻辑执行
-	vector<Dis_and_Path> final_result(list_o.size());  // 初始化 final_result 容器，大小与 list_o 相同
+	vector<dis_and_path> final_result(list_o.size());  // 初始化 final_result 容器，大小与 list_o 相同
 	vector<thread> threads;
 	atomic<size_t> index(0);
 	size_t max_threads = std::thread::hardware_concurrency();
@@ -1135,7 +916,7 @@ vector<Dis_and_Path> CGraph::multi_single_source_all(
 
 					// 执行 Dijkstra 或其他算法
 					if (method == "Dijkstra") {
-						Dis_and_Path result = multi_source_dijkstra(cur_list, target, cutoff, weight_name);
+						dis_and_path result = multi_source_dijkstra(cur_list, target, cutoff, weight_name);
 
 						// 使用互斥锁保护对 final_result 的访问
 						std::lock_guard<std::mutex> lock(result_mutex);
@@ -1158,14 +939,14 @@ vector<Dis_and_Path> CGraph::multi_single_source_all(
 }
 
 // 多个多源最短路径计算
-vector<unordered_map<int, double>> CGraph::multi_multi_source_cost(
+vector<unordered_map<int, double>> GraphAlgorithms::multi_multi_source_cost(
 	const py::object& list_o_,
 	const py::object& method_,
 	const py::object& target_,
 	const py::object& cutoff_,
 	const py::object& weight_name_,
 	const py::object& num_thread_
-) 
+)
 {
 	// 检查机制
 	// 尝试转换 list_o_
@@ -1273,14 +1054,14 @@ vector<unordered_map<int, double>> CGraph::multi_multi_source_cost(
 	return final_result;
 }
 
-vector<unordered_map<int, vector<int>>> CGraph::multi_multi_source_path(
+vector<unordered_map<int, vector<int>>> GraphAlgorithms::multi_multi_source_path(
 	const py::object& list_o_,
 	const py::object& method_,
 	const py::object& target_,
 	const py::object& cutoff_,
 	const py::object& weight_name_,
 	const py::object& num_thread_
-) 
+)
 {
 	// 检查机制
 	// 尝试转换 list_o_
@@ -1388,7 +1169,7 @@ vector<unordered_map<int, vector<int>>> CGraph::multi_multi_source_path(
 	return final_result;
 }
 
-vector<Dis_and_Path> CGraph::multi_multi_source_all(
+vector<dis_and_path> GraphAlgorithms::multi_multi_source_all(
 	const py::object& list_o_,
 	const py::object& method_,
 	const py::object& target_,
@@ -1404,7 +1185,7 @@ vector<Dis_and_Path> CGraph::multi_multi_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: list_o must be of type 'list[list[int]]'." << std::endl;
-		return vector<Dis_and_Path>();
+		return vector<dis_and_path>();
 	}
 
 	// 尝试转换 method_
@@ -1413,7 +1194,7 @@ vector<Dis_and_Path> CGraph::multi_multi_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: method must be of type 'string'." << std::endl;
-		return vector<Dis_and_Path>();
+		return vector<dis_and_path>();
 	}
 
 	// 尝试转换 target_
@@ -1422,7 +1203,7 @@ vector<Dis_and_Path> CGraph::multi_multi_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: target must be of type 'int'." << std::endl;
-		return vector<Dis_and_Path>();
+		return vector<dis_and_path>();
 	}
 
 	// 尝试转换 cutoff_
@@ -1431,7 +1212,7 @@ vector<Dis_and_Path> CGraph::multi_multi_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: cutoff must be of type 'double'." << std::endl;
-		return vector<Dis_and_Path>();
+		return vector<dis_and_path>();
 	}
 
 	// 尝试转换 weight_name_
@@ -1440,7 +1221,7 @@ vector<Dis_and_Path> CGraph::multi_multi_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: weight_name must be of type 'string'." << std::endl;
-		return vector<Dis_and_Path>();
+		return vector<dis_and_path>();
 	}
 
 	// 尝试转换 num_thread_
@@ -1449,7 +1230,7 @@ vector<Dis_and_Path> CGraph::multi_multi_source_all(
 	}
 	catch (const py::cast_error& e) {
 		std::cout << "Error: num_thread must be of type 'int'." << std::endl;
-		return vector<Dis_and_Path>();
+		return vector<dis_and_path>();
 	}
 
 	auto list_o = list_o_.cast<vector<vector<int>>>();
@@ -1460,7 +1241,7 @@ vector<Dis_and_Path> CGraph::multi_multi_source_all(
 	auto num_thread = num_thread_.cast<int>();
 
 	// 逻辑执行
-	vector<Dis_and_Path> final_result(list_o.size());  // 初始化 final_result 容器，大小与 list_o 相同
+	vector<dis_and_path> final_result(list_o.size());  // 初始化 final_result 容器，大小与 list_o 相同
 	vector<thread> threads;
 	atomic<size_t> index(0);
 	size_t max_threads = std::thread::hardware_concurrency();
@@ -1481,7 +1262,7 @@ vector<Dis_and_Path> CGraph::multi_multi_source_all(
 
 					// 执行 Dijkstra 或其他算法
 					if (method == "Dijkstra") {
-						Dis_and_Path result = multi_source_dijkstra(cur_list, target, cutoff, weight_name);
+						dis_and_path result = multi_source_dijkstra(cur_list, target, cutoff, weight_name);
 
 						// 使用互斥锁保护对 final_result 的访问
 						std::lock_guard<std::mutex> lock(result_mutex);
@@ -1503,14 +1284,14 @@ vector<Dis_and_Path> CGraph::multi_multi_source_all(
 	return final_result;
 }
 
-py::array_t<double>  CGraph::cost_matrix_to_numpy(
+py::array_t<double>  GraphAlgorithms::cost_matrix_to_numpy(
 	const py::object& starts_,
 	const py::object& ends_,
 	const py::object& method_,
 	const py::object& cutoff_,
 	const py::object& weight_name_,
 	const py::object& num_thread_
-) 
+)
 {
 	// 输入检查
 	// 尝试转换 starts_
@@ -1588,9 +1369,9 @@ py::array_t<double>  CGraph::cost_matrix_to_numpy(
 	}
 	// 将 multi_list_ 转换成 py::object（这个已经是 py::object 类型）
 	py::object multi_list_obj = py::cast(multi_list_);  // 直接使用 py::list
-	
 
-	vector<Dis_and_Path> multi_result =  multi_multi_source_all(multi_list_obj, method_, target_, cutoff_, weight_name_, num_thread_);
+
+	vector<dis_and_path> multi_result = multi_multi_source_all(multi_list_obj, method_, target_, cutoff_, weight_name_, num_thread_);
 	// 填充cost matrix
 	for (int i = 0; i < num_starts; ++i) {
 		for (int j = 0; j < num_ends; ++j) {
@@ -1608,7 +1389,7 @@ py::array_t<double>  CGraph::cost_matrix_to_numpy(
 	return result; // 返回NumPy数组
 }
 
-py::dict CGraph::path_list_to_numpy(
+py::dict GraphAlgorithms::path_list_to_numpy(
 	const py::object& starts_,
 	const py::object& ends_,
 	const py::object& method_,
@@ -1691,7 +1472,7 @@ py::dict CGraph::path_list_to_numpy(
 	}
 	py::object multi_list_obj = py::cast(multi_list_);
 
-	vector<Dis_and_Path> multi_result = multi_multi_source_all(multi_list_obj, method_, target_, cutoff_, weight_name_, num_thread_);
+	vector<dis_and_path> multi_result = multi_multi_source_all(multi_list_obj, method_, target_, cutoff_, weight_name_, num_thread_);
 
 	// 填充字典
 	for (int i = 0; i < num_starts; ++i) {
@@ -1716,7 +1497,7 @@ py::dict CGraph::path_list_to_numpy(
 }
 
 // 查找最短路径
-vector<vector<int>>  CGraph::shortest_simple_paths(
+vector<vector<int>>  GraphAlgorithms::shortest_simple_paths(
 	const py::object& start_,
 	const py::object& end_,
 	const py::object& weight_name_)
@@ -1764,79 +1545,3 @@ vector<vector<int>>  CGraph::shortest_simple_paths(
 
 	return all_paths;
 }
-
-// 结果计算 ----------------------------------------------------------------------------------------
-
-
-// test -----------------------------------------------------------------------------------------------
-
-
-
-//// 从csv加多条边
-//Graph CGraph::add_edges_from_csv(string path) {
-//	// 打开文件
-//	ifstream file(path);
-//	if (!file.is_open()) {
-//		std::cerr << "Error opening file: " << path << std::endl;
-//	}
-//
-//	string line;
-//
-//	// 读取标题行
-//	getline(file, line);
-//	stringstream headerStream(line);
-//	string header;
-//	vector<string> headers;
-//	while (std::getline(headerStream, header, ',')) {
-//		headers.push_back(header);
-//	}
-//
-//	// 查找特定字段的索引
-//	auto get_column_index = [&headers](const std::string& field) -> int {
-//		auto it = std::find(headers.begin(), headers.end(), field);
-//		return (it != headers.end()) ? std::distance(headers.begin(), it) : -1;
-//	};
-//
-//	int from_node_idx = get_column_index("FROM_NODE");
-//	int to_node_idx = get_column_index("TO_NODE");
-//	int length_idx = get_column_index("length");
-//	int dir_idx = get_column_index("DIR");
-//
-//	// 逐行读取数据
-//	while (std::getline(file, line)) {
-//		std::stringstream ss(line);
-//		std::vector<std::string> values;
-//		std::string value;
-//
-//		// 按逗号分割一行数据
-//		while (std::getline(ss, value, ',')) {
-//			values.push_back(value);
-//		}
-//
-//		// 确保这一行有足够的字段数量
-//		if (values.size() <= std::max({ from_node_idx, to_node_idx, length_idx, dir_idx })) {
-//			std::cerr << "Skipping invalid row: " << line << std::endl;
-//			continue;
-//		}
-//
-//		// 提取所需字段的值
-//		int from_node = std::stoi(values[from_node_idx]);
-//		int to_node = std::stoi(values[to_node_idx]);
-//		double length = std::stod(values[length_idx]);
-//		int dir = std::stoi(values[dir_idx]);
-//
-//		// 根据方向字段决定如何添加路段
-//		if (dir == 1) {
-//			add_edge(from_node, to_node, length);
-//		}
-//		else if (dir == 0) {
-//			add_edge(from_node, to_node, length);
-//			add_edge(to_node, from_node, length);
-//		}
-//		else if (dir == -1) {
-//			add_edge(to_node, from_node, length);
-//		}
-//	}
-//
-//	return G;
-//}

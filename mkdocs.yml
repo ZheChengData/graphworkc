@@ -10,7 +10,10 @@ nav:
     - 项目主页: index.md
     - 快速开始: 快速开始.md
     - 函数接口:
-        - CGraph: Fun&API/CGraph.md
+        - CGraphBase: Fun&API/CGraphBase.md
+        - GraphAlgorithms: Fun&API/GraphAlgorithms.md
+    - 案例展示: 案例展示.md
+        
 
 theme:
   name: material
