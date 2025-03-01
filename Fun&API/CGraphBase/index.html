@@ -721,9 +721,9 @@
 
             <details class="quote">
               <summary>Source code in <code>src\graphworkc.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="c1"># 创建 C++ 图算法对象</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">graphwork</span><span class="o">.</span><span class="n">GraphAlgorithms</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
@@ -744,29 +744,15 @@
         <p><strong>类方法 - get_graph_info:</strong> <br>
 - 获取图信息</p>
 
-
-<details class="example" open>
-  <summary>Example</summary>
-  <p>Getting graph information <br>
-graph.get_graph_info()</p>
-</details>
             <details class="quote">
               <summary>Source code in <code>src\graphworkc.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
-<span class="normal">10</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">10</span>
 <span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_graph_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_graph_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - get_graph_info:** &lt;br&gt;</span>
 <span class="sd">    - 获取图信息</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        Getting graph information &lt;br&gt;</span>
-<span class="sd">        graph.get_graph_info()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get_graph_info</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
@@ -812,7 +798,7 @@ graph.get_graph_info()</p>
               </div>
             </td>
             <td>
-                  <code>None</code>
+                <em>required</em>
             </td>
           </tr>
       </tbody>
@@ -851,15 +837,12 @@ graph.get_graph_info()</p>
       </tbody>
     </table>
 
-
-<details class="example" open>
-  <summary>Example</summary>
-  <p>Getting information about node 1 <br>
-graph.get_node_info(1)</p>
-</details>
             <details class="quote">
               <summary>Source code in <code>src\graphworkc.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">19</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
 <span class="normal">20</span>
 <span class="normal">21</span>
 <span class="normal">22</span>
@@ -871,14 +854,7 @@ graph.get_node_info(1)</p>
 <span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_node_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="normal">31</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_node_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - get_node_info:** &lt;br&gt;</span>
 <span class="sd">    - 获取节点信息</span>
 
@@ -888,10 +864,6 @@ graph.get_node_info(1)</p>
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: 如果“id”不是整数。</span>
 <span class="sd">        AttributeError: 如果图形对象没有`get_node_info`方法。</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        Getting information about node 1 &lt;br&gt;</span>
-<span class="sd">        graph.get_node_info(1)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># 参数检查：确保 id 是有效的节点（假设它们是整数）</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
@@ -941,7 +913,7 @@ graph.get_node_info(1)</p>
               </div>
             </td>
             <td>
-                  <code>None</code>
+                <em>required</em>
             </td>
           </tr>
           <tr class="doc-section-item">
@@ -957,7 +929,7 @@ graph.get_node_info(1)</p>
               </div>
             </td>
             <td>
-                  <code>None</code>
+                <em>required</em>
             </td>
           </tr>
       </tbody>
@@ -996,15 +968,16 @@ graph.get_node_info(1)</p>
       </tbody>
     </table>
 
-
-<details class="example" open>
-  <summary>Example</summary>
-  <p>Getting information about the link between node 1 and node 2<br>
-graph.get_link_info(1, 2)</p>
-</details>
             <details class="quote">
               <summary>Source code in <code>src\graphworkc.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">40</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
 <span class="normal">41</span>
 <span class="normal">42</span>
 <span class="normal">43</span>
@@ -1018,16 +991,9 @@ graph.get_link_info(1, 2)</p>
 <span class="normal">51</span>
 <span class="normal">52</span>
 <span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_link_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="normal">54</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_link_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                  <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                  <span class="n">end</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - get_link_info:** &lt;br&gt;</span>
 <span class="sd">    - 获取边信息</span>
 
@@ -1038,10 +1004,6 @@ graph.get_link_info(1, 2)</p>
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: 如果“start”或“end”不是整数。</span>
 <span class="sd">        AttributeError: 如果图对象没有`get_link_info`方法。</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        Getting information about the link between node 1 and node 2&lt;br&gt;</span>
-<span class="sd">        graph.get_link_info(1, 2)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># 参数检查：确保 start 和 end 是有效的节点（假设它们是整数）</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
@@ -1094,7 +1056,7 @@ graph.get_link_info(1, 2)</p>
               </div>
             </td>
             <td>
-                  <code>int</code>
+                <em>required</em>
             </td>
           </tr>
           <tr class="doc-section-item">
@@ -1110,7 +1072,7 @@ graph.get_link_info(1, 2)</p>
               </div>
             </td>
             <td>
-                  <code>int</code>
+                <em>required</em>
             </td>
           </tr>
           <tr class="doc-section-item">
@@ -1126,7 +1088,23 @@ graph.get_link_info(1, 2)</p>
               </div>
             </td>
             <td>
-                  <code>dict</code>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>planet</code>
+            </td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>节点是否为行星点，0（默认）代表不是行星点，1代表起点是行星点，2代表终点是行星点，3代表全是行星点。</p>
+              </div>
+            </td>
+            <td>
+                  <code>0</code>
             </td>
           </tr>
       </tbody>
@@ -1175,51 +1153,54 @@ graph.get_link_info(1, 2)</p>
       </tbody>
     </table>
 
-
-<details class="example" open>
-  <summary>Example</summary>
-  <p>Adding an edge from node 1 to node 2 with attributes<br>
-edge_attributes = {"weight": 10, "color": "blue"}<br>
-graph.add_edge(1, 2, edge_attributes)</p>
-</details>
             <details class="quote">
               <summary>Source code in <code>src\graphworkc.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 65</span>
-<span class="normal"> 66</span>
-<span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">attribute_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span>
+<span class="normal">94</span>
+<span class="normal">95</span>
+<span class="normal">96</span>
+<span class="normal">97</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+             <span class="n">end</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+             <span class="n">attribute_dict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="n">planet</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - add_edge:**&lt;br&gt;</span>
 <span class="sd">     - 加一条边</span>
 
@@ -1227,34 +1208,36 @@ graph.add_edge(1, 2, edge_attributes)</p>
 <span class="sd">        start (int): 边的起始节点。必须是整数。</span>
 <span class="sd">        end (int): 边的结束节点。必须是整数或浮点数。</span>
 <span class="sd">        attribute_dict (dict): 包含边缘属性的字典，例如权重或其他属性。不能为空。</span>
+<span class="sd">        planet (int): 节点是否为行星点，0（默认）代表不是行星点，1代表起点是行星点，2代表终点是行星点，3代表全是行星点。</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: 如果“start”或“end”不是整数或浮点数。</span>
 <span class="sd">        ValueError: 如果“attribute_dict_”不是字典。</span>
 <span class="sd">        ValueError: 如果“attribute_dict_”是空字典。</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        Adding an edge from node 1 to node 2 with attributes&lt;br&gt;</span>
-<span class="sd">        edge_attributes = {&quot;weight&quot;: 10, &quot;color&quot;: &quot;blue&quot;}&lt;br&gt;</span>
-<span class="sd">        graph.add_edge(1, 2, edge_attributes)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># 参数检查：确保 start 和 v_ 是有效的节点（假设它们是整数）</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;start&#39;: </span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">. It must be an integer.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># 参数检查：确保 start 和 v_ 是有效的节点（假设它们是整数）</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;start&#39;: </span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">. It must be an integer.&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;end&#39;: </span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">. It must be an integer.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;end&#39;: </span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">. It must be an integer.&quot;</span><span class="p">)</span>
 
-    <span class="c1"># 参数检查：确保 attribute_dict_ 是一个字典</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attribute_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;attribute_dict&#39;: </span><span class="si">{</span><span class="n">attribute_dict</span><span class="si">}</span><span class="s2">. It must be a dictionary.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">planet</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;planet&#39;: </span><span class="si">{</span><span class="n">planet</span><span class="si">}</span><span class="s2">. It must be an integer.&quot;</span><span class="p">)</span>
 
-    <span class="c1"># 参数检查：确保字典为空时不要传入</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">attribute_dict</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The &#39;attribute_dict&#39; cannot be an empty dictionary.&quot;</span><span class="p">)</span>
+        <span class="c1"># 初始化空字典</span>
+        <span class="k">if</span> <span class="n">attribute_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">attribute_dict</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># 👈 每个调用生成新字典</span>
+        <span class="k">if</span> <span class="n">planet</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">planet</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;planet&#39;: </span><span class="si">{</span><span class="n">planet</span><span class="si">}</span><span class="s2">. It must be an integer of 0-3.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># 参数类型检查</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attribute_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;attribute_dict必须是字典类型，当前类型：</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">attribute_dict</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># 假设 self.graph 是一个已定义的图对象</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">attribute_dict</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">attribute_dict</span><span class="p">,</span> <span class="n">planet</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -1306,14 +1289,15 @@ graph.add_edge(1, 2, edge_attributes)</p>
                 <code>containing</code>
             </td>
             <td>
-                  <code>three elements</code>
+                  <code>two - fours elements</code>
             </td>
             <td>
               <div class="doc-md-description">
                 <ul>
 <li>start (int): 边的起始节点。</li>
 <li>end (int): 边的结束节点。</li>
-<li>attribute_dict_ (dict): 一个包含边缘属性的字典，例如权重或其他属性。</li>
+<li>attribute_dict_ (dict): 一个包含边缘属性的字典，例如权重或其他属性。（可选）</li>
+<li>planet (int): 点是否为行星点，0（默认）代表不是行星点，1代表起点是行星点，2代表终点是行星点，3代表全是行星点。（可选）</li>
 </ul>
               </div>
             </td>
@@ -1350,7 +1334,7 @@ graph.add_edge(1, 2, edge_attributes)</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>如果'edges'中的任何元素不是元组。</p>
+                <p>如果edges中的任何元素不是元组。</p>
               </div>
             </td>
           </tr>
@@ -1360,7 +1344,7 @@ graph.add_edge(1, 2, edge_attributes)</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>如果任何元组都没有3个元素。</p>
+                <p>如果任何元组都没有2-4个元素。</p>
               </div>
             </td>
           </tr>
@@ -1384,22 +1368,25 @@ graph.add_edge(1, 2, edge_attributes)</p>
               </div>
             </td>
           </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>ValueError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>如果“planet”不是整数。</p>
+              </div>
+            </td>
+          </tr>
       </tbody>
     </table>
 
-
-<details class="example" open>
-  <summary>Example</summary>
-  <p>edges = [<br>
-    (1, 2, {"weight": 5}),<br>
-    (2, 3, {"weight": 10}),<br>
-    (3, 4, {"weight": 15})<br>
-]<br>
-graph_instance.add_edges(edges)</p>
-</details>
             <details class="quote">
               <summary>Source code in <code>src\graphworkc.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">102</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
 <span class="normal">103</span>
 <span class="normal">104</span>
 <span class="normal">105</span>
@@ -1449,54 +1436,65 @@ graph_instance.add_edges(edges)</p>
 <span class="normal">149</span>
 <span class="normal">150</span>
 <span class="normal">151</span>
-<span class="normal">152</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+              <span class="n">edges</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span>  <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - add_edges:**&lt;br&gt;</span>
 <span class="sd">     - 加多条边</span>
 
 <span class="sd">     Args:</span>
 <span class="sd">         edges (list of tuple): 要添加的边列表。每条边都应该是一个元组。</span>
-<span class="sd">         containing three elements:</span>
+<span class="sd">         containing two - fours elements:</span>
 <span class="sd">             - start (int): 边的起始节点。</span>
 <span class="sd">             - end (int): 边的结束节点。</span>
-<span class="sd">             - attribute_dict_ (dict): 一个包含边缘属性的字典，例如权重或其他属性。</span>
+<span class="sd">             - attribute_dict_ (dict): 一个包含边缘属性的字典，例如权重或其他属性。（可选）</span>
+<span class="sd">             - planet (int): 点是否为行星点，0（默认）代表不是行星点，1代表起点是行星点，2代表终点是行星点，3代表全是行星点。（可选）</span>
 
 <span class="sd">     Raises:</span>
 <span class="sd">         ValueError: 如果“边”不是列表。</span>
-<span class="sd">         ValueError: 如果&#39;edges&#39;中的任何元素不是元组。</span>
-<span class="sd">         ValueError: 如果任何元组都没有3个元素。</span>
+<span class="sd">         ValueError: 如果edges中的任何元素不是元组。</span>
+<span class="sd">         ValueError: 如果任何元组都没有2-4个元素。</span>
 <span class="sd">         ValueError: 如果“start”或“end”不是整数。</span>
 <span class="sd">         ValueError: 如果“attribute_dict_”不是字典。</span>
-
-<span class="sd">     Example:</span>
-<span class="sd">         edges = [&lt;br&gt;</span>
-<span class="sd">             (1, 2, {&quot;weight&quot;: 5}),&lt;br&gt;</span>
-<span class="sd">             (2, 3, {&quot;weight&quot;: 10}),&lt;br&gt;</span>
-<span class="sd">             (3, 4, {&quot;weight&quot;: 15})&lt;br&gt;</span>
-<span class="sd">         ]&lt;br&gt;</span>
-<span class="sd">         graph_instance.add_edges(edges)</span>
+<span class="sd">         ValueError: 如果“planet”不是整数。</span>
 <span class="sd">     &quot;&quot;&quot;</span>
-    <span class="c1"># 确保 edges 是一个列表</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;edges&#39; to be a list, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># 确保 edges 是一个列表</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;edges&#39; to be a list, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
-    <span class="c1"># 遍历列表中的每个元素，确保每个元素是一个元组，并且有三个元素</span>
-    <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Each element in &#39;edges&#39; should be a tuple, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="c1"># 遍历列表中的每个元素，确保每个元素是一个元组，并且有三个元素</span>
+        <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Each element in &#39;edges&#39; should be a tuple, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Each tuple in &#39;edges&#39; should have exactly 3 elements, but got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Each tuple in &#39;edges&#39; should have exactly 2-4 elements, but got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
-        <span class="c1"># 检查 start 和 end 是否是有效的节点（例如整数或字符串）</span>
-        <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">attribute_dict_</span> <span class="o">=</span> <span class="n">edge</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;start&#39; to be an integer, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">start</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;end&#39; to be an integer, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">end</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="c1"># 检查 start 和 end 是否是有效的节点（例如整数或字符串）</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">attribute_dict_</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">is_planet_</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">attribute_dict_</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="n">is_planet_</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
 
-        <span class="c1"># 检查 attribute_dict_ 是否是一个字典</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attribute_dict_</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;attribute_dict_&#39; to be a dictionary, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">attribute_dict_</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">is_planet_</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">is_planet_</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;is_planet_&#39; to be an integer 0-3.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;start&#39; to be an integer, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">start</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;end&#39; to be an integer, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">end</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">is_planet_</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;end&#39; to be an integer, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">end</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="c1"># 检查 attribute_dict_ 是否是一个字典</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attribute_dict_</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;attribute_dict_&#39; to be a dictionary, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">attribute_dict_</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
     <span class="c1"># 如果所有检查通过，调用 graph.add_edges</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_edges</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
@@ -1543,7 +1541,7 @@ graph_instance.add_edges(edges)</p>
               </div>
             </td>
             <td>
-                  <code>int</code>
+                <em>required</em>
             </td>
           </tr>
           <tr class="doc-section-item">
@@ -1559,7 +1557,7 @@ graph_instance.add_edges(edges)</p>
               </div>
             </td>
             <td>
-                  <code>int</code>
+                <em>required</em>
             </td>
           </tr>
       </tbody>
@@ -1588,19 +1586,9 @@ graph_instance.add_edges(edges)</p>
       </tbody>
     </table>
 
-
-<details class="example" open>
-  <summary>Example</summary>
-  <p>Removing an edge between node 1 and node 2<br>
-graph.remove_edge(1, 2)</p>
-</details>
             <details class="quote">
               <summary>Source code in <code>src\graphworkc.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">158</span>
 <span class="normal">159</span>
 <span class="normal">160</span>
 <span class="normal">161</span>
@@ -1618,7 +1606,11 @@ graph.remove_edge(1, 2)</p>
 <span class="normal">173</span>
 <span class="normal">174</span>
 <span class="normal">175</span>
-<span class="normal">176</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">remove_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="nb">int</span><span class="p">):</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">remove_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                <span class="n">end</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - remove_edge:**&lt;br&gt;</span>
 <span class="sd">     - 移除一条边</span>
 
@@ -1628,10 +1620,6 @@ graph.remove_edge(1, 2)</p>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: 如果“start”或“end”不是整数。</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        Removing an edge between node 1 and node 2&lt;br&gt;</span>
-<span class="sd">        graph.remove_edge(1, 2)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># 参数检查：确保 start 和 v_ 是有效的节点（假设它们是整数）</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
@@ -1707,7 +1695,7 @@ graph.remove_edge(1, 2)</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>如果“edges”不是列表。</p>
+                <p>如果edges不是列表。</p>
               </div>
             </td>
           </tr>
@@ -1717,25 +1705,16 @@ graph.remove_edge(1, 2)</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>如果'edges'中的任何元素不是元组或不包含正好有两个元素。</p>
+                <p>如果edges中的任何元素不是元组或不包含正好有两个元素。</p>
               </div>
             </td>
           </tr>
       </tbody>
     </table>
 
-
-<details class="example" open>
-  <summary>Example</summary>
-  <p>Removing multiple edges<br>
-edges_to_remove = [(1, 2), (3, 4), (5, 6)]<br>
-graph_instance.remove_edges(edges_to_remove)</p>
-</details>
             <details class="quote">
               <summary>Source code in <code>src\graphworkc.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">178</span>
-<span class="normal">179</span>
-<span class="normal">180</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">180</span>
 <span class="normal">181</span>
 <span class="normal">182</span>
 <span class="normal">183</span>
@@ -1761,8 +1740,8 @@ graph_instance.remove_edges(edges_to_remove)</p>
 <span class="normal">203</span>
 <span class="normal">204</span>
 <span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">remove_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
+<span class="normal">206</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">remove_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">edges</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - remove_edges：**&lt;br&gt;</span>
 <span class="sd">     - 移除多条边</span>
 
@@ -1771,25 +1750,21 @@ graph_instance.remove_edges(edges_to_remove)</p>
 <span class="sd">                                （开始、结束）表示边的节点。</span>
 
 <span class="sd">    Raises:</span>
-<span class="sd">        ValueError: 如果“edges”不是列表。</span>
-<span class="sd">        ValueError: 如果&#39;edges&#39;中的任何元素不是元组或不包含正好有两个元素。</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        Removing multiple edges&lt;br&gt;</span>
-<span class="sd">        edges_to_remove = [(1, 2), (3, 4), (5, 6)]&lt;br&gt;</span>
-<span class="sd">        graph_instance.remove_edges(edges_to_remove)</span>
+<span class="sd">        ValueError: 如果edges不是列表。</span>
+<span class="sd">        ValueError: 如果edges中的任何元素不是元组或不包含正好有两个元素。</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># 确保 edges 是一个列表</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;edges&#39; to be a list, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># 确保 edges 是一个列表</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;edges&#39; to be a list, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
-    <span class="c1"># 遍历列表中的每个元素，确保每个元素是一个元组，并且有三个元素</span>
-    <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Each element in &#39;edges&#39; should be a tuple, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="c1"># 遍历列表中的每个元素，确保每个元素是一个元组，并且有三个元素</span>
+        <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Each element in &#39;edges&#39; should be a tuple, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Each tuple in &#39;edges&#39; should have exactly 2 elements, but got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Each tuple in &#39;edges&#39; should have exactly 2 elements, but got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">remove_edges</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
