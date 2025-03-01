@@ -715,43 +715,48 @@
 G = graphworkc.CGraph()
 </code></pre>
 <h2 id="_3">添加边</h2>
-<p>添加从（0，1），（1，2）依此类推的边，并且添加相应的属性，比如weight权重值</p>
+<p><a href="../Fun%26API/CGraphBase/#add_edge">add_edge</a>函数可以添加指定节点的有向边；
+例如：从（0，1），（1，2）依此类推的边，并且添加相应的属性，比如weight权重值</p>
 <pre><code>for i in range(100):
     G.add_edge(i, i+1, {&quot;weight&quot;: 2, &quot;length&quot;:3})
 </code></pre>
-<p>可以一次性添加多条边.</p>
+<p><a href="../Fun%26API/CGraphBase/#add_edges">add_edges</a>函数可以一次性添加多条有向边：</p>
 <pre><code>G.add_edges([(200, 201, {&quot;weight&quot;: 2}),
              (201, 202, {&quot;weight&quot;: 2}),
              (202, 203, {&quot;weight&quot;: 2})])
 </code></pre>
 <h2 id="_4">删除边</h2>
-<p>删除一条边:(1,2)</p>
+<p><a href="../Fun%26API/CGraphBase/#remove_edge">remove_edge</a>函数可以删除指定的有向边：</p>
 <pre><code>G.remove_edge(1,2)
 </code></pre>
-<p>删除多条边:(3,4),(4,5),(5,6)</p>
+<p><a href="../Fun%26API/CGraphBase/#remove_edges">remove_edges</a>函数可以一次性删除多条有向边:</p>
 <pre><code>G.remove_edges([(3, 4),
              (4, 5),
              (5, 6)])
 </code></pre>
 <h2 id="_5">获取基本信息</h2>
-<p>获取图的基本信息、节点的基本信息、边的基本信息</p>
+<p><a href="../Fun%26API/CGraphBase/#get_graph_info">get_graph_info</a>函数可以获取图的基本信息；</p>
+<p><a href="../Fun%26API/CGraphBase/#get_node_info">get_node_info</a>函数可以获取点的基本信息；</p>
+<p><a href="../Fun%26API/CGraphBase/#get_link_info">get_link_info</a>函数可以获取边的基本信息;</p>
 <pre><code>G.get_graph_info()
 G.get_node_info(1)
 G.get_link_info(1, 2)
 </code></pre>
 <h2 id="_6">多源最短路计算</h2>
-<p>输入起点节点列表，获取到最短路计算的花费,路径，或者花费和路径都返回.<br></p>
-<p>如果只返回cost，则返回结构是dict[int, float].<br></p>
-<p>dict内的每一个int代表了终点节点，对应的float代表了到此节点花费;</p>
+<p><a href="../Fun%26API/GraphAlgorithms/#multi_source_cost">multi_source_cost</a>函数可以获取多源节点到各个节点的最短路花费：</p>
+<p>返回结构是dict[int, float]：<br></p>
+<p>dict内的每一个int代表了终点节点，对应的float代表了到此节点花费，例如：</p>
 <pre><code>m_cost = G.multi_source_cost([1],method=&quot;Dijkstra&quot;,cut_off=30, weight_name=&quot;weight&quot;)
 print(m_cost)
 </code></pre>
-<p>如果只返回path，则返回结构是dict[int, list[float]].<br></p>
+<p><a href="../Fun%26API/GraphAlgorithms/#multi_source_path">multi_source_path</a>函数可以获取多源节点到各个节点的最短路路径：</p>
+<p>返回结构是dict[int, list[float]]：<br></p>
 <p>dict内的每一个int代表了终点节点，对应的list[float]代表了从起点到此节点的序列路径：</p>
 <pre><code>m_path = G.multi_source_path([1],method=&quot;Dijkstra&quot;,cut_off=30, weight_name=&quot;weight&quot;)
 print(m_path)
 </code></pre>
-<p>如果返回cost和path，则返回结构是类似于dict的一个自定义结构体：<br></p>
+<p><a href="../Fun%26API/GraphAlgorithms/#multi_source_all">multi_source_all</a>函数可以获取多源节点到各个节点的最短路路径和花费：</p>
+<p>返回结构是类似于dict的一个自定义结构体：<br></p>
 <p>此结构体存有两个属性：cost，paths.<br></p>
 <p>cost属性为一个字典dict[int, float]：每一个int代表了终点节点，对应的float代表了到此节点花费;<br></p>
 <p>paths属性为一个字典dict[int, list[float]]:  每一个int代表了终点节点，对应的list[float]代表了从起点到此节点的序列路径;</p>
@@ -759,17 +764,19 @@ print(m_path)
 print(m_all.cost)
 </code></pre>
 <h2 id="_7">单源最短路径计算</h2>
-<p>输入起点节点列表，获取到最短路计算的花费,路径，或者花费和路径都返回<br></p>
-<p>如果只返回cost，则返回结构是dict[int, float];<br></p>
+<p><a href="../Fun%26API/GraphAlgorithms/#single_source_cost">single_source_cost</a>函数可以获取单源节点到各个节点的最短路花费：<br></p>
+<p>返回结构是dict[int, float];<br></p>
 <p>dict内的每一个int代表了终点节点，对应的float代表了到此节点花费;</p>
 <pre><code>s_cost = G.single_source_cost(1, method=&quot;Dijkstra&quot;,cut_off=30, weight_name=&quot;weight&quot;)
 print(s_cost)
 </code></pre>
-<p>如果只返回path，则返回结构是dict[int, list[float]].<br></p>
+<p><a href="../Fun%26API/GraphAlgorithms/#single_source_path">single_source_path</a>函数可以获取单源节点到各个节点的最短路路径：</p>
+<p>返回结构是dict[int, list[float]].<br></p>
 <p>dict内的每一个int代表了终点节点，对应的list[float]代表了从起点到此节点的序列路径：</p>
 <pre><code>s_path = G.single_source_path(1, method=&quot;Dijkstra&quot;,cut_off=30, weight_name=&quot;weight&quot;)
 print(s_path)
 </code></pre>
+<p><a href="../Fun%26API/GraphAlgorithms/#single_source_all">single_source_all</a>函数可以获取单源节点到各个节点的最短路路径和花费</p>
 <p>如果返回cost和path，则返回结构是类似于dict的一个自定义结构体：<br></p>
 <p>此结构体存有两个属性：cost，paths.<br></p>
 <p>cost属性为一个字典dict[int, float]：每一个int代表了终点节点，对应的float代表了到此节点花费;<br></p>
@@ -778,7 +785,7 @@ print(s_path)
 print(s_all.paths)
 </code></pre>
 <h2 id="_8">最短路花费矩阵生成</h2>
-<p>根据输入的起点列表和终点列表，计算生成获得一个花费矩阵<br></p>
+<p><a href="../Fun%26API/GraphAlgorithms/#cost_matrix_to_numpy">cost_matrix_to_numpy</a>函数根据输入的起点列表和终点列表，计算生成获得一个花费矩阵<br></p>
 <p>花费矩阵样例：(表格内有数字的部分即为返回结果：(2,2) - (4,4))
 返回的二维numpy矩阵的起点终点序列与输入的start_nodes_list，end_nodes_list顺序一致.</p>
 <table>
@@ -817,7 +824,7 @@ s_martix = G.cost_matrix_to_numpy(start_nodes_list, end_nodes_list, method=&quot
 print(s_martix)
 </code></pre>
 <h2 id="_9">最短路序列路径字典生成</h2>
-<p>根据输入的起点列表和终点列表，计算生成获得一个路径字典：<br></p>
+<p><a href="../Fun%26API/GraphAlgorithms/#path_list_to_numpy">path_list_to_numpy</a>函数根据输入的起点列表和终点列表，计算生成获得一个路径字典：<br></p>
 <p>字典样例：dict{（起点1，终点1）：[路径序列1]， （起点2， 终点2）：[路径序列2] }</p>
 <pre><code>start_nodes_list = [1,2,3]
 end_nodes_list = [10,20,30]
