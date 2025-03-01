@@ -20,7 +20,7 @@ GraphWorkC是一个基于c++实现的图论分析python库，兼具高效与易�
 
 **❗❗❗不要下载GitHub仓库上的代码来使用!!!  直接pip安装graphworkc为第三方库即可使用❗❗❗**
 
-😆😁👉[graphworkc用户手册](https://github.com/ZheChengData/graphworkc)👈😝😉
+😆😁👉[graphworkc用户手册](https://zhechengdata.github.io/graphworkc/)👈😝😉
 
 </div>
 
