@@ -27,6 +27,22 @@ PYBIND11_MODULE(graphwork, m) {
 	});
 
 
+	// 在pybind11模块绑定代码中
+	pybind11::class_<Graph>(m, "Graph")
+		.def("get_nodes", [](Graph& g) {
+		std::vector<int> nodes;
+		for (const auto& pair : g) nodes.push_back(pair.first);
+		return nodes;
+	}, "获取所有起点节点")
+		.def("get_edges", [](Graph& g, int src) {
+		if (g.find(src) == g.end()) return pybind11::dict();
+		pybind11::dict edges;
+		for (const auto& dst_pair : g[src]) {
+			edges[pybind11::cast(dst_pair.first)] = dst_pair.second;
+		}
+		return edges;
+	}, "获取指定起点的所有边");
+
 	py::bind_vector<std::vector<std::vector<int>>>(
 		m, "ListListInt",
 		py::module_local(false)
@@ -76,7 +92,7 @@ PYBIND11_MODULE(graphwork, m) {
 		.def_readwrite("cost", &dis_and_path::distances)
 		.def_readwrite("paths", &dis_and_path::paths)
 		.def("__repr__", [](const dis_and_path &a) {
-		return "<Dis_and_Path cost=" + std::to_string(a.distances.size()) +
+		return "<dis_and_path cost=" + std::to_string(a.distances.size()) +
 			" paths=" + std::to_string(a.paths.size()) + ">";
 	});
 
@@ -92,15 +108,33 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("start"),
 			py::arg("end"))
 
-		// 加边去边
+		// 加点
+		.def("add_node", &CGraph::add_node,
+			py::arg("id"),
+			py::arg("attribute_dict") = py::dict(),
+			py::arg("is_planet") = false)
+
+		.def("add_nodes", &CGraph::add_nodes,
+			py::arg("nodes"))
+
+		// 删点
+		.def("remove_node", &CGraph::remove_node,
+			py::arg("id"))
+
+		.def("remove_nodes", &CGraph::remove_nodes,
+			py::arg("nodes"))
+
+		// 加边
 		.def("add_edge", &CGraph::add_edge,
 			py::arg("start_node"), 
 			py::arg("end_node"),
-			py::arg("attribute_dict"))
+			py::arg("attribute_dict") = py::dict(),
+			py::arg("planet") = 0)
 
 		.def("add_edges", &CGraph::add_edges,
 			py::arg("edges"))
 
+		// 删边
 		.def("remove_edge", &CGraph::remove_edge,
 			py::arg("start"),
 			py::arg("end"))
@@ -117,18 +151,36 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("id"))
 
 		.def("get_link_info", &CGraph::get_link_info,
-			py::arg("start"),
-			py::arg("end"))
+			py::arg("start_node"),
+			py::arg("end_node"))
 
-		// 加边去边
+		// 加点
+		.def("add_node", &CGraph::add_node,
+			py::arg("id"),
+			py::arg("attribute_dict") = py::dict(),
+			py::arg("is_planet") = false)
+
+		.def("add_nodes", &CGraph::add_nodes,
+			py::arg("nodes"))
+
+		// 删点
+		.def("remove_node", &CGraph::remove_node,
+			py::arg("id"))
+
+		.def("remove_nodes", &CGraph::remove_nodes,
+			py::arg("nodes"))
+
+		// 加边
 		.def("add_edge", &CGraph::add_edge,
 			py::arg("start_node"),
 			py::arg("end_node"),
-			py::arg("attribute_dict"))
+			py::arg("attribute_dict") = py::dict(),
+			py::arg("planet") = 0)
 
 		.def("add_edges", &CGraph::add_edges,
 			py::arg("edges"))
 
+		// 删边
 		.def("remove_edge", &CGraph::remove_edge,
 			py::arg("start"),
 			py::arg("end"))
@@ -141,21 +193,21 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("list_o"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
-			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("cut_off") = numeric_limits<double>::infinity(),
 			py::arg("weight_name") = "no_input")
 
 		.def("multi_source_path", &GraphAlgorithms::multi_source_path,
 			py::arg("list_o"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
-			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("cut_off") = numeric_limits<double>::infinity(),
 			py::arg("weight_name") = "no_input")
 
 		.def("multi_source_all", &GraphAlgorithms::multi_source_all,
 			py::arg("list_o"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
-			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("cut_off") = numeric_limits<double>::infinity(),
 			py::arg("weight_name") = "no_input")
 
 		// 单源最短路径
@@ -163,21 +215,21 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("start"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
-			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("cut_off") = numeric_limits<double>::infinity(),
 			py::arg("weight_name") = "no_input")
 
 		.def("single_source_path", &GraphAlgorithms::single_source_path,
 			py::arg("start"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
-			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("cut_off") = numeric_limits<double>::infinity(),
 			py::arg("weight_name") = "no_input")
 
 		.def("single_source_all", &GraphAlgorithms::single_source_all,
 			py::arg("start"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
-			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("cut_off") = numeric_limits<double>::infinity(),
 			py::arg("weight_name") = "no_input")
 
 		// 多个单源最短路径
@@ -185,7 +237,7 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("list_o"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
-			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("cut_off") = numeric_limits<double>::infinity(),
 			py::arg("weight_name") = "no_input",
 			py::arg("num_thread") = 1)
 
@@ -193,7 +245,7 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("list_o"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
-			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("cut_off") = numeric_limits<double>::infinity(),
 			py::arg("weight_name") = "no_input",
 			py::arg("num_thread") = 1)
 
@@ -201,7 +253,7 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("list_o"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
-			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("cut_off") = numeric_limits<double>::infinity(),
 			py::arg("weight_name") = "no_input",
 			py::arg("num_thread") = 1)
 
@@ -210,7 +262,7 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("list_o"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
-			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("cut_off") = numeric_limits<double>::infinity(),
 			py::arg("weight_name") = "no_input",
 			py::arg("num_thread") = 1,
 			py::return_value_policy::move)
@@ -219,7 +271,7 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("list_o"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
-			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("cut_off") = numeric_limits<double>::infinity(),
 			py::arg("weight_name") = "no_input",
 			py::arg("num_thread") = 1,
 			py::return_value_policy::move)
@@ -228,7 +280,7 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("list_o"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
-			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("cut_off") = numeric_limits<double>::infinity(),
 			py::arg("weight_name") = "no_input",
 			py::arg("num_thread") = 1)
 
@@ -237,7 +289,7 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("starts"),
 			py::arg("ends"),
 			py::arg("method") = "Dijkstra",
-			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("cut_off") = numeric_limits<double>::infinity(),
 			py::arg("weight_name") = "no_input",
 			py::arg("num_thread") = 1)
 
@@ -245,7 +297,7 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("starts"),
 			py::arg("ends"),
 			py::arg("method") = "Dijkstra",
-			py::arg("cutoff") = numeric_limits<double>::infinity(),
+			py::arg("cut_off") = numeric_limits<double>::infinity(),
 			py::arg("weight_name") = "no_input",
 			py::arg("num_thread") = 1)
 
