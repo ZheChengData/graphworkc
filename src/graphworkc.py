@@ -8,57 +8,21 @@ class CGraph:
         self.graph = graphwork.GraphAlgorithms()
 
     def get_graph_info(self):
-        """
-           Retrieve information about the graph.
-
-           This method retrieves general information about the graph, such as its
-           structure, the number of nodes and edges, and any other relevant graph
-           details. It assumes that the graph object has a method `get_graph_info`
-           that returns such information.
-
-           Raises:
-               AttributeError: If the graph object does not have a `get_graph_info` method.
-
-           Example:
-               # Getting graph information
-               graph_info = graph_instance.get_graph_info()
-               print(graph_info)
-
-           Notes:
-               - This method relies on the `get_graph_info` method from the graph object
-                 stored in `self.graph`.
-               - The format and content of the information returned depend on the specific
-                 implementation of the `get_graph_info` method in the graph object.
+        """**类方法 - get_graph_info:** <br>
+        - 获取图信息
         """
         self.graph.get_graph_info()
 
     def get_node_info(self, id: int):
-        """
-           Retrieve information about a specific node in the graph.
+        """**类方法 - get_node_info:** <br>
+        - 获取节点信息
 
-           This method retrieves details about a node identified by its `id`. The
-           information returned is dependent on the specific implementation of the
-           `get_node_info` method in the graph object.
+        Args:
+            id (int): 节点的标识符。必须是一个整数，表示图中节点的唯一标识符。
 
-           Args:
-               id (int): The identifier of the node. Must be an integer representing
-                         the node's unique identifier in the graph.
-
-           Raises:
-               ValueError: If 'id' is not an integer.
-               AttributeError: If the graph object does not have a `get_node_info` method.
-
-           Example:
-               # Getting information about node 1
-               node_info = graph_instance.get_node_info(1)
-               print(node_info)
-
-           Notes:
-               - This method relies on the `get_node_info` method from the graph object
-                 stored in `self.graph` to retrieve the node information.
-               - If the node with the given `id` does not exist in the graph, the
-                 behavior depends on the implementation of `get_node_info`. It may
-                 return `None`, raise an exception, or behave differently.
+        Raises:
+            ValueError: 如果“id”不是整数。
+            AttributeError: 如果图形对象没有`get_node_info`方法。
         """
         # 参数检查：确保 id 是有效的节点（假设它们是整数）
         if not isinstance(id, int):
@@ -69,32 +33,16 @@ class CGraph:
     def get_link_info(self,
                       start: int,
                       end: int):
-        """
-            Retrieve information about a specific link (edge) in the graph.
+        """**类方法 - get_link_info:** <br>
+        - 获取边信息
 
-            This method retrieves details about the link (edge) between two nodes,
-            identified by the `start` and `end` nodes. The information returned depends
-            on the specific implementation of the `get_link_info` method in the graph object.
+        Args:
+            start (int): 边的起始节点。必须是整数。
+            end (int): 边的结束节点。必须是整数。
 
-            Args:
-                start (int): The starting node of the edge. Must be an integer.
-                end (int): The ending node of the edge. Must be an integer.
-
-            Raises:
-                ValueError: If 'start' or 'end' are not integers.
-                AttributeError: If the graph object does not have a `get_link_info` method.
-
-            Example:
-                # Getting information about the link between node 1 and node 2
-                link_info = graph_instance.get_link_info(1, 2)
-                print(link_info)
-
-            Notes:
-                - This method relies on the `get_link_info` method from the graph object
-                  stored in `self.graph` to retrieve the link information.
-                - If the link (edge) between the specified nodes does not exist, the
-                  behavior depends on the implementation of `get_link_info`. It may
-                  return `None`, raise an exception, or behave differently.
+        Raises:
+            ValueError: 如果“start”或“end”不是整数。
+            AttributeError: 如果图对象没有`get_link_info`方法。
         """
         # 参数检查：确保 start 和 end 是有效的节点（假设它们是整数）
         if not isinstance(start, int):
@@ -110,38 +58,19 @@ class CGraph:
                  end: int,
                  attribute_dict: dict = None,
                  planet: int = 0):
-        """
-        Add a single edge to the graph between two nodes with specified attributes.
-
-        This method adds an edge between two nodes, where the start node and the
-        end node are provided by the user. The edge also has attributes stored in
-        a dictionary.
+        """**类方法 - add_edge:**<br>
+         - 加一条边
 
         Args:
-            start (int): The starting node of the edge. Must be an integer or float.
-            end (int): The ending node of the edge. Must be an integer or float.
-            attribute_dict (dict): A dictionary containing the attributes of the edge,
-                                    such as weights or other properties. Cannot be empty.
-            planet (int):Mark whether the starting or ending point is a planetary point.
-                0 represents that neither is a planetary point,
-                1 represents that the starting point is a planetary point,
-                2 represents that the ending point is a planetary point,
-                3 represents that both are planetary points
+            start (int): 边的起始节点。必须是整数。
+            end (int): 边的结束节点。必须是整数或浮点数。
+            attribute_dict (dict): 包含边缘属性的字典，例如权重或其他属性。不能为空。
+            planet (int): 节点是否为行星点，0（默认）代表不是行星点，1代表起点是行星点，2代表终点是行星点，3代表全是行星点。
+
         Raises:
-            ValueError: If 'start' or 'end' are not integers or floats.
-            ValueError: If 'attribute_dict_' is not a dictionary.
-
-        Example:
-            # Adding an edge from node 1 to node 2 with attributes
-            edge_attributes = {"weight": 10, "color": "blue"}
-            graph_instance.add_edge(1, 2, edge_attributes)
-
-        Notes:
-            - The method ensures that the input parameters are valid before adding the edge.
-            - If any parameter is invalid, a detailed error message will be raised.
-            - The edge is added to the graph, assuming `self.graph` is a valid graph object
-              with an `add_edge` method.
-
+            ValueError: 如果“start”或“end”不是整数或浮点数。
+            ValueError: 如果“attribute_dict_”不是字典。
+            ValueError: 如果“attribute_dict_”是空字典。
         """
         if 1:
             # 参数检查：确保 start 和 v_ 是有效的节点（假设它们是整数）
@@ -169,40 +98,24 @@ class CGraph:
 
     def add_edges(self,
                   edges: list[tuple[int, int,  Optional[dict[str, float]], Optional[int]]]):
-        """
-         Add multiple edges to the graph.
+        """**类方法 - add_edges:**<br>
+         - 加多条边
 
          Args:
-             edges (list of tuple): A list of edges to be added. Each edge should be a tuple
-             containing three elements:
-                 - start (int): The starting node of the edge.
-                 - end (int): The ending node of the edge.
-                 - attribute_dict_ (dict): A dictionary containing attributes for the edge,
-                   such as weights or other properties.
-                 - planet (int):Mark whether the starting or ending point is a planetary point.
-                    0 represents that neither is a planetary point,
-                    1 represents that the starting point is a planetary point,
-                    2 represents that the ending point is a planetary point,
-                    3 represents that both are planetary points
+             edges (list of tuple): 要添加的边列表。每条边都应该是一个元组。
+             containing two - fours elements:
+                 - start (int): 边的起始节点。
+                 - end (int): 边的结束节点。
+                 - attribute_dict_ (dict): 一个包含边缘属性的字典，例如权重或其他属性。（可选）
+                 - planet (int): 点是否为行星点，0（默认）代表不是行星点，1代表起点是行星点，2代表终点是行星点，3代表全是行星点。（可选）
+
          Raises:
-             ValueError: If 'edges' is not a list.
-             ValueError: If any element in 'edges' is not a tuple.
-             ValueError: If any tuple does not have exactly 3 elements.
-             ValueError: If 'start' or 'end' are not integers.
-             ValueError: If 'attribute_dict_' is not a dictionary.
-
-         Example:
-             edges = [
-                 (1, 2, {"weight": 5}, 0),
-                 (2, 3, {"weight": 10}, 1),
-                 (3, 4, {"weight": 15}, 1)
-             ]
-             graph_instance.add_edges(edges)
-
-         Notes:
-             This method will check the validity of the input data (type and structure) before
-             adding the edges to the graph. If any validation fails, an appropriate ValueError
-             will be raised to help identify the issue with the input.
+             ValueError: 如果“边”不是列表。
+             ValueError: 如果edges中的任何元素不是元组。
+             ValueError: 如果任何元组都没有2-4个元素。
+             ValueError: 如果“start”或“end”不是整数。
+             ValueError: 如果“attribute_dict_”不是字典。
+             ValueError: 如果“planet”不是整数。
          """
         if 1:
             # 确保 edges 是一个列表
@@ -245,29 +158,15 @@ class CGraph:
     def remove_edge(self,
                     start: int,
                     end: int):
-        """
-        Remove an edge from the graph between the specified start and end nodes.
-
-        This method removes an edge from the graph, which is defined by its starting
-        and ending nodes. The edge is identified using these nodes, and the edge is
-        removed if it exists in the graph.
+        """**类方法 - remove_edge:**<br>
+         - 移除一条边
 
         Args:
-            start (int): The starting node of the edge. Must be an integer.
-            end (int): The ending node of the edge. Must be an integer.
+            start (int): 边的起始节点。必须是整数。
+            end (int): 边的结束节点。必须是整数。
 
         Raises:
-            ValueError: If 'start' or 'end' are not integers.
-
-        Example:
-            # Removing an edge between node 1 and node 2
-            graph_instance.remove_edge(1, 2)
-
-        Notes:
-            - This method assumes that `self.graph` is a valid graph object with a
-              `remove_edge` method that can remove an edge using the specified nodes.
-            - If the edge does not exist in the graph, it will be removed without any
-              error, but no change will occur to the graph.
+            ValueError: 如果“start”或“end”不是整数。
         """
         # 参数检查：确保 start 和 v_ 是有效的节点（假设它们是整数）
         if not isinstance(start, int):
@@ -280,34 +179,17 @@ class CGraph:
 
     def remove_edges(self,
                      edges: list[tuple[int, int]]):
+        """**类方法 - remove_edges：**<br>
+         - 移除多条边
+
+        Args:
+            edges (list of tuples): 要删除的边列表，其中每条边表示为两个整数的元组
+                                    （开始、结束）表示边的节点。
+
+        Raises:
+            ValueError: 如果edges不是列表。
+            ValueError: 如果edges中的任何元素不是元组或不包含正好有两个元素。
         """
-            Remove multiple edges from the graph.
-
-            This method removes a list of edges from the graph. Each edge is specified
-            as a tuple containing two elements, representing the start and end nodes.
-            The edges are removed from the graph if they exist.
-
-            Args:
-                edges (list of tuples): A list of edges to remove, where each edge
-                                         is represented as a tuple of two integers
-                                         (start, end) indicating the nodes of the edge.
-
-            Raises:
-                ValueError: If 'edges' is not a list.
-                ValueError: If any element in 'edges' is not a tuple or does not contain
-                            exactly two elements.
-
-            Example:
-                # Removing multiple edges
-                edges_to_remove = [(1, 2), (3, 4), (5, 6)]
-                graph_instance.remove_edges(edges_to_remove)
-
-            Notes:
-                - This method assumes that `self.graph` is a valid graph object with a
-                  `remove_edges` method that can remove multiple edges.
-                - If any edge in the list does not exist in the graph, it will be ignored
-                  and the rest of the edges will still be removed.
-            """
         if 1:
             # 确保 edges 是一个列表
             if not isinstance(edges, list):
@@ -329,33 +211,29 @@ class CGraph:
                           target: int = -1,
                           cut_off: float = float('inf'),
                           weight_name: str = None) -> dict[int, float]:
-        """
-        Computes the multi-source shortest paths from a set of starting nodes using a specified algorithm.
+        """**类方法 - multi_source_cost：**<br>
+           - 多源最短路径计算：返回最少花费
 
-        Args:
-            start_nodes (list): A list of starting nodes for the multi-source shortest path calculation.
-                                Each element of the list represents a single starting node.
-            method (str): The algorithm used for calculating shortest paths. It can be one of the following:
-                          - "Dijkstra": Standard Dijkstra's algorithm.
-                          Defaults to "Dijkstra".
-            target (int): The target node for the shortest path calculation. If set to -1, it indicates no specific target.
-                          Default is -1.
-            cut_off (float): The maximum distance limit for the shortest path. Any path exceeding this value will be ignored.
-                            Defaults to positive infinity (float('inf')).
-            weight_name (str): The name of the edge weight used in the graph for the shortest path calculation.
-                               Defaults to "none".
+          Args:
+              start_nodes (list): 多源最短路径计算的起始节点列表。列表中的每个元素代表一个起点节点。
+              method (str): 用于计算最短路径的算法。它可以是以下之一：
+                  -“Dijkstra”：标准Dijkstra算法。
+                  默认为“Dijkstra”。
+              target (int): 最短路径计算的目标节点。如果设置为-1，则表示没有特定目标。
+              cut_off (float): 最短路径的最大距离限制。任何超过此值的路径都将被忽略。
+              weight_name (str): 图中用于最短路径计算的边权重的名称。默认为None。
 
-        Returns:
-            dict[int: float]: A dictionary that stores the shortest path cost from the source node to each node.
+          Returns:
+              dict[int, float]: 返回多源最短路径计算的花费结果
 
-        Raises:
-            ValueError: If any of the following are violated:
-                - 'start_nodes' is not a list.
-                - 'method' is not one of the valid algorithms: "Dijkstra".
-                - 'target' is not an integer.
-                - 'cut_off' is not a non-negative number.
-                - 'weight_name' is not a string.
-        """
+          Raises:
+              ValueError: 如果违反了以下任何一项：<br>
+                  -“start_nodes”不是列表。<br>
+                  -“method”不是有效的算法之一：“Dijkstra”。<br>
+                  -“target”不是整数。<br>
+                  -“cutoff”不是非负数。<br>
+                  -“weight_name”不是字符串。
+          """
         if 1:
             # 检查 start_nodes 是否是一个列表
             if not isinstance(start_nodes, list):
@@ -388,31 +266,28 @@ class CGraph:
                           target: int = -1,
                           cut_off: float = float('inf'),
                           weight_name: str = None) -> dict[int, list[int]]:
-        """
-        Computes the multi-source shortest paths from a set of starting nodes to a target node using a specified algorithm.
+        """**类方法 - multi_source_path：**<br>
+         - 多源最短路径计算：返回序列路径
 
         Args:
-            start_nodes (list): A list of starting nodes for the multi-source shortest path calculation.
-                                Each element represents a node from which paths are calculated.
-            method (str): The algorithm used for calculating shortest paths. It can be one of the following:
-                          - "Dijkstra": Standard Dijkstra's algorithm (works for graphs with non-negative weights).
-            target (int): The target node to which the shortest paths are calculated. If set to -1, indicates no specific target.
-                          Default is -1, which means no target.
-            cut_off (float): The maximum distance limit for the shortest path calculation. Any path exceeding this value will be ignored.
-                            Defaults to positive infinity (`float('inf')`).
-            weight_name (str): The name of the edge weight used in the graph for the shortest path calculation.
-                               Defaults to "none".
+            start_nodes (list[int]): 多源最短路径计算的起始节点列表。列表中的每个元素代表一个起点节点。
+            method (str): 用于计算最短路径的算法。它可以是以下之一：
+                -“Dijkstra”：标准Dijkstra算法。
+                默认为“Dijkstra”。
+            target (int): 最短路径计算的目标节点。如果设置为-1，则表示没有特定目标。
+            cut_off (float): 最短路径的最大距离限制。任何超过此值的路径都将被忽略。
+            weight_name (str): 图中用于最短路径计算的边权重的名称。默认为None。
 
         Returns:
-            dict[int: list[int]]: A dictionary that stores the shortest path sequence from the source node to each node.
+            dict[int, list[int]]: 返回多源最短路径计算的路径结果
 
         Raises:
-            ValueError: If any of the following are violated:
-                - 'start_nodes' is not a list.
-                - 'method' is not one of the valid algorithms: "Dijkstra"
-                - 'target' is not an integer.
-                - 'cut_off' is not a non-negative number.
-                - 'weight_name' is not a string.
+            ValueError: 如果违反了以下任何一项：<br>
+                -“start_nodes”不是列表。<br>
+                -“method”不是有效的算法之一：“Dijkstra”。<br>
+                -“target”不是整数。<br>
+                -“cutoff”不是非负数。<br>
+                -“weight_name”不是字符串。
         """
         if 1:
             # 检查 start_nodes 是否是一个列表
@@ -446,35 +321,28 @@ class CGraph:
                          target: int = -1,
                          cut_off: float = float('inf'),
                          weight_name: str = None) -> dict:
-        """
-        Computes the shortest paths from multiple source nodes to a target node using a specified
-        pathfinding algorithm and returns the results.
+        """**类方法 - multi_source_all：**<br>
+         - 多源最短路径计算：返回序列路径和最少花费
 
         Args:
-            start_nodes (list of ints): A list of starting nodes for the path search. Each element
-                                         should be an integer representing a start node.
-            method (str): The algorithm to use for pathfinding. Valid options are "Dijkstra".
-                            Defaults to "Dijkstra".
-            target (int): The target node to which all paths from the source nodes are calculated.
-                          If set to -1, the target is ignored. Defaults to -1.
-            cut_off (float or int): The maximum distance to search for. A path is discarded
-                                   if its total weight exceeds this value. Default is infinity.
-            weight_name (str): The name of the edge attribute to use as weights for the pathfinding
-                               algorithm. Default is "none".
-
-        Raises:
-            ValueError: If any of the input parameters have invalid types or values:
-                - 'start_nodes' must be a list of integers.
-                - 'method' must be one of "Dijkstra".
-                - 'target' must be an integer.
-                - 'cut_off' must be a non-negative number.
-                - 'weight_name' must be a string.
+            start_nodes (list[int]): 多源最短路径计算的起始节点列表。列表中的每个元素代表一个起点节点。
+            method (str): 用于计算最短路径的算法。它可以是以下之一：
+                -“Dijkstra”：标准Dijkstra算法。
+                默认为“Dijkstra”。
+            target (int): 最短路径计算的目标节点。如果设置为-1，则表示没有特定目标。
+            cut_off (float): 最短路径的最大距离限制。任何超过此值的路径都将被忽略。
+            weight_name (str): 图中用于最短路径计算的边权重的名称。默认为None。
 
         Returns:
-            dis_and_path[cost:dict[int:float],
-                         path:dict[int: list[int]]]: A custom structure containing two attributes,
-                          cost and paths, which respectively store the shortest path cost and shortest path sequence
-                          from multiple source nodes to each node.
+            dict: 返回多源最短路径计算的花费和路径结果，一个dis_and_path结构体，内有{cost,paths}两个属性
+
+        Raises:
+            ValueError: 如果违反了以下任何一项：<br>
+                -“start_nodes”不是列表。<br>
+                -“method”不是有效的算法之一：“Dijkstra”。<br>
+                -“target”不是整数。<br>
+                -“cutoff”不是非负数。<br>
+                -“weight_name”不是字符串。
         """
         if 1:
             # 检查 start_nodes 是否是一个列表
@@ -508,31 +376,28 @@ class CGraph:
                           target: int = -1,
                           cut_off: float = float('inf'),
                           weight_name: str = None) -> dict[int, float]:
-        """
-        Computes the shortest paths from a set of starting nodes to all other nodes using a specified algorithm.
+        """**类方法 - single_source_cost：**<br>
+         - 单源最短路径计算，返回最少花费
 
         Args:
-            start (int): A starting node for the multi-source shortest path calculation.
-                                Each element represents a starting node from which the paths are calculated.
-            method (str): The algorithm used for calculating the shortest paths. It can be one of the following:
-                          - "Dijkstra": Standard Dijkstra's algorithm (works for graphs with non-negative weights).
-            target (int): The target node to which the shortest paths are calculated. If set to -1, indicates no specific target.
-                          Default is -1, which means no target.
-            cut_off (float): The maximum distance limit for the shortest path calculation. Any path exceeding this value will be ignored.
-                            Defaults to positive infinity (`float('inf')`).
-            weight_name (str): The name of the edge weight used in the graph for the shortest path calculation.
-                               Defaults to "none".
+            start (int): 多源最短路径计算的起始节点。
+            method (str): 用于计算最短路径的算法。它可以是以下之一：
+                -“Dijkstra”：标准Dijkstra算法。
+                默认为“Dijkstra”。
+            target (int): 最短路径计算的目标节点。如果设置为-1，则表示没有特定目标。
+            cut_off (float): 最短路径的最大距离限制。任何超过此值的路径都将被忽略。
+            weight_name (str): 图中用于最短路径计算的边权重的名称。默认为None。
 
         Returns:
-            dict[int:float]: A dictionary that stores the shortest path cost from the source node to each node.
+            dict[int, float]: 返回单源最短路径计算的花费结果
 
         Raises:
-            ValueError: If any of the following are violated:
-                - 'start_nodes' is not int.
-                - 'method' is not one of the valid algorithms: "Dijkstra".
-                - 'target' is not an integer.
-                - 'cut_off' is not a non-negative number.
-                - 'weight_name' is not a string.
+            ValueError: 如果违反了以下任何一项：<br>
+                -“start”不是整数。<br>
+                -“method”不是有效的算法之一：“Dijkstra”。<br>
+                -“target”不是整数。<br>
+                -“cutoff”不是非负数。<br>
+                -“weight_name”不是字符串。
         """
         if 1:
             # 检查 start_nodes 是否是一个列表
@@ -566,31 +431,28 @@ class CGraph:
                            target: int = -1,
                            cut_off: float = float('inf'),
                            weight_name: str = None) -> dict[int, list[int]]:
-        """
-        Computes the shortest path(s) from a given start node to a target node using
-        a specified algorithm.
+        """**类方法 - single_source_path：**<br>
+         - 单源最短路径计算，返回花费
 
         Args:
-            start (int): The starting node for the path search. Must be an integer.
-            method (str): The algorithm to use for pathfinding. Valid options are "Dijkstra".
-                            Defaults to "Dijkstra".
-            target (int): The target node to reach. If -1, finds paths to all nodes.
-                          Must be a non-negative integer.
-            cut_off (float or int): The maximum distance to search for. A path is discarded
-                                   if its total weight exceeds this value. Default is infinity.
-            weight_name (str): The name of the edge attribute to use as weights for the pathfinding
-                               algorithm. Default is "none".
-
-        Raises:
-            ValueError: If any of the input parameters have invalid types or values:
-                - 'start' must be an integer.
-                - 'method' must be one of "Dijkstra".
-                - 'target' must be a non-negative integer.
-                - 'cut_off' must be a non-negative number.
-                - 'weight_name' must be a string.
+            start (int): 多源最短路径计算的起始节点。
+            method (str): 用于计算最短路径的算法。它可以是以下之一：
+                -“Dijkstra”：标准Dijkstra算法。
+                默认为“Dijkstra”。
+            target (int): 最短路径计算的目标节点。如果设置为-1，则表示没有特定目标。
+            cut_off (float): 最短路径的最大距离限制。任何超过此值的路径都将被忽略。
+            weight_name (str): 图中用于最短路径计算的边权重的名称。默认为 None。
 
         Returns:
-            dict[int: list[int]]: A dictionary that stores the shortest path sequence from the source node to each node.
+            dict[int, list[int]]: 返回单源最短路径计算的路径结果。
+
+        Raises:
+            ValueError: 如果违反了以下任何一项：<br>
+                -“start”不是整数。<br>
+                -“method”不是有效的算法之一：“Dijkstra”。<br>
+                -“target”不是整数。<br>
+                -“cutoff”不是非负数。<br>
+                -“weight_name”不是字符串。
         """
         if 1:
             # 检查 list_o 是否是一个列表
@@ -624,33 +486,28 @@ class CGraph:
                           target: int = -1,
                           cut_off: float = float('inf'),
                           weight_name: str = None) -> dict:
-        """
-        Computes the shortest path(s) from a given start node to all other nodes using
-        a specified algorithm.
+        """**类方法 - single_source_all：**<br>
+         - 单源最短路径计算，返回花费和路径
 
         Args:
-            start (int): The starting node for the path search. Must be an integer.
-            method (str): The algorithm to use for pathfinding. Valid options are "Dijkstra". Defaults to "Dijkstra".
-            target (int): The target node to reach. If -1, finds paths to all nodes.
-                          Must be a non-negative integer.
-            cut_off (float or int): The maximum distance to search for. A path is discarded
-                                   if its total weight exceeds this value. Default is infinity.
-            weight_name (str): The name of the edge attribute to use as weights for the pathfinding
-                               algorithm. Default is "none".
-
-        Raises:
-            ValueError: If any of the input parameters have invalid types or values:
-                - 'start' must be an integer.
-                - 'method' must be one of "Dijkstra".
-                - 'target' must be a non-negative integer.
-                - 'cut_off' must be a non-negative number.
-                - 'weight_name' must be a string.
+            start (int): 单源最短路径计算的起始节点。
+            method (str): 用于计算最短路径的算法。它可以是以下之一：
+                -“Dijkstra”：标准Dijkstra算法。
+                默认为“Dijkstra”。
+            target (int): 最短路径计算的目标节点。如果设置为-1，则表示没有特定目标。
+            cut_off (float): 最短路径的最大距离限制。任何超过此值的路径都将被忽略。
+            weight_name (str): 图中用于最短路径计算的边权重的名称。默认为“无”。
 
         Returns:
-            dis_and_path[cost:dict[int:float],
-                         path:dict[int: list[int]]]: A custom structure containing two attributes,
-                          cost and paths, which respectively store the shortest path cost and shortest path sequence
-                          from multiple source nodes to each node.
+            dict: 返回单源最短路径计算的路径结果，一个dis_and_path结构体，内有{cost,paths}两个属性
+
+        Raises:
+            ValueError: 如果违反了以下任何一项：<br>
+                -“start”不是整数。<br>
+                -“method”不是有效的算法之一：“Dijkstra”。<br>
+                -“target”不是整数。<br>
+                -“cutoff”不是非负数。<br>
+                -“weight_name”不是字符串。
         """
         if 1:
             # 检查 list_o 是否是一个列表
@@ -689,35 +546,28 @@ class CGraph:
                          cut_off: float = float('inf'),
                          weight_name: str = None,
                          num_thread: int = 1) -> list[dict[int, float]]:
-        """
-        Computes the shortest path(s) from multiple start nodes to all other nodes
-        using a specified algorithm, and returns the computed costs.
+        """**类方法 - multi_single_source_cost：**<br>
+         - 多个单源最短路径， 返回花费列表
 
         Args:
-            start_nodes (list): A list of starting nodes for the path search. Each item
-                                 in the list must be an integer.
-            method (str): The algorithm to use for pathfinding. Valid options are "Dijkstra". Defaults to "Dijkstra".
-            target (int): The target node to reach. If -1, finds paths to all nodes.
-                          Must be a non-negative integer.
-            cut_off (float or int): The maximum distance to search for. A path is discarded
-                                   if its total weight exceeds this value. Default is infinity.
-            weight_name (str): The name of the edge attribute to use as weights for the pathfinding
-                               algorithm. Default is "none".
-            num_thread (int): The number of threads to use for parallel computation. Default is 1.
-                              Must be an integer.
-
-        Raises:
-            ValueError: If any of the input parameters have invalid types or values:
-                - 'start_nodes' must be a list of integers.
-                - 'method' must be one of "Dijkstra".
-                - 'target' must be a non-negative integer.
-                - 'cut_off' must be a non-negative number.
-                - 'weight_name' must be a string.
-                - 'num_thread' must be an integer.
+            start_nodes (list): 路径搜索的起始节点列表。每个项目列表中的值必须是整数。
+            method (str): 用于寻路的算法。有效选项为“Dijkstra”。默认为“Dijkstra”。
+            target (int): 要到达的目标节点。如果-1，则查找所有节点的路径。必须是非负整数。
+            cut_off (float): 要搜索的最大距离。如果其总权重超过该值,路径被丢弃。默认值为无穷大。
+            weight_name (str): 用作寻路权重的边属性的名称算法。默认值为“无”。
+            num_thread (int): 用于并行计算的线程数。默认值为1。必须是整数。
 
         Returns:
-            list[dist[int: float]]: List, elements are dictionaries: each dictionary
-                stores the shortest path cost from the source node to each node.
+            list[dict[int, float]]: 返回多个单源最短路径计算的路径结果，二维列表：元素是每个源节点的单源最短计算花费
+
+        Raises:
+            ValueError: 如果任何输入参数的类型或值无效：<br>
+                -“start_nodes”必须是整数列表。<br>
+                -“method”必须是“Dijkstra”。<br>
+                -“target”必须是非负整数。<br>
+                -“cutoff”必须是非负数。<br>
+                -“weight_name”必须是字符串。<br>
+                -“num_thread”必须是整数。
         """
         if 1:
             # 检查 list_o 是否是一个列表
@@ -757,36 +607,29 @@ class CGraph:
                          cut_off: float = float('inf'),
                          weight_name: str = None,
                          num_thread: int = 1) -> list[dict[int, list[int]]]:
+        """**类方法 - multi_single_source_path：**<br>
+         - 多个单源最短路径， 返回路径列表
+
+        Args:
+            start_nodes (list): 路径搜索的起始节点列表。每个项目列表中的值必须是整数。
+            method (str): 用于寻路的算法。有效选项为“Dijkstra”。默认为“Dijkstra”。
+            target (int): 要到达的目标节点。如果-1，则查找所有节点的路径。必须是非负整数。
+            cut_off (float): 要搜索的最大距离。如果其总权重超过该值,路径被丢弃。默认值为无穷大。
+            weight_name (str): 用作寻路权重的边属性的名称算法。默认值为“无”。
+            num_thread (int): 用于并行计算的线程数。默认值为1。必须是整数。
+
+        Returns:
+            list[dict[int, list[int]]]: 返回多个单源最短路径计算的路径结果，二维列表：元素是每个源节点的单源最短路径
+
+        Raises:
+            ValueError: 如果任何输入参数的类型或值无效：<br>
+                -“start_nodes”必须是整数列表。<br>
+                -“method”必须是“Dijkstra”。<br>
+                -“target”必须是非负整数。<br>
+                -“cutoff”必须是非负数。<br>
+                -“weight_name”必须是字符串。<br>
+                -“num_thread”必须是整数。
         """
-         Computes the shortest path(s) from multiple start nodes to all other nodes
-         using a specified algorithm, and returns the computed paths.
-
-         Args:
-             start_nodes (list): A list of starting nodes for the path search. Each item
-                                  in the list must be an integer.
-             method (str): The algorithm to use for pathfinding. Valid options are "Dijkstra". Defaults to "Dijkstra".
-             target (int): The target node to reach. If -1, finds paths to all nodes.
-                           Must be a non-negative integer.
-             cut_off (float or int): The maximum distance to search for. A path is discarded
-                                    if its total weight exceeds this value. Default is infinity.
-             weight_name (str): The name of the edge attribute to use as weights for the pathfinding
-                                algorithm. Default is "none".
-             num_thread (int): The number of threads to use for parallel computation. Default is 1.
-                               Must be an integer.
-
-         Raises:
-             ValueError: If any of the input parameters have invalid types or values:
-                 - 'start_nodes' must be a list of integers.
-                 - 'method' must be one of "Dijkstra".
-                 - 'target' must be a non-negative integer.
-                 - 'cut_off' must be a non-negative number.
-                 - 'weight_name' must be a string.
-                 - 'num_thread' must be an integer.
-
-         Returns:
-             list[dist[int: list[int]]]: List, elements are dictionaries: each dictionary
-                stores the shortest path sequence from the source node to each node.
-         """
         if 1:
             # 检查 list_o 是否是一个列表
             if not isinstance(start_nodes, list):
@@ -823,37 +666,28 @@ class CGraph:
                          cut_off: float = float('inf'),
                          weight_name: str = None,
                          num_thread: int = 1) -> dict:
-        """
-           Computes the shortest paths from multiple start nodes to all other nodes
-           using a specified algorithm, and returns the computed paths for all nodes.
+        """**类方法 - multi_single_source_all：**<br>
+         - 多个单源最短路径， 返回路径列表和花费
 
-           Args:
-               start_nodes (list): A list of starting nodes for the path search. Each item
-                                    in the list must be an integer.
-               method (str): The algorithm to use for pathfinding. Valid options are "Dijkstra". Defaults to "Dijkstra".
-               target (int): The target node to reach. If -1, finds paths to all nodes.
-                             Must be a non-negative integer.
-               cut_off (float or int): The maximum distance to search for. A path is discarded
-                                      if its total weight exceeds this value. Default is infinity.
-               weight_name (str): The name of the edge attribute to use as weights for the pathfinding
-                                  algorithm. Default is "none".
-               num_thread (int): The number of threads to use for parallel computation. Default is 1.
-                                 Must be an integer.
+        Args:
+            start_nodes (list): 路径搜索的起始节点列表。每个项目列表中的值必须是整数。
+            method (str): 用于寻路的算法。有效选项为“Dijkstra”。默认为“Dijkstra”。
+            target (int): 要到达的目标节点。如果-1，则查找所有节点的路径。必须是非负整数。
+            cut_off (float or int): 要搜索的最大距离。如果其总权重超过该值,路径被丢弃。默认值为无穷大。
+            weight_name (str): 用作寻路权重的边属性的名称算法。默认值为“无”。
+            num_thread (int): 用于并行计算的线程数。默认值为1。必须是整数。
 
-           Raises:
-               ValueError: If any of the input parameters have invalid types or values:
-                   - 'start_nodes' must be a list of integers.
-                   - 'method' must be one of "Dijkstra".
-                   - 'target' must be a non-negative integer.
-                   - 'cut_off' must be a non-negative number.
-                   - 'weight_name' must be a string.
-                   - 'num_thread' must be an integer.
+        Returns:
+            dict: 返回多个单源最短路径计算的路径结果，二维列表：元素是每个源节点的结构体dis_and_path,此结构体包含两个属性{cost,paths}
 
-           Returns:
-               list[dis_and_path[cost: dist[int: float],
-                    path: dist[int: list[int]]]]: List: The element is a custom structure: each structure contains
-                     two attributes, cost and paths, which respectively store the shortest path cost and shortest path
-                      sequence from multiple source nodes to each node.
+        Raises:
+            ValueError: 如果任何输入参数的类型或值无效：<br>
+                -“start_nodes”必须是整数列表。<br>
+                -“method”必须是“Dijkstra”。<br>
+                -“target”必须是非负整数。<br>
+                -“cut_off”必须是非负数。<br>
+                -“weight_name”必须是字符串。<br>
+                -“num_thread”必须是整数。
         """
         if 1:
             # 检查 list_o 是否是一个列表
@@ -891,36 +725,28 @@ class CGraph:
                          cut_off: float = float('inf'),
                          weight_name: str = None,
                          num_thread: int = 1) -> list[dict[int, float]]:
-        """
-        Computes the cost of the shortest path(s) from multiple start node sets to all other nodes
-        using a specified algorithm, and returns the computed costs for each start node set.
+        """**类方法 - multi_multi_source_cost：**<br>
+         - 多个多源最短路径， 返回最短路径花费
 
         Args:
-            start_nodes (list of lists): A list where each item is a list of starting nodes for the
-                                         path search. Each inner list should contain integers representing
-                                         multiple start nodes.
-            method (str): The algorithm to use for pathfinding. Valid options are "Dijkstra". Defaults to "Dijkstra".
-            target (int): The target node to reach. If -1, finds paths to all nodes.
-                          Must be a non-negative integer.
-            cut_off (float or int): The maximum distance to search for. A path is discarded
-                                   if its total weight exceeds this value. Default is infinity.
-            weight_name (str): The name of the edge attribute to use as weights for the pathfinding
-                               algorithm. Default is "none".
-            num_thread (int): The number of threads to use for parallel computation. Default is 1.
-                              Must be an integer.
-
-        Raises:
-            ValueError: If any of the input parameters have invalid types or values:
-                - 'start_nodes' must be a list of lists of integers.
-                - 'method' must be one of "Dijkstra".
-                - 'target' must be a non-negative integer.
-                - 'cut_off' must be a non-negative number.
-                - 'weight_name' must be a string.
-                - 'num_thread' must be an integer.
+            start_nodes (list): 路径搜索的起始节点二维列表。每个列表中的列表是一个多源节点列表。
+            method (str): 用于寻路的算法。有效选项为“Dijkstra”。默认为“Dijkstra”。
+            target (int): 要到达的目标节点。如果-1，则查找所有节点的路径。必须是非负整数。
+            cut_off (float or int): 要搜索的最大距离。如果其总权重超过该值,路径被丢弃。默认值为无穷大。
+            weight_name (str): 用作寻路权重的边属性的名称算法。默认值为“无”。
+            num_thread (int): 用于并行计算的线程数。默认值为1。必须是整数。
 
         Returns:
-            list[dist[int: float]]: List, elements are dictionaries: each dictionary
-                stores the shortest path cost from the source node to each node.
+            list[dict[int, float]]: 返回多个多源最短路径计算的路径结果，二维列表：元素是每个多源最短路的花费列表
+
+        Raises:
+            ValueError: 如果任何输入参数的类型或值无效：<br>
+                -“start_nodes”必须是二维整数列表。<br>
+                -“method”必须是“Dijkstra”。<br>
+                -“target”必须是非负整数。<br>
+                -“cut_off”必须是非负数。<br>
+                -“weight_name”必须是字符串。<br>
+                -“num_thread”必须是整数。
         """
         if 1:
             # 检查 list_o 是否是一个列表
@@ -962,36 +788,28 @@ class CGraph:
                          cut_off: float = float('inf'),
                          weight_name: str = None,
                          num_thread: int = 1) -> list[dict[int, list[int]]]:
-        """
-        Computes the shortest paths from multiple sets of start nodes to all other nodes
-        using a specified algorithm, and returns the computed paths for each start node set.
+        """**类方法 - multi_multi_source_path：**<br>
+         - 多个多源最短路径， 返回最短计算路径
 
         Args:
-            start_nodes (list of lists): A list where each item is a list of starting nodes for the
-                                         path search. Each inner list should contain integers representing
-                                         multiple start nodes.
-            method (str): The algorithm to use for pathfinding. Valid options are "Dijkstra". Defaults to "Dijkstra".
-            target (int): The target node to reach. If -1, finds paths to all nodes.
-                          Must be a non-negative integer.
-            cut_off (float or int): The maximum distance to search for. A path is discarded
-                                   if its total weight exceeds this value. Default is infinity.
-            weight_name (str): The name of the edge attribute to use as weights for the pathfinding
-                               algorithm. Default is "none".
-            num_thread (int): The number of threads to use for parallel computation. Default is 1.
-                              Must be an integer.
-
-        Raises:
-            ValueError: If any of the input parameters have invalid types or values:
-                - 'start_nodes' must be a list of lists of integers.
-                - 'method' must be one of "Dijkstra".
-                - 'target' must be a non-negative integer.
-                - 'cut_off' must be a non-negative number.
-                - 'weight_name' must be a string.
-                - 'num_thread' must be an integer.
+            start_nodes (list): 路径搜索的起始节点二维列表。每个列表中的列表是一个多源节点列表。
+            method (str): 用于寻路的算法。有效选项为“Dijkstra”。默认为“Dijkstra”。
+            target (int): 要到达的目标节点。如果-1，则查找所有节点的路径。必须是非负整数。
+            cut_off (float or int): 要搜索的最大距离。如果其总权重超过该值,路径被丢弃。默认值为无穷大。
+            weight_name (str): 用作寻路权重的边属性的名称算法。默认值为“无”。
+            num_thread (int): 用于并行计算的线程数。默认值为1。必须是整数。
 
         Returns:
-            list[dist[int: list[int]]]: List, elements are dictionaries: each dictionary
-                stores the shortest path sequence from the source node to each node.
+            result: 返回多个多源最短路径计算的路径结果，二维列表：元素是每个多源最短路的花费列表
+
+        Raises:
+            ValueError: 如果任何输入参数的类型或值无效：<br>
+                -“start_nodes”必须是二维整数列表。<br>
+                -“method”必须是“Dijkstra”。<br>
+                -“target”必须是非负整数。<br>
+                -“cut_off”必须是非负数。<br>
+                -“weight_name”必须是字符串。<br>
+                -“num_thread”必须是整数。
         """
         if 1:
             # 检查 list_o 是否是一个列表
@@ -1033,38 +851,28 @@ class CGraph:
                          cut_off: float = float('inf'),
                          weight_name: str = None,
                          num_thread: int = 1) -> dict:
-        """
-        Computes the shortest paths from multiple sets of start nodes to all other nodes using a specified
-        algorithm, and returns the computed paths for all start node sets.
+        """**类方法 - multi_multi_source_all：**<br>
+         - 多个多源最短路径， 返回所有最短计算路径和花费
 
         Args:
-            start_nodes (list of lists): A list where each item is a list of starting nodes for the
-                                         path search. Each inner list should contain integers representing
-                                         multiple start nodes.
-            method (str): The algorithm to use for pathfinding. Valid options are "Dijkstra". Defaults to "Dijkstra".
-            target (int): The target node to reach. If -1, finds paths to all nodes.
-                          Must be a non-negative integer.
-            cut_off (float or int): The maximum distance to search for. A path is discarded
-                                   if its total weight exceeds this value. Default is infinity.
-            weight_name (str): The name of the edge attribute to use as weights for the pathfinding
-                               algorithm. Default is "none".
-            num_thread (int): The number of threads to use for parallel computation. Default is 1.
-                              Must be an integer.
-
-        Raises:
-            ValueError: If any of the input parameters have invalid types or values:
-                - 'start_nodes' must be a list of lists of integers.
-                - 'method' must be one of "Dijkstra".
-                - 'target' must be a non-negative integer.
-                - 'cut_off' must be a non-negative number.
-                - 'weight_name' must be a string.
-                - 'num_thread' must be an integer.
+            start_nodes (list): 路径搜索的起始节点二维列表。每个列表中的列表是一个多源节点列表。
+            method (str): 用于寻路的算法。有效选项为“Dijkstra”。默认为“Dijkstra”。
+            target (int): 要到达的目标节点。如果-1，则查找所有节点的路径。必须是非负整数。
+            cut_off (float or int): 要搜索的最大距离。如果其总权重超过该值,路径被丢弃。默认值为无穷大。
+            weight_name (str): 用作寻路权重的边属性的名称算法。默认值为“无”。
+            num_thread (int): 用于并行计算的线程数。默认值为1。必须是整数。
 
         Returns:
-            list[dis_and_path[cost: dist[int: float],
-                    path: dist[int: list[int]]]]: List: The element is a custom structure: each structure contains
-                     two attributes, cost and paths, which respectively store the shortest path cost and shortest path
-                      sequence from multiple source nodes to each node.
+            result: 返回多个多源最短路径计算的路径结果，二维列表：元素是每个多源路径计算返回的结构体result,此结构体包含两个属性{cost,paths}
+
+        Raises:
+            ValueError: 如果任何输入参数的类型或值无效：<br>
+                -“start_nodes”必须是二维整数列表。<br>
+                -“method”必须是“Dijkstra”。<br>
+                -“target”必须是非负整数。<br>
+                -“cut_off”必须是非负数。<br>
+                -“weight_name”必须是字符串。<br>
+                -“num_thread”必须是整数。
         """
         if 1:
             # 检查 list_o 是否是一个列表
@@ -1106,36 +914,30 @@ class CGraph:
                              cut_off: float = float('inf'),
                              weight_name: str = None,
                              num_thread: int = 1):
-        """
-            Computes the cost matrix (shortest path costs) between multiple pairs of start and end nodes using
-            a specified pathfinding algorithm, and returns the result as a NumPy array.
+        """**类方法 - cost_matrix_to_numpy：**
+         - 输入起点列表和终点列表，计算获得一个起点到终点的花费矩阵
 
-            Args:
-                start_nodes (list of ints): A list of starting nodes for the path search. Each element should
-                                             be an integer representing a single start node.
-                end_nodes (list of ints): A list of ending nodes for the path search. Each element should
-                                          be an integer representing a single end node.
-                method (str): The algorithm to use for pathfinding. Valid options are "Dijkstra". Defaults to "Dijkstra".
-                cut_off (float or int): The maximum distance to search for. A path is discarded
-                                       if its total weight exceeds this value. Default is infinity.
-                weight_name (str): The name of the edge attribute to use as weights for the pathfinding
-                                   algorithm. Default is "none".
-                num_thread (int): The number of threads to use for parallel computation. Default is 1.
-                                  Must be an integer.
+        Args:
+            start_nodes (list of ints): 路径搜索的起始节点列表。每个元素都应该可以是表示单个起始节点的整数。
+            end_nodes (list of ints): 路径搜索的结束节点列表。每个元素都应该。
+            method (str): 用于寻路的算法。有效选项为“Dijkstra”。默认为“Dijkstra”。
+            cut_off (float or int): 要搜索的最大距离。路径被丢弃如果其总重量超过该值。默认值为无穷大。
+            weight_name (str): 用作寻路权重的边属性的名称算法。默认值为“无”。
+            num_thread (int): 用于并行计算的线程数。默认值为1。必须是整数。
 
-            Raises:
-                ValueError: If any of the input parameters have invalid types or values:
-                    - 'start_nodes' must be a list of integers.
-                    - 'end_nodes' must be a list of integers.
-                    - 'method' must be one of "Dijkstra".
-                    - 'cut_off' must be a non-negative number.
-                    - 'weight_name' must be a string.
-                    - 'num_thread' must be an integer.
+        Raises:
+            ValueError: 如果任何输入参数的类型或值无效：<br>
+                -“start_nodes”必须是整数列表。<br>
+                -“end_nodes”必须是整数列表。<br>
+                -“method”必须是“Dijkstra”。<br>
+                -“cut_off”必须是非负数。<br>
+                -“weight_name”必须是字符串。<br>
+                -“num_thread”必须是整数。
 
-            Returns:
-                numpy.ndarray: A NumPy array where each element represents the shortest path cost
-                               between a start node and an end node, based on the specified algorithm.
-                               The dimensions of the array will be len(start_nodes) x len(end_nodes).
+        Returns:
+            numpy.ndarray: 一个numpy数组，其中每个元素表示最短路径成本<br>
+                基于指定的算法在开始节点和结束节点之间进行通信。<br>
+                数组的维度将是len（start_nodes）x len（end_nodes”）。
         """
         if 1:
             # 检查 start_nodes 是否是一个列表
@@ -1173,37 +975,30 @@ class CGraph:
                            cut_off: float = float('inf'),
                            weight_name: str = None,
                            num_thread: int = 1) -> dict[tuple[int, int], list[int]]:
-        """
-            Computes the path list (shortest paths) between multiple pairs of start and end nodes using
-            a specified pathfinding algorithm, and returns the result as a NumPy array.
+        """**类方法 - path_list_to_numpy：**
+         - - 输入起点列表和终点列表，计算获得一个起点到终点的路径列表
 
-            Args:
-                start_nodes (list of ints): A list of starting nodes for the path search. Each element should
-                                             be an integer representing a single start node.
-                end_nodes (list of ints): A list of ending nodes for the path search. Each element should
-                                          be an integer representing a single end node.
-                method (str): The algorithm to use for pathfinding. Valid options are "Dijkstra". Defaults to "Dijkstra".
-                cut_off (float or int): The maximum distance to search for. A path is discarded
-                                       if its total weight exceeds this value. Default is infinity.
-                weight_name (str): The name of the edge attribute to use as weights for the pathfinding
-                                   algorithm. Default is "none".
-                num_thread (int): The number of threads to use for parallel computation. Default is 1.
-                                  Must be an integer.
+        Args:
+            start_nodes (list of ints): 路径搜索的起始节点列表。每个元素都应该可以是表示单个起始节点的整数。
+            end_nodes (list of ints): 路径搜索的结束节点列表。每个元素都应该。
+            method (str): 用于寻路的算法。有效选项为“Dijkstra”。默认为“Dijkstra”。
+            cut_off (float or int): 要搜索的最大距离。路径被丢弃如果其总重量超过该值。默认值为无穷大。
+            weight_name (str): 用作寻路权重的边属性的名称算法。默认值为“无”。
+            num_thread (int): 用于并行计算的线程数。默认值为1。必须是整数。
 
-            Raises:
-                ValueError: If any of the input parameters have invalid types or values:
-                    - 'start_nodes' must be a list of integers.
-                    - 'end_nodes' must be a list of integers.
-                    - 'method' must be one of "Dijkstra".
-                    - 'cut_off' must be a non-negative number.
-                    - 'weight_name' must be a string.
-                    - 'num_thread' must be an integer.
+        Raises:
+            ValueError: 如果任何输入参数的类型或值无效：<br>
+                -“start_nodes”必须是整数列表。<br>
+                -“end_nodes”必须是整数列表。<br>
+                -“method”必须是“Dijkstra”。<br>
+                -“cutoff”必须是非负数。<br>
+                -“weight_name”必须是字符串。<br>
+                -“num_thread”必须是整数。
 
-            Returns:
-                numpy.ndarray: A NumPy array where each element represents the shortest path (as a list of nodes)
-                               between a start node and an end node, based on the specified algorithm.
-                               The dimensions of the array will be len(start_nodes) x len(end_nodes), and each
-                               element will contain the node sequence representing the path.
+        Returns:
+            numpy.ndarray: NumPy数组，其中每个元素表示最短路径（作为节点列表）例如：<br>
+                [1,3,[2,3],<br>
+                1,4,[2,3,4]]
         """
         if 1:
             # 检查 start_nodes 是否是一个列表
