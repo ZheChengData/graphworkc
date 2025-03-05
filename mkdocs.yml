@@ -13,6 +13,7 @@ nav:
         - CGraphBase: Fun&API/CGraphBase.md
         - GraphAlgorithms: Fun&API/GraphAlgorithms.md
     - 案例展示: 案例展示.md
+    - 版本迭代: 版本迭代.md
         
 
 theme:
