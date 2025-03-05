@@ -57,7 +57,7 @@ class CGraph:
 
     def set_centroid(self,
                      node: int):
-        """**类方法 - get_link_info:** <br>
+        """**类方法 - set_centroid:** <br>
         - 将一个节点修改为形心点
 
         Args:
@@ -74,7 +74,7 @@ class CGraph:
 
     def set_centroids(self,
                      nodes: list[int]):
-        """**类方法 - get_link_info:** <br>
+        """**类方法 - set_centroids:** <br>
         - 将一个节点修改为形心点
 
         Args:
