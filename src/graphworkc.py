@@ -11,9 +11,11 @@ class CGraph:
         """**类方法 - get_graph_info:** <br>
         - 获取图信息
         """
-        self.graph.get_graph_info()
+        result = self.graph.get_graph_info()
+        return result
 
-    def get_node_info(self, id: int):
+    def get_node_info(self,
+                      id: int):
         """**类方法 - get_node_info:** <br>
         - 获取节点信息
 
@@ -22,13 +24,13 @@ class CGraph:
 
         Raises:
             ValueError: 如果“id”不是整数。
-            AttributeError: 如果图形对象没有`get_node_info`方法。
         """
-        # 参数检查：确保 id 是有效的节点（假设它们是整数）
+        # 确保 id 是有效的节点（假设它们是整数）
         if not isinstance(id, int):
             raise ValueError(f"Invalid value for 'start': {start}. It must be an integer.")
 
-        self.graph.get_node_info(id)
+        result = self.graph.get_node_info(id)
+        return result
 
     def get_link_info(self,
                       start: int,
@@ -42,22 +44,60 @@ class CGraph:
 
         Raises:
             ValueError: 如果“start”或“end”不是整数。
-            AttributeError: 如果图对象没有`get_link_info`方法。
         """
-        # 参数检查：确保 start 和 end 是有效的节点（假设它们是整数）
+        # 确保 start 和 end 是有效的节点（假设它们是整数）
         if not isinstance(start, int):
             raise ValueError(f"Invalid value for 'start': {start}. It must be an integer.")
 
         if not isinstance(end, int):
             raise ValueError(f"Invalid value for 'end': {end}. It must be an integer.")
 
-        self.graph.get_link_info(start, end)
+        result = self.graph.get_link_info(start, end)
+        return result
+
+    def set_centroid(self,
+                     node: int):
+        """**类方法 - get_link_info:** <br>
+        - 将一个节点修改为形心点
+
+        Args:
+            node (int): 要修改的节点。必须是整数。
+
+        Raises:
+            ValueError: 如果“node”不是整数。
+        """
+        # 确保 node 是有效的节点（假设它们是整数）
+        if not isinstance(node, int):
+            raise ValueError(f"Invalid value for 'start': {node}. It must be an integer.")
+
+        self.graph.set_centroid(node)
+
+    def set_centroids(self,
+                     nodes: list[int]):
+        """**类方法 - get_link_info:** <br>
+        - 将一个节点修改为形心点
+
+        Args:
+            nodes (list[int]): 要修改的节点。必须是整数。
+
+        Raises:
+            ValueError: 如果“nodes”不是列表。
+            ValueError: 如果“node”不是整数。
+        """
+        # 确保 nodes 是一个列表
+        if not isinstance(nodes, list):
+            raise ValueError(f"Expected 'nodes' to be a list, but got {type(nodes)}.")
+        # 确保 node 是有效的节点（假设它们是整数）
+        for node in nodes:
+            if not isinstance(node, int):
+                raise ValueError(f"Invalid value for 'node': {node}. It must be an integer.")
+
+        self.graph.set_centroid(nodes)
 
     def add_edge(self,
                  start: int,
                  end: int,
-                 attribute_dict: dict = None,
-                 planet: int = 0):
+                 attribute_dict: dict = None):
         """**类方法 - add_edge:**<br>
          - 加一条边
 
@@ -65,12 +105,10 @@ class CGraph:
             start (int): 边的起始节点。必须是整数。
             end (int): 边的结束节点。必须是整数或浮点数。
             attribute_dict (dict): 包含边缘属性的字典，例如权重或其他属性。不能为空。
-            planet (int): 节点是否为形心点，0（默认）代表不是形心点，1代表起点是形心点，2代表终点是形心点，3代表全是形心点。
 
         Raises:
             ValueError: 如果“start”或“end”不是整数或浮点数。
             ValueError: 如果“attribute_dict_”不是字典。
-            ValueError: 如果“attribute_dict_”是空字典。
         """
         if 1:
             # 参数检查：确保 start 和 v_ 是有效的节点（假设它们是整数）
@@ -80,42 +118,35 @@ class CGraph:
             if not isinstance(end, int):
                 raise ValueError(f"Invalid value for 'end': {end}. It must be an integer.")
 
-            if not isinstance(planet, int):
-                raise ValueError(f"Invalid value for 'planet': {planet}. It must be an integer.")
-
             # 初始化空字典
             if attribute_dict is None:
-                attribute_dict = {}  # 👈 每个调用生成新字典
-            if planet < 0 or planet > 3:
-                raise ValueError(f"Invalid value for 'planet': {planet}. It must be an integer of 0-3.")
+                attribute_dict = {}
 
             # 参数类型检查
             if not isinstance(attribute_dict, dict):
                 raise ValueError(f"attribute_dict必须是字典类型，当前类型：{type(attribute_dict)}")
 
         # 假设 self.graph 是一个已定义的图对象
-        self.graph.add_edge(start, end, attribute_dict, planet)
+        self.graph.add_edge(start, end, attribute_dict)
 
     def add_edges(self,
-                  edges: list[tuple[int, int,  Optional[dict[str, float]], Optional[int]]]):
+                  edges: list[tuple]):
         """**类方法 - add_edges:**<br>
          - 加多条边
 
          Args:
              edges (list of tuple): 要添加的边列表。每条边都应该是一个元组。
-             containing two - fours elements:
+             containing three elements:
                  - start (int): 边的起始节点。
                  - end (int): 边的结束节点。
                  - attribute_dict_ (dict): 一个包含边缘属性的字典，例如权重或其他属性。（可选）
-                 - planet (int): 点是否为形心点，0（默认）代表不是形心点，1代表起点是形心点，2代表终点是形心点，3代表全是形心点。（可选）
 
          Raises:
              ValueError: 如果“边”不是列表。
              ValueError: 如果edges中的任何元素不是元组。
-             ValueError: 如果任何元组都没有2-4个元素。
+             ValueError: 如果任何元组都没有2-3个元素。
              ValueError: 如果“start”或“end”不是整数。
              ValueError: 如果“attribute_dict_”不是字典。
-             ValueError: 如果“planet”不是整数。
          """
         if 1:
             # 确保 edges 是一个列表
@@ -127,26 +158,20 @@ class CGraph:
                 if not isinstance(edge, tuple):
                     raise ValueError(f"Each element in 'edges' should be a tuple, but got {type(edge)}.")
 
-                if len(edge) < 2 or len(edge) > 4:
+                if len(edge) < 2 or len(edge) > 3:
                     raise ValueError(f"Each tuple in 'edges' should have exactly 2-4 elements, but got {len(edge)}.")
 
                 # 检查 start 和 end 是否是有效的节点（例如整数或字符串）
                 start = edge[0]
                 end = edge[1]
                 attribute_dict_ = {}
-                is_planet_ = 0
                 if len(edge) == 3:
                     attribute_dict_ = edge[2]
-                if len(edge) == 4:
-                    is_planet_ = edge[3]
 
-                if is_planet_ < 0 or is_planet_ > 3:
-                    raise ValueError(f"Expected 'is_planet_' to be an integer 0-3.")
+                # 检查 start end 是否为整数
                 if not isinstance(start, int):
                     raise ValueError(f"Expected 'start' to be an integer, but got {type(start)}.")
                 if not isinstance(end, int):
-                    raise ValueError(f"Expected 'end' to be an integer, but got {type(end)}.")
-                if not isinstance(is_planet_, int):
                     raise ValueError(f"Expected 'end' to be an integer, but got {type(end)}.")
                 # 检查 attribute_dict_ 是否是一个字典
                 if not isinstance(attribute_dict_, dict):
@@ -256,6 +281,8 @@ class CGraph:
             if weight_name is not None and not isinstance(weight_name, str):
                 raise ValueError(f"Invalid value for 'weight_name': {weight_name}. It must be either a string or None.")
 
+        if weight_name is None:
+            weight_name = ""
         result = self.graph.multi_source_cost(start_nodes, method, target, cut_off, weight_name)
 
         return result
@@ -311,6 +338,8 @@ class CGraph:
             if weight_name is not None and not isinstance(weight_name, str):
                 raise ValueError(f"Invalid value for 'weight_name': {weight_name}. It must be either a string or None.")
 
+        if weight_name is None:
+            weight_name = ""
         result = self.graph.multi_source_path(start_nodes, method, target, cut_off, weight_name)
 
         return result
@@ -365,7 +394,8 @@ class CGraph:
             # 检查 weight_name 是否是一个字符串或 None
             if weight_name is not None and not isinstance(weight_name, str):
                 raise ValueError(f"Invalid value for 'weight_name': {weight_name}. It must be either a string or None.")
-
+        if weight_name is None:
+            weight_name = ""
         result = self.graph.multi_source_all(start_nodes, method, target, cut_off, weight_name)
 
         return result
@@ -421,6 +451,8 @@ class CGraph:
             if weight_name is not None and not isinstance(weight_name, str):
                 raise ValueError(f"Invalid value for 'weight_name': {weight_name}. It must be either a string or None.")
 
+        if weight_name is None:
+            weight_name = ""
         result = self.graph.single_source_cost(start, method, target, cut_off, weight_name)
 
         return result
@@ -476,6 +508,8 @@ class CGraph:
             if weight_name is not None and not isinstance(weight_name, str):
                 raise ValueError(f"Invalid value for 'weight_name': {weight_name}. It must be either a string or None.")
 
+        if weight_name is None:
+            weight_name = ""
         result = self.graph.single_source_path(start, method, target, cut_off, weight_name)
 
         return result
@@ -533,9 +567,8 @@ class CGraph:
 
         # 如果 weight_name 是 None, 不传递该参数
         if weight_name is None:
-            result = self.graph.single_source_all(start, method, target, cut_off)
-        else:
-            result = self.graph.single_source_all(start, method, target, cut_off, weight_name)
+            weight_name = ""
+        result = self.graph.single_source_all(start, method, target, cut_off, weight_name)
 
         return result
 
@@ -596,6 +629,8 @@ class CGraph:
                 raise ValueError(f"Invalid value for 'num_thread': {num_thread}. It must be a integer.")
 
         # 如果 weight_name 是 None, 不传递该参数
+        if weight_name is None:
+            weight_name = ""
         result = self.graph.multi_single_source_cost(start_nodes, method, target, cut_off, weight_name, num_thread)
 
         return result
@@ -656,7 +691,10 @@ class CGraph:
             if not isinstance(num_thread, int):
                 raise ValueError(f"Invalid value for 'num_thread': {num_thread}. It must be a integer.")
 
+        if weight_name is None:
+            weight_name = ""
         result = self.graph.multi_single_source_path(start_nodes, method, target, cut_off, weight_name, num_thread)
+
         return result
 
     def multi_single_source_all(self,
@@ -715,7 +753,10 @@ class CGraph:
             if not isinstance(num_thread, int):
                 raise ValueError(f"Invalid value for 'num_thread': {num_thread}. It must be a integer.")
 
+        if weight_name is None:
+            weight_name = ""
         result = self.graph.multi_single_source_all(start_nodes, method, target, cut_off, weight_name, num_thread)
+
         return result
 
     def multi_multi_source_cost(self,
@@ -778,7 +819,10 @@ class CGraph:
             if not isinstance(num_thread, int):
                 raise ValueError(f"Invalid value for 'num_thread': {num_thread}. It must be a integer.")
 
+        if weight_name is None:
+            weight_name = ""
         result = self.graph.multi_multi_source_cost(start_nodes, method, target, cut_off, weight_name, num_thread)
+
         return result
 
     def multi_multi_source_path(self,
@@ -841,7 +885,10 @@ class CGraph:
             if not isinstance(num_thread, int):
                 raise ValueError(f"Invalid value for 'num_thread': {num_thread}. It must be a integer.")
 
+        if weight_name is None:
+            weight_name = ""
         result = self.graph.multi_multi_source_path(start_nodes, method, target, cut_off, weight_name, num_thread)
+
         return result
 
     def multi_multi_source_all(self,
@@ -904,12 +951,15 @@ class CGraph:
             if not isinstance(num_thread, int):
                 raise ValueError(f"Invalid value for 'num_thread': {num_thread}. It must be a integer.")
 
+        if weight_name is None:
+            weight_name = ""
         result = self.graph.multi_multi_source_all(start_nodes, method, target, cut_off, weight_name, num_thread)
+
         return result
 
     def cost_matrix_to_numpy(self,
-                             start_nodes: list[list[int]],
-                             end_nodes: list[list[int]],
+                             start_nodes: list[int],
+                             end_nodes: list[int],
                              method: str = "Dijkstra",
                              cut_off: float = float('inf'),
                              weight_name: str = None,
@@ -965,12 +1015,15 @@ class CGraph:
             if not isinstance(num_thread, int):
                 raise ValueError(f"Invalid value for 'num_thread': {num_thread}. It must be a integer.")
 
+        if weight_name is None:
+            weight_name = ""
         result = self.graph.cost_matrix_to_numpy(start_nodes, end_nodes, method, cut_off, weight_name, num_thread)
+
         return result
 
     def path_list_to_numpy(self,
-                           start_nodes: list[list[int]],
-                           end_nodes: list[list[int]],
+                           start_nodes: list[int],
+                           end_nodes: list[int],
                            method: str = "Dijkstra",
                            cut_off: float = float('inf'),
                            weight_name: str = None,
@@ -991,7 +1044,7 @@ class CGraph:
                 -“start_nodes”必须是整数列表。<br>
                 -“end_nodes”必须是整数列表。<br>
                 -“method”必须是“Dijkstra”。<br>
-                -“cutoff”必须是非负数。<br>
+                -“cut_off”必须是非负数。<br>
                 -“weight_name”必须是字符串。<br>
                 -“num_thread”必须是整数。
 
@@ -1026,5 +1079,8 @@ class CGraph:
             if not isinstance(num_thread, int):
                 raise ValueError(f"Invalid value for 'num_thread': {num_thread}. It must be a integer.")
 
+        if weight_name is None:
+            weight_name = ""
         result = self.graph.path_list_to_numpy(start_nodes, end_nodes, method, cut_off, weight_name, num_thread)
+
         return result

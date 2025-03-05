@@ -1,7 +1,12 @@
 #include "GraphAlgorithms.h"
 
-// 多源最短路 底层算法
-unordered_map<int, double> GraphAlgorithms::multi_source_dijkstra_cost_planet(
+
+// 定义一个互斥锁
+mutex result_mutex;
+
+// 核心算法 ---------------------------------------------------------------------------------------
+
+unordered_map<int, double> GraphAlgorithms::multi_source_dijkstra_cost_centroid(
 	const vector<int>& sources,
 	int target,
 	double cutoff,
@@ -58,6 +63,147 @@ unordered_map<int, double> GraphAlgorithms::multi_source_dijkstra_cost_planet(
 	return dist;
 };
 
+unordered_map<int, double> GraphAlgorithms::multi_source_dijkstra_cost(
+	const vector<int>& sources,
+	int target,
+	double cutoff,
+	string weight_name)
+{
+	unordered_map<int, double> dist;
+	priority_queue<pair<double, int>, vector<pair<double, int>>, greater<>> pq;
+
+	// 初始化源节点
+	for (const auto& s : sources) {
+		dist[s] = 0.0;
+		pq.emplace(0.0, s);
+	}
+
+	// 遍历优先队列， 更新最短路径
+	while (!pq.empty()) {
+		std::pair<double, int> top = pq.top();
+		pq.pop();
+		double d = top.first;  // 获取距离
+		int u = top.second;    // 获取节点
+
+		// 跳过已处理的更优路径
+		if (d > dist[u]) continue;
+
+		// 提前终止条件
+		if (u == target) break;
+		if (d > cutoff) continue;
+
+		// 遍历邻居并更新距离
+		if (G.find(u) != G.end()) {
+			for (const auto& pair : G.at(u)) {
+				int v = pair.first;    // 获取邻接节点
+				const unordered_map<string, double>& attributes = pair.second;  // 获取边的属性（权重）
+
+				// 提取权重（假设键为 "weight"）
+				double weight = 0.0;
+				if (attributes.find(weight_name) != attributes.end()) {
+					weight = attributes.at(weight_name);
+				}
+				else {
+					weight = 1;
+				}
+
+				double new_dist = d + weight;
+				// 发现更短路径
+				if (dist.find(v) == dist.end() || new_dist < dist[v]) {
+					dist[v] = new_dist;
+					pq.emplace(new_dist, v);
+				}
+			}
+		}
+	}
+
+	return dist;
+};
+
+unordered_map<int, vector<int>> GraphAlgorithms::multi_source_dijkstra_path(
+	const vector<int>& sources,
+	int target,
+	double cutoff,
+	string weight_name)
+{
+	unordered_map<int, vector<int>> paths;
+	// 检查目标是否是源节点之一
+	for (const auto& s : sources) {
+		if (s == target) {
+			return { {s, {s}} };
+		}
+	}
+
+	// 初始化
+	unordered_map<int, double> dist;
+	unordered_map<int, int> pred;
+	priority_queue<
+		pair<double, int>,
+		vector<pair<double, int>>,
+		greater<>
+	> pq;
+
+	// 初始化源节点
+	for (const auto& s : sources) {
+		dist[s] = 0.0;
+		pq.emplace(0.0, s);
+		pred[s] = -1;
+		paths[s] = { s };
+	}
+
+	// 遍历优先队列， 更新最短路径
+	while (!pq.empty()) {
+		std::pair<double, int> top = pq.top();
+		pq.pop();
+		double d = top.first;  // 获取距离
+		int u = top.second;    // 获取节点
+
+		// 跳过已处理的更优路径
+		if (d > dist[u]) continue;
+
+		// 提前终止条件
+		if (u == target) break;
+		if (d > cutoff) continue;
+
+		// 遍历邻居并更新距离
+		if (G.find(u) != G.end()) {
+			for (const auto& pair : G.at(u)) {
+				int v = pair.first;    // 获取邻接节点
+				const unordered_map<string, double>& attributes = pair.second;  // 获取边的属性（权重）
+
+				// 提取权重（假设键为 "weight"）
+				double weight = 0.0;
+				if (attributes.find(weight_name) != attributes.end()) {
+					weight = attributes.at(weight_name);
+				}
+				else {
+					weight = 1;
+				}
+
+				double new_dist = d + weight;
+				// 发现更短路径
+				// 修改路径构建逻辑
+				if (dist.find(v) == dist.end() || new_dist < dist[v]) {
+					dist[v] = new_dist;
+					pred[v] = u;
+					pq.emplace(new_dist, v);
+
+					// 重构路径生成逻辑
+					vector<int> new_path;
+					if (pred[v] != -1) {
+						new_path = paths[pred[v]];  // 获取前驱节点的完整路径
+					}
+					new_path.push_back(v);
+					paths[v] = new_path;
+				}
+			}
+		}
+	}
+
+	//返回序列路径
+	return paths;
+};
+
 dis_and_path GraphAlgorithms::multi_source_dijkstra(
 	const vector<int>& sources,
 	int target,
@@ -85,6 +231,7 @@ dis_and_path GraphAlgorithms::multi_source_dijkstra(
 		dist[s] = 0.0;
 		pq.emplace(0.0, s);
 		pred[s] = -1; // 表示源节点无前驱
+		paths[s] = { s };
 	}
 
 	// 遍历优先队列， 更新最短路径
@@ -123,207 +270,22 @@ dis_and_path GraphAlgorithms::multi_source_dijkstra(
 					pred[v] = u;
 					pq.emplace(new_dist, v);
 
-					paths[v] = paths[u];
-					paths[v].push_back(v);
+					// 重构路径生成逻辑
+					vector<int> new_path;
+					if (pred[v] != -1) {
+						new_path = paths[pred[v]];  // 获取前驱节点的完整路径
+					}
+					new_path.push_back(v);
+					paths[v] = new_path;
 				}
 			}
 		}
 	}
-
-	//// 路径重建
-	//std::unordered_map<int, std::vector<int>> paths;
-	//auto build_path = [&](int node) {
-	//	std::vector<int> path;
-	//	if (pred.find(node) == pred.end()) return path;
-	//	while (node != -1) {
-	//		path.push_back(node);
-	//		node = pred[node];
-	//	}
-	//	std::reverse(path.begin(), path.end());
-	//	return path;
-	//};
-
-	//// 返回结果
-	//if (target != -1) {
-	//	if (dist.find(target) == dist.end()) {
-	//		throw std::runtime_error("No path to target");
-	//	}
-	//	paths[target] = build_path(target);
-	//}
-	//else {
-	//	for (const auto& pair : dist) {
-	//		int node = pair.first;  // 获取键 (节点)
-	//		paths[node] = build_path(node);
-	//	}
-	//}
 
 	//返回最短路径和花费
 	return { dist, paths };
 }
 
-unordered_map<int, double> GraphAlgorithms::multi_source_dijkstra_cost(
-	const vector<int>& sources,
-	int target,
-	double cutoff,
-	string weight_name)
-{
-	unordered_map<int, double> dist;
-	priority_queue<pair<double, int>, vector<pair<double, int>>, greater<>> pq;
-
-	// 初始化源节点
-	for (const auto& s : sources) {
-		dist[s] = 0.0;
-		pq.emplace(0.0, s);
-	}
-
-	while (!pq.empty()) {
-		auto current = pq.top();
-		double d = current.first;
-		int u = current.second;
-		pq.pop();
-
-		if (d > dist[u]) continue;
-		if (u == target) break;
-		if (d > cutoff) continue;
-
-		// 修复：检查节点是否存在邻接表
-		auto u_it = G.find(u);
-		if (u_it == G.end()) continue;
-
-		const auto& neighbors = u_it->second;
-		for (const auto& edge : neighbors) {
-			int v = edge.first;
-			const auto& attrs = edge.second;
-
-			// 提取权重
-			double weight = 1.0;
-			auto attr_it = attrs.find(weight_name);
-			if (attr_it != attrs.end()) {
-				weight = attr_it->second;
-			}
-			else {
-				// 可选：抛出异常或记录日志
-				// throw runtime_error("Weight '" + weight_name + "' missing");
-			}
-
-			double new_dist = d + weight;
-			if (!dist.count(v) || new_dist < dist[v]) {
-				dist[v] = new_dist;
-				pq.emplace(new_dist, v);
-			}
-		}
-	}
-
-	return dist;
-};
-
-unordered_map<int, vector<int>> GraphAlgorithms::multi_source_dijkstra_path(
-	const vector<int>& sources,
-	int target,
-	double cutoff,
-	string weight_name)
-{
-	unordered_map<int, vector<int>> paths;
-
-	// 检查目标是否是源节点之一
-	for (const auto& s : sources) {
-		if (s == target) {
-			return { {s, {s}} };
-		}
-	}
-
-	// 初始化
-	unordered_map<int, double> dist;
-	unordered_map<int, int> pred;
-	priority_queue<
-		pair<double, int>,
-		vector<pair<double, int>>,
-		greater<>
-	> pq;
-
-	// 初始化源节点
-	for (const auto& s : sources) {
-		dist[s] = 0.0;
-		pq.emplace(0.0, s);
-		pred[s] = -1; // 表示源节点无前驱
-	}
-
-	// 遍历优先队列， 更新最短路径
-	while (!pq.empty()) {
-		std::pair<double, int> top = pq.top();
-		pq.pop();
-		double d = top.first;  // 获取距离
-		int u = top.second;    // 获取节点
-
-		// 跳过已处理的更优路径
-		if (d > dist[u]) continue;
-
-		// 提前终止条件
-		if (u == target) break;
-		if (d > cutoff) continue;
-
-		// 遍历邻居并更新距离
-		if (G.find(u) != G.end()) {
-			for (const auto& pair : G.at(u)) {
-				int v = pair.first;    // 获取邻接节点
-				const unordered_map<string, double>& attributes = pair.second;  // 获取边的属性（权重）
-
-				// 提取权重（假设键为 "weight"）
-				double weight = 0.0;
-				if (attributes.find(weight_name) != attributes.end()) {
-					weight = attributes.at(weight_name);
-				}
-				else {
-					weight = 1;
-				}
-
-				double new_dist = d + weight;
-				// 发现更短路径
-				if (dist.find(v) == dist.end() || new_dist < dist[v]) {
-					dist[v] = new_dist;
-					pred[v] = u;
-					pq.emplace(new_dist, v);
-
-					paths[v] = paths[u];
-					paths[v].push_back(v);
-				}
-			}
-		}
-	}
-
-	//// 路径重建
-	//std::unordered_map<int, std::vector<int>> paths;
-	//auto build_path = [&](int node) {
-	//	std::vector<int> path;
-	//	if (pred.find(node) == pred.end()) return path;
-	//	while (node != -1) {
-	//		path.push_back(node);
-	//		node = pred[node];
-	//	}
-	//	std::reverse(path.begin(), path.end());
-	//	return path;
-	//};
-
-	//// 返回结果
-	//if (target != -1) {
-	//	if (dist.find(target) == dist.end()) {
-	//		throw std::runtime_error("No path to target");
-	//	}
-	//	paths[target] = build_path(target);
-	//}
-	//else {
-	//	for (const auto& pair : dist) {
-	//		int node = pair.first;  // 获取键 (节点)
-	//		paths[node] = build_path(node);
-	//	}
-	//}
-
-	//返回序列路径
-	return paths;
-};
-
-
-// Dijkstra 算法（单源最短路径）
 double GraphAlgorithms::shortest_path_dijkstra(
 	int source,
 	int target,
@@ -381,6 +343,10 @@ double GraphAlgorithms::shortest_path_dijkstra(
 	return dist[target];
 }
 
+// 核心算法 ---------------------------------------------------------------------------------------
+
+// 调用方法 ---------------------------------------------------------------------------------------
+
 // 多源最短路径计算：返回花费
 unordered_map<int, double> GraphAlgorithms::multi_source_cost(
 	const py::object& list_o_,
@@ -389,71 +355,17 @@ unordered_map<int, double> GraphAlgorithms::multi_source_cost(
 	const py::object& cutoff_,
 	const py::object& weight_name_)
 {
-	// 检查机制
-	if (1) {
-		// 尝试转换 list_o_
-		try {
-			auto list_o = list_o_.cast<vector<int>>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: list_o must be of type 'list[int]'." << std::endl;
-			return unordered_map<int, double>();
-		}
-
-		// 尝试转换 method_
-		try {
-			auto method = method_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: method must be of type 'string'." << std::endl;
-			return unordered_map<int, double>();
-		}
-
-		// 尝试转换 target_
-		try {
-			auto target = target_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: target must be of type 'int'." << std::endl;
-			return unordered_map<int, double>();
-		}
-
-		// 尝试转换 cutoff_
-		try {
-			auto cutoff = cutoff_.cast<double>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: cutoff must be of type 'double'." << std::endl;
-			return unordered_map<int, double>();
-		}
-
-		// 尝试转换 weight_name_
-		try {
-			auto weight_name = weight_name_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: weight_name must be of type 'string'." << std::endl;
-			return unordered_map<int, double>();
-		}
-	}
-	
-
 	auto list_o = list_o_.cast<vector<int>>();
 	auto method = method_.cast<string>();
 	auto target = target_.cast<int>();
 	auto cutoff = cutoff_.cast<double>();
-	auto weight_name = weight_name_.cast<string>();
+	auto weight_name = weight_name_.cast<std::string>();
 
 	// 逻辑执行
 	if (method == "Dijkstra") {
 		unordered_map<int, double> result = multi_source_dijkstra_cost(list_o, target, cutoff, weight_name);
 		return result;
 	}
-	else {
-		std::cout << "not have this method now." << std::endl;
-		return unordered_map<int, double>();
-	}
-
 }
 
 unordered_map<int, vector<int>> GraphAlgorithms::multi_source_path(
@@ -463,53 +375,6 @@ unordered_map<int, vector<int>> GraphAlgorithms::multi_source_path(
 	const py::object& cutoff_,
 	const py::object& weight_name_)
 {
-	// 检查机制
-	if (1) {
-		// 尝试转换 list_o_
-		try {
-			auto list_o = list_o_.cast<vector<int>>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: list_o must be of type 'list[int]'." << std::endl;
-			return unordered_map<int, vector<int>>();
-		}
-
-		// 尝试转换 method_
-		try {
-			auto method = method_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: method must be of type 'string'." << std::endl;
-			return unordered_map<int, vector<int>>();
-		}
-
-		// 尝试转换 target_
-		try {
-			auto target = target_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: target must be of type 'int'." << std::endl;
-			return unordered_map<int, vector<int>>();
-		}
-
-		// 尝试转换 cutoff_
-		try {
-			auto cutoff = cutoff_.cast<double>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: cutoff must be of type 'double'." << std::endl;
-			return unordered_map<int, vector<int>>();
-		}
-
-		// 尝试转换 weight_name_
-		try {
-			auto weight_name = weight_name_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: weight_name must be of type 'string'." << std::endl;
-			return unordered_map<int, vector<int>>();
-		}
-	}
 	
 	auto list_o = list_o_.cast<vector<int>>();
 	auto method = method_.cast<string>();
@@ -518,8 +383,11 @@ unordered_map<int, vector<int>> GraphAlgorithms::multi_source_path(
 	auto weight_name = weight_name_.cast<string>();
 
 	// 逻辑执行
-	unordered_map<int, vector<int>> result = multi_source_dijkstra_path(list_o, target, cutoff, weight_name);
-	return result;
+	if (method == "Dijkstra") {
+		// 逻辑执行
+		unordered_map<int, vector<int>> result = multi_source_dijkstra_path(list_o, target, cutoff, weight_name);
+		return result;
+	}
 }
 
 dis_and_path GraphAlgorithms::multi_source_all(
@@ -529,51 +397,6 @@ dis_and_path GraphAlgorithms::multi_source_all(
 	const py::object& cutoff_,
 	const py::object& weight_name_)
 {
-	// 检查机制
-		// 尝试转换 list_o_
-	try {
-		auto list_o = list_o_.cast<vector<int>>();
-	}
-	catch (const py::cast_error& e) {
-		std::cout << "Error: list_o must be of type 'list[int]'." << std::endl;
-		return dis_and_path();
-	}
-
-	// 尝试转换 method_
-	try {
-		auto method = method_.cast<string>();
-	}
-	catch (const py::cast_error& e) {
-		std::cout << "Error: method must be of type 'string'." << std::endl;
-		return dis_and_path();
-	}
-
-	// 尝试转换 target_
-	try {
-		auto target = target_.cast<int>();
-	}
-	catch (const py::cast_error& e) {
-		std::cout << "Error: target must be of type 'int'." << std::endl;
-		return dis_and_path();
-	}
-
-	// 尝试转换 cutoff_
-	try {
-		auto cutoff = cutoff_.cast<double>();
-	}
-	catch (const py::cast_error& e) {
-		std::cout << "Error: cutoff must be of type 'double'." << std::endl;
-		return dis_and_path();
-	}
-
-	// 尝试转换 weight_name_
-	try {
-		auto weight_name = weight_name_.cast<string>();
-	}
-	catch (const py::cast_error& e) {
-		std::cout << "Error: weight_name must be of type 'string'." << std::endl;
-		return dis_and_path();
-	}
 	auto list_o = list_o_.cast<vector<int>>();
 	auto method = method_.cast<string>();
 	auto target = target_.cast<int>();
@@ -582,8 +405,10 @@ dis_and_path GraphAlgorithms::multi_source_all(
 
 
 	// 逻辑执行
-	dis_and_path result = multi_source_dijkstra(list_o, target, cutoff, weight_name);
-	return result;
+	if (method == "Dijkstra") {
+		dis_and_path result = multi_source_dijkstra(list_o, target, cutoff, weight_name);
+		return result;
+	}
 }
 
 // 单源最短路径计算
@@ -594,52 +419,6 @@ unordered_map<int, double> GraphAlgorithms::single_source_cost(
 	const py::object& cutoff_,
 	const py::object& weight_name_)
 {
-	// 检查机制
-	// 尝试转换 list_o_
-	try {
-		auto o = o_.cast<int>();
-	}
-	catch (const py::cast_error& e) {
-		std::cout << "Error: list_o must be of type 'list[int]'." << std::endl;
-		return unordered_map<int, double>();
-	}
-
-	// 尝试转换 method_
-	try {
-		auto method = method_.cast<string>();
-	}
-	catch (const py::cast_error& e) {
-		std::cout << "Error: method must be of type 'string'." << std::endl;
-		return unordered_map<int, double>();
-	}
-
-	// 尝试转换 target_
-	try {
-		auto target = target_.cast<int>();
-	}
-	catch (const py::cast_error& e) {
-		std::cout << "Error: target must be of type 'int'." << std::endl;
-		return unordered_map<int, double>();
-	}
-
-	// 尝试转换 cutoff_
-	try {
-		auto cutoff = cutoff_.cast<double>();
-	}
-	catch (const py::cast_error& e) {
-		std::cout << "Error: cutoff must be of type 'double'." << std::endl;
-		return unordered_map<int, double>();
-	}
-
-	// 尝试转换 weight_name_
-	try {
-		auto weight_name = weight_name_.cast<string>();
-	}
-	catch (const py::cast_error& e) {
-		std::cout << "Error: weight_name must be of type 'string'." << std::endl;
-		return unordered_map<int, double>();
-	}
-
 	auto o = o_.cast<int>();
 	auto method = method_.cast<string>();
 	auto target = target_.cast<int>();
@@ -654,10 +433,6 @@ unordered_map<int, double> GraphAlgorithms::single_source_cost(
 		result = multi_source_dijkstra_cost(list_o, target, cutoff, weight_name);
 		return result;
 	}
-	else {
-		std::cout << "not have this method now." << std::endl;
-		return unordered_map<int, double>();
-	}
 }
 
 unordered_map<int, std::vector<int>> GraphAlgorithms::single_source_path(
@@ -667,54 +442,6 @@ unordered_map<int, std::vector<int>> GraphAlgorithms::single_source_path(
 	const py::object& cutoff_,
 	const py::object& weight_name_)
 {
-	// 检查机制
-	if (1) {
-		// 尝试转换 list_o_
-		try {
-			auto o = o_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: list_o must be of type 'list[int]'." << std::endl;
-			return unordered_map<int, vector<int>>();
-		}
-
-		// 尝试转换 method_
-		try {
-			auto method = method_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: method must be of type 'string'." << std::endl;
-			return unordered_map<int, vector<int>>();
-		}
-
-		// 尝试转换 target_
-		try {
-			auto target = target_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: target must be of type 'int'." << std::endl;
-			return unordered_map<int, vector<int>>();
-		}
-
-		// 尝试转换 cutoff_
-		try {
-			auto cutoff = cutoff_.cast<double>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: cutoff must be of type 'double'." << std::endl;
-			return unordered_map<int, vector<int>>();
-		}
-
-		// 尝试转换 weight_name_
-		try {
-			auto weight_name = weight_name_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: weight_name must be of type 'string'." << std::endl;
-			return unordered_map<int, vector<int>>();
-		}
-	}
-	
 	auto o = o_.cast<int>();
 	auto method = method_.cast<string>();
 	auto target = target_.cast<int>();
@@ -728,10 +455,6 @@ unordered_map<int, std::vector<int>> GraphAlgorithms::single_source_path(
 		unordered_map<int, vector<int>> result = multi_source_dijkstra_path(list_o, target, cutoff, weight_name);
 		return result;
 	}
-	else {
-		std::cout << "not have this method now." << std::endl;
-		return unordered_map<int, vector<int>>();
-	}
 }
 
 dis_and_path GraphAlgorithms::single_source_all(
@@ -741,52 +464,6 @@ dis_and_path GraphAlgorithms::single_source_all(
 	const py::object& cutoff_,
 	const py::object& weight_name_)
 {
-	// 检查机制
-	// 尝试转换 list_o_
-	try {
-		auto o = o_.cast<int>();
-	}
-	catch (const py::cast_error& e) {
-		std::cout << "Error: list_o must be of type 'list[int]'." << std::endl;
-		return dis_and_path();
-	}
-
-	// 尝试转换 method_
-	try {
-		auto method = method_.cast<string>();
-	}
-	catch (const py::cast_error& e) {
-		std::cout << "Error: method must be of type 'string'." << std::endl;
-		return dis_and_path();
-	}
-
-	// 尝试转换 target_
-	try {
-		auto target = target_.cast<int>();
-	}
-	catch (const py::cast_error& e) {
-		std::cout << "Error: target must be of type 'int'." << std::endl;
-		return dis_and_path();
-	}
-
-	// 尝试转换 cutoff_
-	try {
-		auto cutoff = cutoff_.cast<double>();
-	}
-	catch (const py::cast_error& e) {
-		std::cout << "Error: cutoff must be of type 'double'." << std::endl;
-		return dis_and_path();
-	}
-
-	// 尝试转换 weight_name_
-	try {
-		auto weight_name = weight_name_.cast<string>();
-	}
-	catch (const py::cast_error& e) {
-		std::cout << "Error: weight_name must be of type 'string'." << std::endl;
-		return dis_and_path();
-	}
-
 	auto o = o_.cast<int>();
 	auto method = method_.cast<string>();
 	auto target = target_.cast<int>();
@@ -800,10 +477,6 @@ dis_and_path GraphAlgorithms::single_source_all(
 		dis_and_path result = multi_source_dijkstra(list_o, target, cutoff, weight_name);
 		return result;
 	}
-	else {
-		std::cout << "not have this method now." << std::endl;
-		return dis_and_path();
-	}
 }
 
 // 多个单源最短路径计算
@@ -815,62 +488,6 @@ vector<unordered_map<int, double>> GraphAlgorithms::multi_single_source_cost(
 	const py::object& weight_name_,
 	const py::object& num_thread_
 ) {
-	// 检查机制
-	if (1) {
-		// 尝试转换 list_o_
-		try {
-			auto list_o = list_o_.cast<vector<int>>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: list_o must be of type 'list[int]'." << std::endl;
-			return vector<unordered_map<int, double>>();
-		}
-
-		// 尝试转换 method_
-		try {
-			auto method = method_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: method must be of type 'string'." << std::endl;
-			return vector<unordered_map<int, double>>();
-		}
-
-		// 尝试转换 target_
-		try {
-			auto target = target_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: target must be of type 'int'." << std::endl;
-			return vector<unordered_map<int, double>>();
-		}
-
-		// 尝试转换 cutoff_
-		try {
-			auto cutoff = cutoff_.cast<double>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: cutoff must be of type 'double'." << std::endl;
-			return vector<unordered_map<int, double>>();
-		}
-
-		// 尝试转换 weight_name_
-		try {
-			auto weight_name = weight_name_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: weight_name must be of type 'string'." << std::endl;
-			return vector<unordered_map<int, double>>();
-		}
-
-		try {
-			auto num_thread = num_thread_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: list_o must be of type 'list[int]'." << std::endl;
-			return vector<unordered_map<int, double>>();
-		}
-	}
-	
 	auto list_o = list_o_.cast<vector<int>>();
 	auto method = method_.cast<string>();
 	auto target = target_.cast<int>();
@@ -932,62 +549,6 @@ vector<unordered_map<int, vector<int>>> GraphAlgorithms::multi_single_source_pat
 	const py::object& weight_name_,
 	const py::object& num_thread_
 ) {
-	// 检查机制
-	if (1) {
-		// 尝试转换 list_o_
-		try {
-			auto list_o = list_o_.cast<vector<int>>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: list_o must be of type 'list[int]'." << std::endl;
-			return vector<unordered_map<int, vector<int>>>();
-		}
-
-		// 尝试转换 method_
-		try {
-			auto method = method_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: method must be of type 'string'." << std::endl;
-			return vector<unordered_map<int, vector<int>>>();
-		}
-
-		// 尝试转换 target_
-		try {
-			auto target = target_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: target must be of type 'int'." << std::endl;
-			return vector<unordered_map<int, vector<int>>>();
-		}
-
-		// 尝试转换 cutoff_
-		try {
-			auto cutoff = cutoff_.cast<double>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: cutoff must be of type 'double'." << std::endl;
-			return vector<unordered_map<int, vector<int>>>();
-		}
-
-		// 尝试转换 weight_name_
-		try {
-			auto weight_name = weight_name_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: weight_name must be of type 'string'." << std::endl;
-			return vector<unordered_map<int, vector<int>>>();
-		}
-
-		try {
-			auto num_thread = num_thread_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: num_thread must be of type 'int'." << std::endl;
-			return vector<unordered_map<int, vector<int>>>();
-		}
-	}
-	
 	auto list_o = list_o_.cast<vector<int>>();
 	auto method = method_.cast<string>();
 	auto target = target_.cast<int>();
@@ -1043,65 +604,8 @@ vector<dis_and_path> GraphAlgorithms::multi_single_source_all(
 	const py::object& target_,
 	const py::object& cutoff_,
 	const py::object& weight_name_,
-	const py::object& num_thread_
-) {
-	// 检查机制
-	if (1) {
-		// 尝试转换 list_o_
-		try {
-			auto list_o = list_o_.cast<vector<int>>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: list_o must be of type 'list[int]'." << std::endl;
-			return vector<dis_and_path>();
-		}
-
-		// 尝试转换 method_
-		try {
-			auto method = method_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: method must be of type 'string'." << std::endl;
-			return vector<dis_and_path>();
-		}
-
-		// 尝试转换 target_
-		try {
-			auto target = target_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: target must be of type 'int'." << std::endl;
-			return vector<dis_and_path>();
-		}
-
-		// 尝试转换 cutoff_
-		try {
-			auto cutoff = cutoff_.cast<double>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: cutoff must be of type 'double'." << std::endl;
-			return vector<dis_and_path>();
-		}
-
-		// 尝试转换 weight_name_
-		try {
-			auto weight_name = weight_name_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: weight_name must be of type 'string'." << std::endl;
-			return vector<dis_and_path>();
-		}
-
-		// 尝试转换 num_thread_
-		try {
-			auto num_thread = num_thread_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: num_thread must be of type 'int'." << std::endl;
-			return vector<dis_and_path>();
-		}
-	}
-	
+	const py::object& num_thread_)
+{
 	auto list_o = list_o_.cast<vector<int>>();
 	auto method = method_.cast<string>();
 	auto target = target_.cast<int>();
@@ -1160,66 +664,8 @@ vector<unordered_map<int, double>> GraphAlgorithms::multi_multi_source_cost(
 	const py::object& target_,
 	const py::object& cutoff_,
 	const py::object& weight_name_,
-	const py::object& num_thread_
-)
+	const py::object& num_thread_)
 {
-	// 检查机制
-	if (1) {
-		// 尝试转换 list_o_
-		try {
-			auto list_o = list_o_.cast<vector<vector<int>>>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: list_o must be of type 'list[list[int]]'." << std::endl;
-			return vector<unordered_map<int, double>>();
-		}
-
-		// 尝试转换 method_
-		try {
-			auto method = method_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: method must be of type 'string'." << std::endl;
-			return vector<unordered_map<int, double>>();
-		}
-
-		// 尝试转换 target_
-		try {
-			auto target = target_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: target must be of type 'int'." << std::endl;
-			return vector<unordered_map<int, double>>();
-		}
-
-		// 尝试转换 cutoff_
-		try {
-			auto cutoff = cutoff_.cast<double>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: cutoff must be of type 'double'." << std::endl;
-			return vector<unordered_map<int, double>>();
-		}
-
-		// 尝试转换 weight_name_
-		try {
-			auto weight_name = weight_name_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: weight_name must be of type 'string'." << std::endl;
-			return vector<unordered_map<int, double>>();
-		}
-
-		// 尝试转换 num_thread_
-		try {
-			auto num_thread = num_thread_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: num_thread must be of type 'int'." << std::endl;
-			return vector<unordered_map<int, double>>();
-		}
-	}
-	
 	auto list_o = list_o_.cast<vector<vector<int>>>();
 	auto method = method_.cast<string>();
 	auto target = target_.cast<int>();
@@ -1271,7 +717,7 @@ vector<unordered_map<int, double>> GraphAlgorithms::multi_multi_source_cost(
 	return final_result;
 }
 
-vector<unordered_map<int, double>> GraphAlgorithms::multi_multi_source_cost_planet(
+vector<unordered_map<int, double>> GraphAlgorithms::multi_multi_source_cost_centroid(
 	const py::object& list_o_,
 	const py::object& method_,
 	const py::object& target_,
@@ -1280,63 +726,6 @@ vector<unordered_map<int, double>> GraphAlgorithms::multi_multi_source_cost_plan
 	const py::object& num_thread_
 )
 {
-	// 检查机制
-	if (1) {
-		// 尝试转换 list_o_
-		try {
-			auto list_o = list_o_.cast<vector<vector<int>>>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: list_o must be of type 'list[list[int]]'." << std::endl;
-			return vector<unordered_map<int, double>>();
-		}
-
-		// 尝试转换 method_
-		try {
-			auto method = method_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: method must be of type 'string'." << std::endl;
-			return vector<unordered_map<int, double>>();
-		}
-
-		// 尝试转换 target_
-		try {
-			auto target = target_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: target must be of type 'int'." << std::endl;
-			return vector<unordered_map<int, double>>();
-		}
-
-		// 尝试转换 cutoff_
-		try {
-			auto cutoff = cutoff_.cast<double>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: cutoff must be of type 'double'." << std::endl;
-			return vector<unordered_map<int, double>>();
-		}
-
-		// 尝试转换 weight_name_
-		try {
-			auto weight_name = weight_name_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: weight_name must be of type 'string'." << std::endl;
-			return vector<unordered_map<int, double>>();
-		}
-
-		// 尝试转换 num_thread_
-		try {
-			auto num_thread = num_thread_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: num_thread must be of type 'int'." << std::endl;
-			return vector<unordered_map<int, double>>();
-		}
-	}
-
 	auto list_o = list_o_.cast<vector<vector<int>>>();
 	auto method = method_.cast<string>();
 	auto target = target_.cast<int>();
@@ -1366,7 +755,7 @@ vector<unordered_map<int, double>> GraphAlgorithms::multi_multi_source_cost_plan
 
 					// 执行 Dijkstra 或其他算法
 					if (method == "Dijkstra") {
-						unordered_map<int, double> result = multi_source_dijkstra_cost_planet(cur_list, target, cutoff, weight_name);
+						unordered_map<int, double> result = multi_source_dijkstra_cost_centroid(cur_list, target, cutoff, weight_name);
 
 						// 使用互斥锁保护对 final_result 的访问
 						std::lock_guard<std::mutex> lock(result_mutex);
@@ -1388,7 +777,6 @@ vector<unordered_map<int, double>> GraphAlgorithms::multi_multi_source_cost_plan
 	return final_result;
 }
 
-
 vector<unordered_map<int, vector<int>>> GraphAlgorithms::multi_multi_source_path(
 	const py::object& list_o_,
 	const py::object& method_,
@@ -1397,64 +785,7 @@ vector<unordered_map<int, vector<int>>> GraphAlgorithms::multi_multi_source_path
 	const py::object& weight_name_,
 	const py::object& num_thread_
 )
-{
-	// 检查机制
-	if (1) {
-		// 尝试转换 list_o_
-		try {
-			auto list_o = list_o_.cast<vector<vector<int>>>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: list_o must be of type 'list[list[int]]'." << std::endl;
-			return vector<unordered_map<int, vector<int>>>();
-		}
-
-		// 尝试转换 method_
-		try {
-			auto method = method_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: method must be of type 'string'." << std::endl;
-			return vector<unordered_map<int, vector<int>>>();
-		}
-
-		// 尝试转换 target_
-		try {
-			auto target = target_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: target must be of type 'int'." << std::endl;
-			return vector<unordered_map<int, vector<int>>>();
-		}
-
-		// 尝试转换 cutoff_
-		try {
-			auto cutoff = cutoff_.cast<double>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: cutoff must be of type 'double'." << std::endl;
-			return vector<unordered_map<int, vector<int>>>();
-		}
-
-		// 尝试转换 weight_name_
-		try {
-			auto weight_name = weight_name_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: weight_name must be of type 'string'." << std::endl;
-			return vector<unordered_map<int, vector<int>>>();
-		}
-
-		// 尝试转换 num_thread_
-		try {
-			auto num_thread = num_thread_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: num_thread must be of type 'int'." << std::endl;
-			return vector<unordered_map<int, vector<int>>>();
-		}
-	}
-	
+{	
 	auto list_o = list_o_.cast<vector<vector<int>>>();
 	auto method = method_.cast<string>();
 	auto target = target_.cast<int>();
@@ -1515,63 +846,6 @@ vector<dis_and_path> GraphAlgorithms::multi_multi_source_all(
 	const py::object& num_thread_
 )
 {
-	// 检查机制
-	if (1) {
-		// 尝试转换 list_o_
-		try {
-			auto list_o = list_o_.cast<vector<vector<int>>>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: list_o must be of type 'list[list[int]]'." << std::endl;
-			return vector<dis_and_path>();
-		}
-
-		// 尝试转换 method_
-		try {
-			auto method = method_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: method must be of type 'string'." << std::endl;
-			return vector<dis_and_path>();
-		}
-
-		// 尝试转换 target_
-		try {
-			auto target = target_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: target must be of type 'int'." << std::endl;
-			return vector<dis_and_path>();
-		}
-
-		// 尝试转换 cutoff_
-		try {
-			auto cutoff = cutoff_.cast<double>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: cutoff must be of type 'double'." << std::endl;
-			return vector<dis_and_path>();
-		}
-
-		// 尝试转换 weight_name_
-		try {
-			auto weight_name = weight_name_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: weight_name must be of type 'string'." << std::endl;
-			return vector<dis_and_path>();
-		}
-
-		// 尝试转换 num_thread_
-		try {
-			auto num_thread = num_thread_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: num_thread must be of type 'int'." << std::endl;
-			return vector<dis_and_path>();
-		}
-	}
-	
 	auto list_o = list_o_.cast<vector<vector<int>>>();
 	auto method = method_.cast<string>();
 	auto target = target_.cast<int>();
@@ -1631,115 +905,101 @@ py::array_t<double>  GraphAlgorithms::cost_matrix_to_numpy(
 	const py::object& weight_name_,
 	const py::object& num_thread_
 )
-{
-	// 输入检查
-	if (1) {
-		// 尝试转换 starts_
-		try {
-			auto test_list = starts_.cast<vector<int>>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: starts_ must be of type 'list[int]'." << std::endl;
-			return py::array_t<double>();
-		}
-
-		// 尝试转换 ends_
-		try {
-			auto test_list = ends_.cast<vector<int>>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: ends_ must be of type 'list[int]'." << std::endl;
-			return py::array_t<double>();
-		}
-
-		// 尝试转换 method_
-		try {
-			auto method = method_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: method must be of type 'string'." << std::endl;
-			return py::array_t<double>();
-		}
-
-		// 尝试转换 cutoff_
-		try {
-			auto cutoff = cutoff_.cast<double>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: cutoff must be of type 'double'." << std::endl;
-			return py::array_t<double>();
-		}
-
-		// 尝试转换 weight_name_
-		try {
-			auto weight_name = weight_name_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: weight_name must be of type 'string'." << std::endl;
-			return py::array_t<double>();
-		}
-
-		// 尝试转换 num_thread_
-		try {
-			auto num_thread = num_thread_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: num_thread must be of type 'int'." << std::endl;
-			return py::array_t<double>();
-		}
-	}
-	
-	GTemp = G;
+{	
 	// 逻辑运行
+	GTemp = G;
 	// 获取起点列表和终点列表及其大小
 	auto starts = starts_.cast<vector<int>>();
 	auto ends = ends_.cast<vector<int>>();
+	auto weight_name = weight_name_.cast<string>();
+	auto num_thread = num_thread_.cast<int>();
 	size_t num_starts = starts.size();
 	size_t num_ends = ends.size();
 
-	//// 将临时图 加入 行星点
-	//for (auto i : starts) {
-	//	if (m_node_map[i]["planet_"] == 1) {
-	//		GTemp[i] = m_planet_start_map[i];
-	//	}
-	//}
-	//for (auto i : ends) {
-	//	if (m_node_map[i]["planet_"] == 1) {
-	//		for (auto pair : m_planet_end_map) {
-	//			auto key = pair.first;
-	//			auto value = pair.second;
-	//			GTemp[key].emplace(i, value);
-	//		}
-	//		
-	//	}
-	//}
+	// 将行星点加入临时图
+	for (auto i : starts) {
+		if (m_node_map[i]["centroid_"] == 1) {
+			GTemp[i] = m_centroid_start_map[i];
+		}
+	}
 
 	// 创建一个二维数组来存储所有起点到终点的花费
-	py::array_t<double> result({ num_starts, num_ends }); // 2D NumPy数组
+	py::array_t<double> result({ num_starts, num_ends });
 	py::buffer_info buf_info = result.request();
-	double* ptr = static_cast<double*>(buf_info.ptr); // 获取数组的指针
+	double* ptr = static_cast<double*>(buf_info.ptr);
 
 	py::object target_ = py::int_(-1);
 	vector<vector<int>> multi_list_;
-	for (auto i : starts) {
-		vector<int> cur_vec{ i };
-		multi_list_.push_back(cur_vec);
-	}
-	// 将 multi_list_ 转换成 py::object（这个已经是 py::object 类型）
-	py::object multi_list_obj = py::cast(multi_list_);  // 直接使用 py::list
 
+	// 这里根据num_thread来分批处理
+	size_t num_batches = (num_starts + num_thread - 1) / num_thread;  // 计算批次数
 
-	vector<unordered_map<int, double>> multi_result = multi_multi_source_cost(multi_list_obj, method_, target_, cutoff_, weight_name_, num_thread_);
-	// 填充cost matrix
-	for (int i = 0; i < num_starts; ++i) {
-		for (int j = 0; j < num_ends; ++j) {
-			auto it = multi_result[i].find(ends[j]);
-			if (it != multi_result[i].end()) {
-				ptr[i * num_ends + j] = it->second;
-			}
-			else {
-				// 如果找不到该键，您可以选择赋一个默认值，或者跳过
-				ptr[i * num_ends + j] = -1; // 或者其他默认值
+	// 循环每个批次
+	for (size_t batch_idx = 0; batch_idx < num_batches; ++batch_idx) {
+		// 计算当前批次的起点范围
+		size_t start_idx = batch_idx * num_thread;
+		size_t end_idx = min((batch_idx + 1) * num_thread, num_starts);
+
+		// 生成当前批次的multi_list_
+		multi_list_.clear();
+		for (size_t i = start_idx; i < end_idx; ++i) {
+			vector<int> cur_vec{ starts[i] };
+			multi_list_.push_back(cur_vec);
+		}
+
+		// 转换成 py::object（已经是 py::list 类型）
+		py::object multi_list_obj = py::cast(multi_list_);
+
+		// 计算当前批次的多源最短路径
+		vector<unordered_map<int, double>> multi_result = multi_multi_source_cost_centroid(multi_list_obj, method_, target_, cutoff_, weight_name_, num_thread_);
+
+		// 填充当前批次的 cost matrix
+		for (size_t i = start_idx; i < end_idx; ++i) {
+			for (size_t j = 0; j < num_ends; ++j) {
+				// 如果起点等于终点，直接返回0
+				if (starts[i] == ends[j]) {
+					ptr[i * num_ends + j] = 0;
+					continue; 
+				}
+
+				// 如果终点是行星点
+				if (m_node_map[ends[j]]["centroid_"] != 1) {
+					auto it = multi_result[i - start_idx].find(ends[j]);
+					if (it != multi_result[i - start_idx].end()) {
+						ptr[i * num_ends + j] = it->second;
+					}
+					else {
+						ptr[i * num_ends + j] = -1; // 默认值
+					}
+				}
+
+				// 如果终点不是行星点
+				else {
+					if (m_centroid_end_map[ends[j]].size() == 0) {
+						ptr[i * num_ends + j] = -1;
+					}
+					else {
+						double minest_cost = numeric_limits<double>::infinity();
+						// 遍历前导图
+						for (const auto& pair : m_centroid_end_map[ends[j]]) {
+							// 1. 判断 pair.second[weight_name] 是否存在
+							const auto& weight_it = pair.second.find(weight_name);
+							const double weight_value = (weight_it != pair.second.end()) ? weight_it->second : 1.0;
+
+							// 2. 判断 multi_result[i][pair.first] 是否存在
+							const auto& result_it = multi_result[i - start_idx].find(pair.first);
+							if (result_it == multi_result[i - start_idx].end()) {
+								continue; // 跳过本次循环
+							}
+
+							// 3. 计算当前成本
+							const double cur_cost = weight_value + result_it->second;
+							minest_cost = std::min(minest_cost, cur_cost);
+						}
+						// 最终赋值逻辑（需处理全跳过的边界情况）
+						ptr[i * num_ends + j] = (minest_cost != std::numeric_limits<double>::infinity()) ? minest_cost : -1;
+					}
+				}
 			}
 		}
 	}
@@ -1756,64 +1016,6 @@ py::dict GraphAlgorithms::path_list_to_numpy(
 	const py::object& num_thread_
 )
 {
-	// 输入检查
-	if (1) {
-		// 尝试转换 starts_
-		try {
-			auto test_list = starts_.cast<vector<int>>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: starts_ must be of type 'list[int]'." << std::endl;
-			return py::array_t<double>();
-		}
-
-		// 尝试转换 ends_
-		try {
-			auto test_list = ends_.cast<vector<int>>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: ends_ must be of type 'list[int]'." << std::endl;
-			return py::array_t<double>();
-		}
-
-		// 尝试转换 method_
-		try {
-			auto method = method_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: method must be of type 'string'." << std::endl;
-			return py::array_t<double>();
-		}
-
-		// 尝试转换 cutoff_
-		try {
-			auto cutoff = cutoff_.cast<double>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: cutoff must be of type 'double'." << std::endl;
-			return py::array_t<double>();
-		}
-
-		// 尝试转换 weight_name_
-		try {
-			auto weight_name = weight_name_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: weight_name must be of type 'string'." << std::endl;
-			return py::array_t<double>();
-		}
-
-		// 尝试转换 num_thread_
-		try {
-			auto num_thread = num_thread_.cast<int>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: num_thread must be of type 'int'." << std::endl;
-			return py::array_t<double>();
-		}
-	}
-	
-	// 逻辑运行
 	// 获取起点列表和终点列表的大小
 	auto starts = starts_.cast<vector<int>>();
 	auto ends = ends_.cast<vector<int>>();
@@ -1864,20 +1066,6 @@ vector<vector<int>>  GraphAlgorithms::shortest_simple_paths(
 	int start, end;
 	string weight_name;
 
-	// 输入检查
-	if (1) {
-		try {
-			start = start_.cast<int>();
-			end = end_.cast<int>();
-			weight_name = weight_name_.cast<string>();
-		}
-		catch (const py::cast_error& e) {
-			std::cout << "Error: Invalid parameter type. start/end must be int, weight_name must be string." << std::endl;
-			return vector<vector<int>>();
-		}
-	}
-	
-
 	unordered_set<int> ignore_nodes;
 	vector<vector<int>> all_paths;
 	vector<int> prev_path;
@@ -1908,4 +1096,122 @@ vector<vector<int>>  GraphAlgorithms::shortest_simple_paths(
 	return all_paths;
 }
 
-// ------------------------------test------------------------------------------------
+// 调用方法 ---------------------------------------------------------------------------------------
+
+// test ------------------------------------------------------------------------------
+
+unordered_map<int, double> GraphAlgorithms::test1(
+	const vector<int>& sources,
+	int target,
+	double cutoff,
+	string weight_name)
+{
+	unordered_map<int, double> dist;
+	priority_queue<pair<double, int>, vector<pair<double, int>>, greater<>> pq;
+
+	// 初始化源节点
+	for (const auto& s : sources) {
+		dist[s] = 0.0;
+		pq.emplace(0.0, s);
+	}
+
+	while (!pq.empty()) {
+		auto current = pq.top();
+		double d = current.first;
+		int u = current.second;
+		pq.pop();
+
+		if (d > dist[u]) continue;
+		if (u == target) break;
+		if (d > cutoff) continue;
+
+		// 检查节点是否存在邻接表
+		auto u_it = G_temp.find(u);
+		if (u_it == G_temp.end()) continue;
+
+		const auto& neighbors = u_it->second;
+		for (const auto& edge : neighbors) {
+			int v = edge.first;
+			double weight = edge.second;  // 直接获取预存的权重值
+
+			double new_dist = d + weight;
+			if (!dist.count(v) || new_dist < dist[v]) {
+				dist[v] = new_dist;
+				pq.emplace(new_dist, v);
+			}
+		}
+	}
+
+	return dist;
+}
+
+vector<unordered_map<int, double>> GraphAlgorithms::test(
+	const py::object& list_o_,
+	const py::object& method_,
+	const py::object& target_,
+	const py::object& cutoff_,
+	const py::object& weight_name_,
+	const py::object& num_thread_)
+{
+	auto list_o = list_o_.cast<vector<int>>();
+	auto method = method_.cast<string>();
+	auto target = target_.cast<int>();
+	auto cutoff = cutoff_.cast<double>();
+	auto weight_name = weight_name_.cast<string>();
+	auto num_thread = num_thread_.cast<int>();
+
+	// 权重处理
+	auto start = chrono::steady_clock::now();
+	for (auto& entry : G) {
+		int u = entry.first;
+		auto& edges = entry.second;
+		for (auto& edge : edges) {
+			int v = edge.first;
+			auto& attrs = edge.second;
+			double weight = 1.0;
+			auto attr_it = attrs.find(weight_name);
+			if (attr_it != attrs.end()) {
+				weight = attr_it->second;
+			}
+
+			G_temp[u].emplace_back(v, weight);
+		}
+	}
+	auto end = chrono::steady_clock::now();
+	auto duration = chrono::duration_cast<std::chrono::milliseconds>(end - start);
+	std::cout << "权重 耗时：" << duration.count() << " 毫秒" << std::endl;
+
+	// 结果计算
+	auto start1 = std::chrono::steady_clock::now();
+	vector<unordered_map<int, double>> final_result(list_o.size());
+	vector<future<void>> futures;  // 用来管理异步任务
+
+	size_t max_threads = std::thread::hardware_concurrency();
+	if (num_thread > max_threads) num_thread = max_threads;
+
+	// 使用 std::async 启动多个线程
+	for (size_t i = 0; i < list_o.size(); ++i) {
+		futures.push_back(std::async(std::launch::async, [&, i]() {
+			vector<int> cur_list = { list_o[i] };
+			unordered_map<int, double> result;
+
+			if (method == "Dijkstra") {
+				result = test1(cur_list, target, cutoff, weight_name);
+			}
+
+			std::lock_guard<std::mutex> lock(result_mutex); // 锁保护结果
+			final_result[i] = result;
+		}));
+	}
+
+	// 等待所有任务完成
+	for (auto& fut : futures) {
+		fut.get();
+	}
+
+	auto end1 = std::chrono::steady_clock::now();
+	auto duration1 = chrono::duration_cast<std::chrono::milliseconds>(end1 - start1);
+	std::cout << "计算耗时：" << duration1.count() << " 毫秒" << std::endl;
+
+	return final_result;
+}

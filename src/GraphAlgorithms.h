@@ -6,8 +6,9 @@ class GraphAlgorithms : public CGraph {
 public:
 	Graph GTemp;
 
-	// 核心算法
-	unordered_map<int, double> multi_source_dijkstra_cost_planet(
+	// 核心算法 ---------------------------------------------------------------------------------------
+
+	unordered_map<int, double> multi_source_dijkstra_cost_centroid(
 		const vector<int>& sources,
 		int target,
 		double cutoff,
@@ -38,7 +39,11 @@ public:
 		unordered_set<int>& ignore_nodes,
 		const string& weight_name);
 
-	// 多源最短路径计算
+	// 核心算法 ---------------------------------------------------------------------------------------
+
+	// 调用方法 ---------------------------------------------------------------------------------------
+
+	// 多源最短路径
 	unordered_map<int, double> multi_source_cost(
 		const py::object& list_o,
 		const py::object& method,
@@ -60,7 +65,7 @@ public:
 		const py::object& cutoff,
 		const py::object& weight_name);
 
-	// 单源最短路径计算
+	// 单源最短路径
 	unordered_map<int, double> single_source_cost(
 		const py::object& o_,
 		const py::object& method_,
@@ -153,7 +158,7 @@ public:
 		const py::object& end,
 		const py::object& weight_name_);
 
-	vector<unordered_map<int, double>> GraphAlgorithms::multi_multi_source_cost_planet(
+	vector<unordered_map<int, double>> multi_multi_source_cost_centroid(
 		const py::object& list_o_,
 		const py::object& method_,
 		const py::object& target_,
@@ -161,16 +166,24 @@ public:
 		const py::object& weight_name_,
 		const py::object& num_thread_);
 
+	// 调用方法 ---------------------------------------------------------------------------------------
 
 	// test-------------------------------------------------------------------
-	unordered_map<int, vector<int>> test(
-		const py::object& list_o,
-		const py::object& method,
-		const py::object& target,
-		const py::object& cutoff,
-		const py::object& weight_name);
+	
+	vector<unordered_map<int, double>> test(
+		const py::object& list_o_,
+		const py::object& method_,
+		const py::object& target_,
+		const py::object& cutoff_,
+		const py::object& weight_name_,
+		const py::object& num_thread_);
 
-	void test2();
+	unordered_map<int, double> test1(
+		const vector<int>& sources,
+		int target,
+		double cutoff,
+		string weight_name);
+	
 };
 
 
