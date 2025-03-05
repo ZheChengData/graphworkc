@@ -552,6 +552,24 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.set_centroid" class="md-nav__link">
+    <span class="md-ellipsis">
+      set_centroid
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.set_centroids" class="md-nav__link">
+    <span class="md-ellipsis">
+      set_centroids
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -725,6 +743,24 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.set_centroid" class="md-nav__link">
+    <span class="md-ellipsis">
+      set_centroid
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#src.graphworkc.CGraph.set_centroids" class="md-nav__link">
+    <span class="md-ellipsis">
+      set_centroids
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -787,11 +823,13 @@
 <span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span>
-<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_graph_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_graph_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - get_graph_info:** &lt;br&gt;</span>
 <span class="sd">    - 获取图信息</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get_graph_info</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get_graph_info</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">result</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -861,23 +899,12 @@
               </div>
             </td>
           </tr>
-          <tr class="doc-section-item">
-            <td>
-                  <code>AttributeError</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>如果图形对象没有<code>get_node_info</code>方法。</p>
-              </div>
-            </td>
-          </tr>
       </tbody>
     </table>
 
             <details class="quote">
               <summary>Source code in <code>src\graphworkc.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">16</span>
-<span class="normal">17</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
 <span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
@@ -891,7 +918,10 @@
 <span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
-<span class="normal">31</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_node_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_node_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                  <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - get_node_info:** &lt;br&gt;</span>
 <span class="sd">    - 获取节点信息</span>
 
@@ -900,13 +930,13 @@
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: 如果“id”不是整数。</span>
-<span class="sd">        AttributeError: 如果图形对象没有`get_node_info`方法。</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># 参数检查：确保 id 是有效的节点（假设它们是整数）</span>
+    <span class="c1"># 确保 id 是有效的节点（假设它们是整数）</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;start&#39;: </span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">. It must be an integer.&quot;</span><span class="p">)</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get_node_info</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get_node_info</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -992,24 +1022,12 @@
               </div>
             </td>
           </tr>
-          <tr class="doc-section-item">
-            <td>
-                  <code>AttributeError</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>如果图对象没有<code>get_link_info</code>方法。</p>
-              </div>
-            </td>
-          </tr>
       </tbody>
     </table>
 
             <details class="quote">
               <summary>Source code in <code>src\graphworkc.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">35</span>
 <span class="normal">36</span>
 <span class="normal">37</span>
 <span class="normal">38</span>
@@ -1028,7 +1046,9 @@
 <span class="normal">51</span>
 <span class="normal">52</span>
 <span class="normal">53</span>
-<span class="normal">54</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_link_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_link_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                   <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                   <span class="n">end</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - get_link_info:** &lt;br&gt;</span>
@@ -1040,16 +1060,16 @@
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: 如果“start”或“end”不是整数。</span>
-<span class="sd">        AttributeError: 如果图对象没有`get_link_info`方法。</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># 参数检查：确保 start 和 end 是有效的节点（假设它们是整数）</span>
+    <span class="c1"># 确保 start 和 end 是有效的节点（假设它们是整数）</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;start&#39;: </span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">. It must be an integer.&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;end&#39;: </span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">. It must be an integer.&quot;</span><span class="p">)</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get_link_info</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get_link_info</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -1128,22 +1148,6 @@
                   <code>None</code>
             </td>
           </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>planet</code>
-            </td>
-            <td>
-                  <code>int</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>节点是否为形心点，0（默认）代表不是形心点，1代表起点是形心点，2代表终点是形心点，3代表全是形心点。</p>
-              </div>
-            </td>
-            <td>
-                  <code>0</code>
-            </td>
-          </tr>
       </tbody>
     </table>
 
@@ -1177,67 +1181,48 @@
               </div>
             </td>
           </tr>
-          <tr class="doc-section-item">
-            <td>
-                  <code>ValueError</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>如果“attribute_dict_”是空字典。</p>
-              </div>
-            </td>
-          </tr>
       </tbody>
     </table>
 
             <details class="quote">
               <summary>Source code in <code>src\graphworkc.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span>
-<span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span>
-<span class="normal">85</span>
-<span class="normal">86</span>
-<span class="normal">87</span>
-<span class="normal">88</span>
-<span class="normal">89</span>
-<span class="normal">90</span>
-<span class="normal">91</span>
-<span class="normal">92</span>
-<span class="normal">93</span>
-<span class="normal">94</span>
-<span class="normal">95</span>
-<span class="normal">96</span>
-<span class="normal">97</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
              <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
              <span class="n">end</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-             <span class="n">attribute_dict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-             <span class="n">planet</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+             <span class="n">attribute_dict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - add_edge:**&lt;br&gt;</span>
 <span class="sd">     - 加一条边</span>
 
@@ -1245,12 +1230,10 @@
 <span class="sd">        start (int): 边的起始节点。必须是整数。</span>
 <span class="sd">        end (int): 边的结束节点。必须是整数或浮点数。</span>
 <span class="sd">        attribute_dict (dict): 包含边缘属性的字典，例如权重或其他属性。不能为空。</span>
-<span class="sd">        planet (int): 节点是否为形心点，0（默认）代表不是形心点，1代表起点是形心点，2代表终点是形心点，3代表全是形心点。</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: 如果“start”或“end”不是整数或浮点数。</span>
 <span class="sd">        ValueError: 如果“attribute_dict_”不是字典。</span>
-<span class="sd">        ValueError: 如果“attribute_dict_”是空字典。</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="mi">1</span><span class="p">:</span>
         <span class="c1"># 参数检查：确保 start 和 v_ 是有效的节点（假设它们是整数）</span>
@@ -1260,21 +1243,16 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;end&#39;: </span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">. It must be an integer.&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">planet</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;planet&#39;: </span><span class="si">{</span><span class="n">planet</span><span class="si">}</span><span class="s2">. It must be an integer.&quot;</span><span class="p">)</span>
-
         <span class="c1"># 初始化空字典</span>
         <span class="k">if</span> <span class="n">attribute_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">attribute_dict</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># 👈 每个调用生成新字典</span>
-        <span class="k">if</span> <span class="n">planet</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">planet</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;planet&#39;: </span><span class="si">{</span><span class="n">planet</span><span class="si">}</span><span class="s2">. It must be an integer of 0-3.&quot;</span><span class="p">)</span>
+            <span class="n">attribute_dict</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="c1"># 参数类型检查</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attribute_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;attribute_dict必须是字典类型，当前类型：</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">attribute_dict</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># 假设 self.graph 是一个已定义的图对象</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">attribute_dict</span><span class="p">,</span> <span class="n">planet</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">attribute_dict</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -1326,7 +1304,7 @@
                 <code>containing</code>
             </td>
             <td>
-                  <code>two - fours elements</code>
+                  <code>three elements</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1334,7 +1312,6 @@
 <li>start (int): 边的起始节点。</li>
 <li>end (int): 边的结束节点。</li>
 <li>attribute_dict_ (dict): 一个包含边缘属性的字典，例如权重或其他属性。（可选）</li>
-<li>planet (int): 点是否为形心点，0（默认）代表不是形心点，1代表起点是形心点，2代表终点是形心点，3代表全是形心点。（可选）</li>
 </ul>
               </div>
             </td>
@@ -1381,7 +1358,7 @@
             </td>
             <td>
               <div class="doc-md-description">
-                <p>如果任何元组都没有2-4个元素。</p>
+                <p>如果任何元组都没有2-3个元素。</p>
               </div>
             </td>
           </tr>
@@ -1405,55 +1382,12 @@
               </div>
             </td>
           </tr>
-          <tr class="doc-section-item">
-            <td>
-                  <code>ValueError</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>如果“planet”不是整数。</p>
-              </div>
-            </td>
-          </tr>
       </tbody>
     </table>
 
             <details class="quote">
               <summary>Source code in <code>src\graphworkc.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">132</span>
 <span class="normal">133</span>
 <span class="normal">134</span>
 <span class="normal">135</span>
@@ -1477,26 +1411,49 @@
 <span class="normal">153</span>
 <span class="normal">154</span>
 <span class="normal">155</span>
-<span class="normal">156</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-              <span class="n">edges</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span>  <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]):</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+              <span class="n">edges</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - add_edges:**&lt;br&gt;</span>
 <span class="sd">     - 加多条边</span>
 
 <span class="sd">     Args:</span>
 <span class="sd">         edges (list of tuple): 要添加的边列表。每条边都应该是一个元组。</span>
-<span class="sd">         containing two - fours elements:</span>
+<span class="sd">         containing three elements:</span>
 <span class="sd">             - start (int): 边的起始节点。</span>
 <span class="sd">             - end (int): 边的结束节点。</span>
 <span class="sd">             - attribute_dict_ (dict): 一个包含边缘属性的字典，例如权重或其他属性。（可选）</span>
-<span class="sd">             - planet (int): 点是否为形心点，0（默认）代表不是形心点，1代表起点是形心点，2代表终点是形心点，3代表全是形心点。（可选）</span>
 
 <span class="sd">     Raises:</span>
 <span class="sd">         ValueError: 如果“边”不是列表。</span>
 <span class="sd">         ValueError: 如果edges中的任何元素不是元组。</span>
-<span class="sd">         ValueError: 如果任何元组都没有2-4个元素。</span>
+<span class="sd">         ValueError: 如果任何元组都没有2-3个元素。</span>
 <span class="sd">         ValueError: 如果“start”或“end”不是整数。</span>
 <span class="sd">         ValueError: 如果“attribute_dict_”不是字典。</span>
-<span class="sd">         ValueError: 如果“planet”不是整数。</span>
 <span class="sd">     &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="mi">1</span><span class="p">:</span>
         <span class="c1"># 确保 edges 是一个列表</span>
@@ -1508,26 +1465,20 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Each element in &#39;edges&#39; should be a tuple, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Each tuple in &#39;edges&#39; should have exactly 2-4 elements, but got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
             <span class="c1"># 检查 start 和 end 是否是有效的节点（例如整数或字符串）</span>
             <span class="n">start</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">end</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">attribute_dict_</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="n">is_planet_</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
                 <span class="n">attribute_dict_</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-                <span class="n">is_planet_</span> <span class="o">=</span> <span class="n">edge</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
 
-            <span class="k">if</span> <span class="n">is_planet_</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">is_planet_</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;is_planet_&#39; to be an integer 0-3.&quot;</span><span class="p">)</span>
+            <span class="c1"># 检查 start end 是否为整数</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;start&#39; to be an integer, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">start</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;end&#39; to be an integer, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">end</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">is_planet_</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;end&#39; to be an integer, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">end</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
             <span class="c1"># 检查 attribute_dict_ 是否是一个字典</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attribute_dict_</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
@@ -1625,27 +1576,27 @@
 
             <details class="quote">
               <summary>Source code in <code>src\graphworkc.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">remove_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">remove_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                 <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                 <span class="n">end</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - remove_edge:**&lt;br&gt;</span>
@@ -1751,33 +1702,33 @@
 
             <details class="quote">
               <summary>Source code in <code>src\graphworkc.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span>
-<span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">remove_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">remove_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">edges</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - remove_edges：**&lt;br&gt;</span>
 <span class="sd">     - 移除多条边</span>
@@ -1804,6 +1755,236 @@
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Each tuple in &#39;edges&#39; should have exactly 2 elements, but got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">remove_edges</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div><p><a id="set_centroid"></a>
+</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="src.graphworkc.CGraph.set_centroid"></a>
+    <div class="doc doc-contents first">
+
+        <p><strong>类方法 - get_link_info:</strong> <br>
+- 将一个节点修改为形心点</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>node</code>
+            </td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>要修改的节点。必须是整数。</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>ValueError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>如果“node”不是整数。</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+            <details class="quote">
+              <summary>Source code in <code>src\graphworkc.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">node</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - get_link_info:** &lt;br&gt;</span>
+<span class="sd">    - 将一个节点修改为形心点</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        node (int): 要修改的节点。必须是整数。</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: 如果“node”不是整数。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 确保 node 是有效的节点（假设它们是整数）</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;start&#39;: </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">. It must be an integer.&quot;</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">set_centroid</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div><p><a id="set_centroids"></a>
+</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="src.graphworkc.CGraph.set_centroids"></a>
+    <div class="doc doc-contents first">
+
+        <p><strong>类方法 - get_link_info:</strong> <br>
+- 将一个节点修改为形心点</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>nodes</code>
+            </td>
+            <td>
+                  <code>list[int]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>要修改的节点。必须是整数。</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>ValueError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>如果“nodes”不是列表。</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>ValueError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>如果“node”不是整数。</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+            <details class="quote">
+              <summary>Source code in <code>src\graphworkc.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span>
+<span class="normal">94</span>
+<span class="normal">95</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_centroids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">nodes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - get_link_info:** &lt;br&gt;</span>
+<span class="sd">    - 将一个节点修改为形心点</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        nodes (list[int]): 要修改的节点。必须是整数。</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: 如果“nodes”不是列表。</span>
+<span class="sd">        ValueError: 如果“node”不是整数。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 确保 nodes 是一个列表</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;nodes&#39; to be a list, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="c1"># 确保 node 是有效的节点（假设它们是整数）</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;node&#39;: </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">. It must be an integer.&quot;</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">set_centroid</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
