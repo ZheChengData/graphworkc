@@ -27,3 +27,9 @@ comments: true
 
 <a id="remove_edges"></a>
 ::: src.graphworkc.CGraph.remove_edges
+
+<a id="set_centroid"></a>
+::: src.graphworkc.CGraph.set_centroid
+
+<a id="set_centroids"></a>
+::: src.graphworkc.CGraph.set_centroids
