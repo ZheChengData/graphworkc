@@ -1,5 +1,6 @@
 import graphwork
-from typing import Optional,Type
+from typing import Optional, Type
+import numpy as np
 
 
 class CGraph:
@@ -7,15 +8,18 @@ class CGraph:
         # 创建 C++ 图算法对象
         self.graph = graphwork.GraphAlgorithms()
 
-    def get_graph_info(self):
+    def get_graph_info(self) -> dict:
         """**类方法 - get_graph_info:** <br>
         - 获取图信息
+
+        Returns:
+              dict: 返回当前图的相关属性
         """
         result = self.graph.get_graph_info()
         return result
 
     def get_node_info(self,
-                      id: int):
+                      id: int) -> dict:
         """**类方法 - get_node_info:** <br>
         - 获取节点信息
 
@@ -24,6 +28,9 @@ class CGraph:
 
         Raises:
             ValueError: 如果“id”不是整数。
+
+        Returns:
+              dict: 返回当前节点的相关属性
         """
         # 确保 id 是有效的节点（假设它们是整数）
         if not isinstance(id, int):
@@ -34,7 +41,7 @@ class CGraph:
 
     def get_link_info(self,
                       start: int,
-                      end: int):
+                      end: int) -> dict:
         """**类方法 - get_link_info:** <br>
         - 获取边信息
 
@@ -44,6 +51,9 @@ class CGraph:
 
         Raises:
             ValueError: 如果“start”或“end”不是整数。
+
+        Returns:
+              dict: 返回当前边的相关属性
         """
         # 确保 start 和 end 是有效的节点（假设它们是整数）
         if not isinstance(start, int):
@@ -56,7 +66,7 @@ class CGraph:
         return result
 
     def set_centroid(self,
-                     node: int):
+                     node: int) -> None:
         """**类方法 - set_centroid:** <br>
         - 将一个节点修改为形心点
 
@@ -73,9 +83,9 @@ class CGraph:
         self.graph.set_centroid(node)
 
     def set_centroids(self,
-                     nodes: list[int]):
+                     nodes: list[int]) -> None:
         """**类方法 - set_centroids:** <br>
-        - 将一个节点修改为形心点
+        - 将多个节点修改为形心点
 
         Args:
             nodes (list[int]): 要修改的节点。必须是整数。
@@ -97,14 +107,14 @@ class CGraph:
     def add_edge(self,
                  start: int,
                  end: int,
-                 attribute_dict: dict = None):
+                 attribute_dict: dict = None) -> None:
         """**类方法 - add_edge:**<br>
          - 加一条边
 
         Args:
             start (int): 边的起始节点。必须是整数。
             end (int): 边的结束节点。必须是整数或浮点数。
-            attribute_dict (dict): 包含边缘属性的字典，例如权重或其他属性。不能为空。
+            attribute_dict (dict): 包含边缘属性的字典，例如权重或其他属性。
 
         Raises:
             ValueError: 如果“start”或“end”不是整数或浮点数。
@@ -130,7 +140,7 @@ class CGraph:
         self.graph.add_edge(start, end, attribute_dict)
 
     def add_edges(self,
-                  edges: list[tuple]):
+                  edges: list[tuple]) -> None:
         """**类方法 - add_edges:**<br>
          - 加多条边
 
@@ -182,7 +192,7 @@ class CGraph:
 
     def remove_edge(self,
                     start: int,
-                    end: int):
+                    end: int) -> None:
         """**类方法 - remove_edge:**<br>
          - 移除一条边
 
@@ -203,7 +213,7 @@ class CGraph:
         self.graph.remove_edge(start, end)
 
     def remove_edges(self,
-                     edges: list[tuple[int, int]]):
+                     edges: list[tuple[int, int]]) -> None:
         """**类方法 - remove_edges：**<br>
          - 移除多条边
 
@@ -249,14 +259,14 @@ class CGraph:
               weight_name (str): 图中用于最短路径计算的边权重的名称。默认为None。
 
           Returns:
-              dict[int, float]: 返回多源最短路径计算的花费结果
+              dict[int, float]: 多源最短路径计算的花费结果，键为目标节点，值为对应的花费
 
           Raises:
               ValueError: 如果违反了以下任何一项：<br>
                   -“start_nodes”不是列表。<br>
                   -“method”不是有效的算法之一：“Dijkstra”。<br>
                   -“target”不是整数。<br>
-                  -“cutoff”不是非负数。<br>
+                  -“cut_off”不是非负数。<br>
                   -“weight_name”不是字符串。
           """
         if 1:
@@ -306,14 +316,14 @@ class CGraph:
             weight_name (str): 图中用于最短路径计算的边权重的名称。默认为None。
 
         Returns:
-            dict[int, list[int]]: 返回多源最短路径计算的路径结果
+            dict[int, list[int]]: 返回多源最短路径计算的路径结果， 键为目标节点，值为对应的序列路径
 
         Raises:
             ValueError: 如果违反了以下任何一项：<br>
                 -“start_nodes”不是列表。<br>
                 -“method”不是有效的算法之一：“Dijkstra”。<br>
                 -“target”不是整数。<br>
-                -“cutoff”不是非负数。<br>
+                -“cut_off”不是非负数。<br>
                 -“weight_name”不是字符串。
         """
         if 1:
@@ -363,14 +373,17 @@ class CGraph:
             weight_name (str): 图中用于最短路径计算的边权重的名称。默认为None。
 
         Returns:
-            dict: 返回多源最短路径计算的花费和路径结果，一个dis_and_path结构体，内有{cost,paths}两个属性
+            dis_and_path: 自定义结构体，内有{cost,paths}两个属性，返回多源最短路径计算的花费和路径结果，<br>
+                         假设返回结果为： res，则 <br>
+                          res.cost为 dict[int, float]: 多源最短路径计算的花费结果，键为目标节点，值为对应的花费 <br>
+                          res.paths为 dict[int, list[int]]: 多源最短路径计算的路径结果， 键为目标节点，值为对应的序列路径
 
         Raises:
             ValueError: 如果违反了以下任何一项：<br>
                 -“start_nodes”不是列表。<br>
                 -“method”不是有效的算法之一：“Dijkstra”。<br>
                 -“target”不是整数。<br>
-                -“cutoff”不是非负数。<br>
+                -“cut_off”不是非负数。<br>
                 -“weight_name”不是字符串。
         """
         if 1:
@@ -419,14 +432,14 @@ class CGraph:
             weight_name (str): 图中用于最短路径计算的边权重的名称。默认为None。
 
         Returns:
-            dict[int, float]: 返回单源最短路径计算的花费结果
+            dict[int, float]: 单源最短路径计算的花费结果，键为目标节点，值为对应的花费
 
         Raises:
             ValueError: 如果违反了以下任何一项：<br>
                 -“start”不是整数。<br>
                 -“method”不是有效的算法之一：“Dijkstra”。<br>
                 -“target”不是整数。<br>
-                -“cutoff”不是非负数。<br>
+                -“cut_off”不是非负数。<br>
                 -“weight_name”不是字符串。
         """
         if 1:
@@ -476,14 +489,14 @@ class CGraph:
             weight_name (str): 图中用于最短路径计算的边权重的名称。默认为 None。
 
         Returns:
-            dict[int, list[int]]: 返回单源最短路径计算的路径结果。
+            dict[int, list[int]]: 返回单源最短路径计算的路径结果， 键为目标节点，值为对应的序列路径
 
         Raises:
             ValueError: 如果违反了以下任何一项：<br>
                 -“start”不是整数。<br>
                 -“method”不是有效的算法之一：“Dijkstra”。<br>
                 -“target”不是整数。<br>
-                -“cutoff”不是非负数。<br>
+                -“cut_off”不是非负数。<br>
                 -“weight_name”不是字符串。
         """
         if 1:
@@ -533,14 +546,17 @@ class CGraph:
             weight_name (str): 图中用于最短路径计算的边权重的名称。默认为“无”。
 
         Returns:
-            dict: 返回单源最短路径计算的路径结果，一个dis_and_path结构体，内有{cost,paths}两个属性
+            dis_and_path: 自定义结构体，内有{cost,paths}两个属性，返回单源最短路径计算的花费和路径结果，<br>
+                         假设返回结果为： res，则 <br>
+                          res.cost为 dict[int, float]: 单源最短路径计算的花费结果，键为目标节点，值为对应的花费 <br>
+                          res.paths为 dict[int, list[int]]: 单源最短路径计算的路径结果，键为目标节点，值为对应的序列路径
 
         Raises:
             ValueError: 如果违反了以下任何一项：<br>
                 -“start”不是整数。<br>
                 -“method”不是有效的算法之一：“Dijkstra”。<br>
                 -“target”不是整数。<br>
-                -“cutoff”不是非负数。<br>
+                -“cut_off”不是非负数。<br>
                 -“weight_name”不是字符串。
         """
         if 1:
@@ -591,14 +607,15 @@ class CGraph:
             num_thread (int): 用于并行计算的线程数。默认值为1。必须是整数。
 
         Returns:
-            list[dict[int, float]]: 返回多个单源最短路径计算的路径结果，二维列表：元素是每个源节点的单源最短计算花费
+            list[dict[int, float]]: 返回多个单源最短路径计算的路径结果<br>
+                                列表内的元素是每个源节点的单源最短计算花费字典dict[int, float]
 
         Raises:
             ValueError: 如果任何输入参数的类型或值无效：<br>
                 -“start_nodes”必须是整数列表。<br>
                 -“method”必须是“Dijkstra”。<br>
                 -“target”必须是非负整数。<br>
-                -“cutoff”必须是非负数。<br>
+                -“cut_off”必须是非负数。<br>
                 -“weight_name”必须是字符串。<br>
                 -“num_thread”必须是整数。
         """
@@ -654,14 +671,15 @@ class CGraph:
             num_thread (int): 用于并行计算的线程数。默认值为1。必须是整数。
 
         Returns:
-            list[dict[int, list[int]]]: 返回多个单源最短路径计算的路径结果，二维列表：元素是每个源节点的单源最短路径
+            list[dict[int, list[int]]]: 返回多个单源最短路径计算的路径结果<br>
+                                        列表内的每个元素是每个源节点的单源最短路径dict[int, list[int]]
 
         Raises:
             ValueError: 如果任何输入参数的类型或值无效：<br>
                 -“start_nodes”必须是整数列表。<br>
                 -“method”必须是“Dijkstra”。<br>
                 -“target”必须是非负整数。<br>
-                -“cutoff”必须是非负数。<br>
+                -“cut_off”必须是非负数。<br>
                 -“weight_name”必须是字符串。<br>
                 -“num_thread”必须是整数。
         """
@@ -716,7 +734,11 @@ class CGraph:
             num_thread (int): 用于并行计算的线程数。默认值为1。必须是整数。
 
         Returns:
-            dict: 返回多个单源最短路径计算的路径结果，二维列表：元素是每个源节点的结构体dis_and_path,此结构体包含两个属性{cost,paths}
+            dict: 返回多个单源最短路径计算的路径结果，二维列表：元素是每个源节点的结构体dis_and_path,此结构体包含两个属性{cost,paths} <br>
+                    假设返回结果为： res_list，则 <br>
+                          结果的第k个元素：res_list[k]: <br>
+                          res_list[k].cost为 dict[int, float]: 单源最短路径计算的花费结果，键为目标节点，值为对应的花费 <br>
+                          res_list[k].paths为 dict[int, list[int]]: 单源最短路径计算的路径结果，键为目标节点，值为对应的序列路径
 
         Raises:
             ValueError: 如果任何输入参数的类型或值无效：<br>
@@ -778,7 +800,8 @@ class CGraph:
             num_thread (int): 用于并行计算的线程数。默认值为1。必须是整数。
 
         Returns:
-            list[dict[int, float]]: 返回多个多源最短路径计算的路径结果，二维列表：元素是每个多源最短路的花费列表
+            list[dict[int, float]]: 返回多个多源最短路径计算的路径结果<br>
+                                    列表内的元素是每个多源最短路的花费字典dict[int, float]
 
         Raises:
             ValueError: 如果任何输入参数的类型或值无效：<br>
@@ -844,7 +867,8 @@ class CGraph:
             num_thread (int): 用于并行计算的线程数。默认值为1。必须是整数。
 
         Returns:
-            result: 返回多个多源最短路径计算的路径结果，二维列表：元素是每个多源最短路的花费列表
+            list[dict[int, list[int]]]: 返回多个多源最短路径计算的路径结果<br>
+                    列表内的每个元素是每个多源最短路的路径字典 dict[int, list[int]]
 
         Raises:
             ValueError: 如果任何输入参数的类型或值无效：<br>
@@ -910,7 +934,12 @@ class CGraph:
             num_thread (int): 用于并行计算的线程数。默认值为1。必须是整数。
 
         Returns:
-            result: 返回多个多源最短路径计算的路径结果，二维列表：元素是每个多源路径计算返回的结构体result,此结构体包含两个属性{cost,paths}
+            result: dict: 返回多个单源最短路径计算的路径结果，二维列表：元素是每个源节点的结构体dis_and_path,此结构体包含两个属性{cost,paths} <br>
+                    假设返回结果为： res_list，则 <br>
+                          结果的第k个元素：res_list[k]: <br>
+                          res_list[k].cost为 dict[int, float]: 多源最短路径计算的花费结果，键为目标节点，值为对应的花费 <br>
+                          res_list[k].paths为 dict[int, list[int]]: 多源最短路径计算的路径结果，键为目标节点，值为对应的序列路径
+
 
         Raises:
             ValueError: 如果任何输入参数的类型或值无效：<br>
@@ -963,7 +992,7 @@ class CGraph:
                              method: str = "Dijkstra",
                              cut_off: float = float('inf'),
                              weight_name: str = None,
-                             num_thread: int = 1):
+                             num_thread: int = 1) -> np.ndarray:
         """**类方法 - cost_matrix_to_numpy：**
          - 输入起点列表和终点列表，计算获得一个起点到终点的花费矩阵
 
@@ -986,8 +1015,9 @@ class CGraph:
 
         Returns:
             numpy.ndarray: 一个numpy数组，其中每个元素表示最短路径成本<br>
-                基于指定的算法在开始节点和结束节点之间进行通信。<br>
-                数组的维度将是len（start_nodes）x len（end_nodes”）。
+                数组的维度将是len（start_nodes）x len（end_nodes”）<br>
+                假设返回结果是res： 则<br>
+                res[m][n]代表了从m到n的花费
         """
         if 1:
             # 检查 start_nodes 是否是一个列表
@@ -1049,9 +1079,9 @@ class CGraph:
                 -“num_thread”必须是整数。
 
         Returns:
-            numpy.ndarray: NumPy数组，其中每个元素表示最短路径（作为节点列表）例如：<br>
-                [1,3,[2,3],<br>
-                1,4,[2,3,4]]
+            dict[tuple[int, int], list[int]]: 字典，其中每个键表示 起点-终点 的路径（作为节点列表），每个值表示最短路径。 例如：<br>
+                [(1,3):[2,3],<br>
+                (1,4):[2,3,4]]
         """
         if 1:
             # 检查 start_nodes 是否是一个列表
