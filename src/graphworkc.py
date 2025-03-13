@@ -1114,3 +1114,53 @@ class CGraph:
         result = self.graph.path_list_to_numpy(start_nodes, end_nodes, method, cut_off, weight_name, num_thread)
 
         return result
+
+    def shortest_paths(self,
+                       source: int,
+                       target: int,
+                       num: int,
+                       weight_name: str = None) -> list[list[int]]:
+        """**类方法 - shortest_paths：**
+        - - 输入起点和目标点，和要获取的最短路数量，获得花费从小到大的最短路径序列
+
+        Args:
+            source (int): 路径搜索的起点。
+            target (int): 路径搜索的终点。
+            num (int): 要获取最短路径的数量。
+            weight_name (str): 要使用的权重的字段名称。默认值为None。
+
+        Raises:
+            ValueError: 如果任何输入参数的类型或值无效：<br>
+                -“source”必须是整数。<br>
+                -“target”必须是整数。<br>
+                -“num”必须是整数。<br>
+                -“weight_name”必须是字符串。<br>
+
+        Returns:
+            list[list[int]]: 二维列表，按花费从小到大返回序列路径。 例如：<br>
+                [[1,3,5],
+                 [1,2,5],
+                 [1,4,5]]
+        """
+        if 1:
+            # 检查 source 是否是一个列表
+            if not isinstance(source, int):
+                raise ValueError(f"Invalid value for 'source': {source}. It must be a int.")
+
+            # 检查 target 是否是一个列表
+            if not isinstance(target, int):
+                raise ValueError(f"Invalid value for 'target': {target}. It must be a int.")
+
+            # 检查 num 是否是一个列表
+            if not isinstance(num, int):
+                raise ValueError(f"Invalid value for 'num': {num}. It must be a int.")
+
+            # 检查 weight_name 是否是一个字符串或 None
+            if weight_name is not None and not isinstance(weight_name, str):
+                raise ValueError(f"Invalid value for 'weight_name': {weight_name}. It must be either a string or None.")
+
+        if weight_name is None:
+            weight_name = ""
+        result = self.graph.shortest_paths(source, target, num, weight_name)
+
+        return result

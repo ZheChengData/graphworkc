@@ -45,3 +45,5 @@ comments: true
 <a id="path_list_to_numpy"></a>
 ::: src.graphworkc.CGraph.path_list_to_numpy
 
+<a id="shortest_paths"></a>
+::: src.graphworkc.CGraph.shortest_paths

@@ -1,6 +1,7 @@
 #include "CGraphBase.h"
 
-// 基本算法 ---------------------------------------------------------------------------------------
+// 基础操作 ---------------------------------------------------------------------------------------
+
 
 // 加边
 void CGraph::basic_add_edge(
@@ -40,14 +41,55 @@ void CGraph::basic_add_edge(
 	else {
 		// 非形心边
 		G[o][d] = attribute_dict;
-		
+		G[d];
 	}
 
 	node_in_list[d].emplace(o);
 	node_out_list[o].emplace(d);
 	// 更新边的计数
 	number_link += 1;
+
+	// 遍历所有字段并更新 field_freq 和 full_field_map
+	for (const auto& field : attribute_dict) {
+		const string& field_name = field.first;
+
+		// 更新 field_freq
+		if (field_freq.find(field_name) == field_freq.end()) {
+			// 新字段，初始化
+			field_freq[field_name] = 1;
+		}
+		else {
+			// 字段已存在，值加 1
+			field_freq[field_name] += 1;
+		}
+
+		// 如果该字段的值 / number_link == 1，说明该字段已完全出现
+		if (field_freq[field_name] / number_link == 1) {
+			// 查找 field_name 在 field_vec 中的位置
+			auto it = find(field_vec.begin(), field_vec.end(), field_name);
+			if (it == field_vec.end()) {
+				// 如果没有找到该字段，说明是新字段，添加到 field_vec 中
+				field_vec.push_back(field_name);
+				// 在 full_field_map 中新增一个 unordered_map
+				full_field_map.push_back(unordered_map<int, vector<pair<int, double>>>());
+				full_field_reverse_map.push_back(unordered_map<int, vector<pair<int, double>>>());
+				// 获取新增字段的位置（索引）
+				it = find(field_vec.begin(), field_vec.end(), field_name);
+			}
+
+			// 获取字段在 field_vec 中的位置
+			int field_index = distance(field_vec.begin(), it);
+
+			// 更新 full_field_map 中对应位置的 unordered_map
+			full_field_map[field_index][o].push_back({ d, field.second });
+
+			// 更新 full_field_reserve_map 中对应位置的 unordered_map（同步更新）
+			full_field_reverse_map[field_index][d].push_back({ o, field.second });
+		}
+	}
+
 }
+
 
 // 删边
 void CGraph::basic_remove_edge(
@@ -83,6 +125,7 @@ void CGraph::basic_remove_edge(
 	// 更新计数器
 	if (edge_removed > 0) number_link = max(0, number_link - 1);
 }
+
 
 // 设置形心点
 void CGraph::basic_set_centroid(
@@ -121,9 +164,9 @@ void CGraph::basic_set_centroid(
 	}
 }
 
-// 基本算法 ---------------------------------------------------------------------------------------
 
-// 基础操作 ---------------------------------------------------------------------------------------
+// 基础函数 ---------------------------------------------------------------------------------------
+
 
 // 获取基本信息
 py::dict CGraph::get_graph_info() {
@@ -134,6 +177,7 @@ py::dict CGraph::get_graph_info() {
 
 	return result;
 }
+
 
 // 获取点的基本信息 待修改
 py::dict CGraph::get_node_info(const py::object& id)
@@ -159,6 +203,7 @@ py::dict CGraph::get_node_info(const py::object& id)
 
 	return result;
 }
+
 
 // 获取边的基本信息
 py::dict CGraph::get_link_info(
@@ -201,6 +246,7 @@ py::dict CGraph::get_link_info(
 	return result;
 }
 
+
 // 添加一条边
 void CGraph::add_edge(
 	const py::object& start_node_,
@@ -213,6 +259,7 @@ void CGraph::add_edge(
 
 	basic_add_edge(start_node, end_node, attribute_dict);
 }
+
 
 // 添加多条边
 void CGraph::add_edges(const py::list& edges_) {
@@ -241,6 +288,7 @@ void CGraph::add_edges(const py::list& edges_) {
 	}
 }
 
+
 // 删除一条边
 void CGraph::remove_edge(
 	const py::object& start_,
@@ -258,6 +306,7 @@ void CGraph::remove_edge(
 	// 检查图中是否存在这条边
 	basic_remove_edge(start, end);
 }
+
 
 // 删除多条边
 void CGraph::remove_edges(const py::list& edges_) {
@@ -294,11 +343,10 @@ void CGraph::remove_edges(const py::list& edges_) {
 	}
 }
 
+
 // 更新节点为形心点
 // 修改C++函数为两个重载版本
 void CGraph::set_centroid(int node) { basic_set_centroid(node); }
 void CGraph::set_centroid(const std::vector<int>& nodes) {
 	for (int node : nodes) { basic_set_centroid(node); }
 }
-
-// 基础操作 ---------------------------------------------------------------------------------------
