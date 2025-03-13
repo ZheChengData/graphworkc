@@ -619,9 +619,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#src.graphworkc.CGraph.path_list_to_numpy" class="md-nav__link">
+  <a href="#src.graphworkc.CGraph.path_list_to_dict" class="md-nav__link">
     <span class="md-ellipsis">
-      path_list_to_numpy
+      path_list_to_dict
     </span>
   </a>
   
@@ -834,9 +834,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#src.graphworkc.CGraph.path_list_to_numpy" class="md-nav__link">
+  <a href="#src.graphworkc.CGraph.path_list_to_dict" class="md-nav__link">
     <span class="md-ellipsis">
-      path_list_to_numpy
+      path_list_to_dict
     </span>
   </a>
   
@@ -4764,7 +4764,7 @@ res[m][n]代表了从m到n的花费</p>
             </details>
     </div>
 
-</div><p><a id="path_list_to_numpy"></a>
+</div><p><a id="path_list_to_dict"></a>
 </p>
 
 
@@ -4772,10 +4772,10 @@ res[m][n]代表了从m到n的花费</p>
 
 
 
-<a id="src.graphworkc.CGraph.path_list_to_numpy"></a>
+<a id="src.graphworkc.CGraph.path_list_to_dict"></a>
     <div class="doc doc-contents first">
 
-        <p><strong>类方法 - path_list_to_numpy：</strong>
+        <p><strong>类方法 - path_list_to_dict：</strong>
  - - 输入起点列表和终点列表，计算获得一个起点到终点的路径列表</p>
 
 
@@ -5007,14 +5007,14 @@ res[m][n]代表了从m到n的花费</p>
 <span class="normal">1113</span>
 <span class="normal">1114</span>
 <span class="normal">1115</span>
-<span class="normal">1116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">path_list_to_numpy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                       <span class="n">start_nodes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
-                       <span class="n">end_nodes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
-                       <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Dijkstra&quot;</span><span class="p">,</span>
-                       <span class="n">cut_off</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">),</span>
-                       <span class="n">weight_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                       <span class="n">num_thread</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - path_list_to_numpy：**</span>
+<span class="normal">1116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">path_list_to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                      <span class="n">start_nodes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+                      <span class="n">end_nodes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+                      <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Dijkstra&quot;</span><span class="p">,</span>
+                      <span class="n">cut_off</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">),</span>
+                      <span class="n">weight_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                      <span class="n">num_thread</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;**类方法 - path_list_to_dict：**</span>
 <span class="sd">     - - 输入起点列表和终点列表，计算获得一个起点到终点的路径列表</span>
 
 <span class="sd">    Args:</span>
@@ -5067,7 +5067,7 @@ res[m][n]代表了从m到n的花费</p>
 
     <span class="k">if</span> <span class="n">weight_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">weight_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">path_list_to_numpy</span><span class="p">(</span><span class="n">start_nodes</span><span class="p">,</span> <span class="n">end_nodes</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">cut_off</span><span class="p">,</span> <span class="n">weight_name</span><span class="p">,</span> <span class="n">num_thread</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">path_list_to_dict</span><span class="p">(</span><span class="n">start_nodes</span><span class="p">,</span> <span class="n">end_nodes</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">cut_off</span><span class="p">,</span> <span class="n">weight_name</span><span class="p">,</span> <span class="n">num_thread</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">result</span>
 </code></pre></div></td></tr></table></div>
