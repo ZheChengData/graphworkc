@@ -42,8 +42,8 @@ comments: true
 <a id="cost_matrix_to_numpy"></a>
 ::: src.graphworkc.CGraph.cost_matrix_to_numpy
 
-<a id="path_list_to_numpy"></a>
-::: src.graphworkc.CGraph.path_list_to_numpy
+<a id="path_list_to_dict"></a>
+::: src.graphworkc.CGraph.path_list_to_dict
 
 <a id="shortest_paths"></a>
 ::: src.graphworkc.CGraph.shortest_paths

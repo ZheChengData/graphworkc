@@ -1051,14 +1051,14 @@ class CGraph:
 
         return result
 
-    def path_list_to_numpy(self,
-                           start_nodes: list[int],
-                           end_nodes: list[int],
-                           method: str = "Dijkstra",
-                           cut_off: float = float('inf'),
-                           weight_name: str = None,
-                           num_thread: int = 1) -> dict[tuple[int, int], list[int]]:
-        """**类方法 - path_list_to_numpy：**
+    def path_list_to_dict(self,
+                          start_nodes: list[int],
+                          end_nodes: list[int],
+                          method: str = "Dijkstra",
+                          cut_off: float = float('inf'),
+                          weight_name: str = None,
+                          num_thread: int = 1) -> dict[tuple[int, int], list[int]]:
+        """**类方法 - path_list_to_dict：**
          - - 输入起点列表和终点列表，计算获得一个起点到终点的路径列表
 
         Args:
@@ -1111,7 +1111,7 @@ class CGraph:
 
         if weight_name is None:
             weight_name = ""
-        result = self.graph.path_list_to_numpy(start_nodes, end_nodes, method, cut_off, weight_name, num_thread)
+        result = self.graph.path_list_to_dict(start_nodes, end_nodes, method, cut_off, weight_name, num_thread)
 
         return result
 

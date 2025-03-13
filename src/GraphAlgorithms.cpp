@@ -1687,8 +1687,10 @@ py::dict GraphAlgorithms::path_list_to_numpy(
 
 			if (it != multi_result[i].end()) {
 				auto cur_path = it->second;
-				// 将路径加入到列表
-				path_list.append(cur_path);
+				// 将 cur_path 的每个元素加入到 path_list 中，而不是将整个 cur_path 作为一个元素
+				for (const auto& node : cur_path) {
+					path_list.append(node);
+				}
 				result[py::make_tuple(starts[i], ends[j])] = path_list;  // 使用 (起点, 终点) 作为字典的键
 			}
 			else {
