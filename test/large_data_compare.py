@@ -608,7 +608,7 @@ def t_cost_matrix(link: pd.DataFrame = None, num: int = 50):
 
 
 if __name__ == '__main__':
-    net = pd.read_csv("data/zasy/link.csv", encoding='gbk')
+    net = pd.read_csv("data/link.csv", encoding='gbk')
     neg_net = net[net['dir'] == 0].copy()
     neg_net[['from_node', 'to_node']] = neg_net[['to_node', 'from_node']]
     net = pd.concat([neg_net, net]).reset_index(drop=True)
