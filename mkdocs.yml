@@ -31,7 +31,30 @@ theme:
     text: Roboto
     code: Roboto Mono
   features:
-    - navigation.tabs  # 启用横向导航
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.path
+    - navigation.sections
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - navigation.expand
+    - navigation.top
+    - navigation.indexes
+    - navigation.prune
+#    - toc.integrate
+
+    # Palette toggle for light mode
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
   
 on:
     push:
@@ -49,7 +72,27 @@ extra_css:
   - stylesheets/extra.css 
  
 markdown_extensions:
+  - def_list
+  - tables
+  - admonition
   - attr_list
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
  
 extra_javascript:
   - js/custom.js
