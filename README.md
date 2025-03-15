@@ -10,6 +10,7 @@
 
 ![PyPI - Version](https://img.shields.io/pypi/v/graphworkc)
 ![GitHub License](https://img.shields.io/github/license/ZheChengData/graphworkc)
+[![Downloads](https://static.pepy.tech/badge/graphworkc)](https://pepy.tech/project/graphworkc)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/graphworkc)
 
 
