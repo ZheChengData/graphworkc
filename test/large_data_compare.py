@@ -7,7 +7,6 @@
 import time
 import pandas as pd
 import networkx as nx
-import geopandas as gpd
 import graphworkc as gw
 
 
@@ -613,16 +612,16 @@ if __name__ == '__main__':
     neg_net[['from_node', 'to_node']] = neg_net[['to_node', 'from_node']]
     net = pd.concat([neg_net, net]).reset_index(drop=True)
 
-    t_single_source_cost(link=net)
-    t_single_source_path(link=net)
-    t_single_source_all(link=net)
-    t_multi_source_cost(link=net)
-    t_multi_source_path(link=net)
-    t_multi_source_all(link=net)
-    t_multi_single_source_cost(link=net, num=5)
-    t_multi_single_source_path(link=net, num=5)
-    t_multi_single_source_all(link=net, num=5)
-    t_multi_multi_source_cost(link=net, num=5)
-    t_multi_multi_source_path(link=net, num=5)
-    t_multi_multi_source_all(link=net, num=5)
+    # t_single_source_cost(link=net)
+    # t_single_source_path(link=net)
+    # t_single_source_all(link=net)
+    # t_multi_source_cost(link=net)
+    # t_multi_source_path(link=net)
+    # t_multi_source_all(link=net)
+    t_multi_single_source_cost(link=net, num=20)
+    t_multi_single_source_path(link=net, num=20)
+    t_multi_single_source_all(link=net, num=20)
+    # t_multi_multi_source_cost(link=net, num=5)
+    # t_multi_multi_source_path(link=net, num=5)
+    # t_multi_multi_source_all(link=net, num=5)
     # t_cost_matrix(link=net, num=2000)
