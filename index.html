@@ -415,7 +415,7 @@
         <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      安装与使用
+      性能对比
     </span>
   </a>
   
@@ -424,25 +424,67 @@
         <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      主要功能
+      如何使用
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="如何使用">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
-      使用场景
+      如何安装
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      如何更新
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      用户反馈
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#graphworkc_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      graphworkc相关特性
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#graphworkc_2" class="md-nav__link">
     <span class="md-ellipsis">
-      特性
+      graphworkc主要功能
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#graphworkc_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      graphworkc使用场景
     </span>
   </a>
   
@@ -604,7 +646,7 @@
         <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      安装与使用
+      性能对比
     </span>
   </a>
   
@@ -613,25 +655,67 @@
         <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      主要功能
+      如何使用
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="如何使用">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
-      使用场景
+      如何安装
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      如何更新
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      用户反馈
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#graphworkc_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      graphworkc相关特性
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#graphworkc_2" class="md-nav__link">
     <span class="md-ellipsis">
-      特性
+      graphworkc主要功能
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#graphworkc_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      graphworkc使用场景
     </span>
   </a>
   
@@ -671,28 +755,56 @@
 <p class="admonition-title">Note</p>
 <p>这个项目正处在频繁的升级迭代期， 当前版本v1.1.9， 请用户及时更新.</p>
 </div>
-<h2 id="_2">安装与使用</h2>
-<p>此开源库当前已上传至pypi官网，可直接pip下载使用即可，目前要求python版本&gt;=3.9</p>
+<p><strong>💬下一版本v1.2.0预计更新内容</strong></p>
+<ul>
+<li>支持linux操作系统</li>
+<li>单个OD起终点的路径搜索</li>
+</ul>
+<h2 id="_2">性能对比</h2>
+<p>使用<a href="https://github.com/networkx/networkx">networkx</a>v3.4.2版本与graphworkc在同一路网下进行最短路搜索测试，测试结果如下：</p>
+<figure>
+  <img alt="Image title" src="img/test_with_nx/single_single.png" />
+</figure>
+<figure>
+  <img alt="Image title" src="img/test_with_nx/multi_single.png" />
+</figure>
+<p>测试代码见<a href="https://github.com/ZheChengData/graphworkc/tree/main/test">测试数据与代码</a></p>
+<h2 id="_3">如何使用</h2>
+<p>此开源库已上传至pypi官网，直接pip安装后即可使用，目前要求python版本&gt;=3.9</p>
+<h3 id="_4">如何安装</h3>
 <div class="highlight"><pre><span></span><code>pip install graphworkc
 </code></pre></div>
-<h2 id="_3">主要功能</h2>
+<h3 id="_5">如何更新</h3>
+<div class="highlight"><pre><span></span><code>pip install --upgrade  graphworkc
+</code></pre></div>
+<h3 id="_6">用户反馈</h3>
+<ul>
+<li>如果您发现了graphworkc的BUG，请在<a href="https://github.com/ZheChengData/graphworkc/issues">issue界面</a>提交</li>
+<li>如果您有任何关于graphworkc的使用问题且在查阅<a href="https://zhechengdata.github.io/graphworkc/">用户文档</a>后仍然无法解决，可以在<a href="https://github.com/ZheChengData/graphworkc/discussions">讨论区</a>提问</li>
+</ul>
+<p>欢迎加入<strong>浙诚数据开源社群</strong>获取更多咨询，由于目前两个微信群的人数均已超过200人，请您添加小助手后再入群：</p>
+<figure>
+  <img alt="Image title" src="img/tk.jpg" />
+</figure>
+<h2 id="graphworkc_1">graphworkc相关特性</h2>
+<ul>
+<li><strong>开源</strong>：项目完全开源，任何人都可以自由查看和贡献代码</li>
+<li><strong>跨平台</strong>：支持多种操作系统，方便用户在不同环境下使用</li>
+<li><strong>高性能</strong>：底层为c++驱动，不受python全局解释器锁GIL的限制</li>
+<li><strong>易于集成</strong>：提供简单易用的 API 接口，便于与其他系统集成</li>
+</ul>
+<h2 id="graphworkc_2">graphworkc主要功能</h2>
 <ul>
 <li><strong>最短路径计算</strong>：基于给定的 OD（Origin-Destination）对，计算并返回最短路径</li>
 <li><strong>最少花费计算</strong>：考虑路网中的花费信息，计算从源点到目的点的最少花费路径</li>
 <li><strong>高效算法</strong>：使用高效的图论算法，确保即使在大规模路网数据下也能快速计算结果</li>
 <li><strong>灵活的配置</strong>：支持用户根据实际需求自定义路网结构和计算模型，便于适应各种应用场景</li>
 </ul>
-<h2 id="_4">使用场景</h2>
+<h2 id="graphworkc_3">graphworkc使用场景</h2>
 <ul>
 <li><strong>交通运输</strong>：适用于城市交通管理、道路规划等领域，帮助计算最优的行驶路线，优化交通流量</li>
 <li><strong>网络优化</strong>：可以用于计算信息传输的最短路径或最低成本路径，提升网络效率</li>
 <li><strong>智能物流</strong>：为物流公司提供路径优化方案，降低运输成本和时间</li>
-</ul>
-<h2 id="_5">特性</h2>
-<ul>
-<li><strong>开源</strong>：项目完全开源，任何人都可以自由查看和贡献代码</li>
-<li><strong>跨平台</strong>：支持多种操作系统，方便用户在不同环境下使用</li>
-<li><strong>易于集成</strong>：提供简单易用的 API 接口，便于与其他系统集成</li>
 </ul>
 
 
