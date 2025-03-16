@@ -1108,12 +1108,27 @@
 <span class="c1"># {(1, 3): [1, 2, 3], (1, 7): [1, 2, 3, 7], (4, 3): [4, 5, 6, 7, 3], (4, 7): [4, 5, 6, 7]}</span>
 </code></pre></div>
 <h2 id="k">寻找K条最短路</h2>
-<p><a href="../Fun%26API/GraphAlgorithms/#shortest_paths">shortest_paths</a>函数根据输入的<strong>起点、终点</strong>返回两点之间<strong>最短的前K条路径</strong>：</p>
-<p>假设有如下图：则可通过此函数获取1到5的三条最短路径</p>
-<figure>
-  <img alt="Image title" src="../img/k_path.png" width="250" />
-  <figcaption>K最短路</figcaption>
-</figure>
+<p><a href="../Fun%26API/GraphAlgorithms/#shortest_paths">shortest_paths</a>函数根据输入的<strong>起点</strong>和<strong>终点</strong>，返回两点之间<strong>最短的前K条路径</strong>：</p>
+<p>假设有如下图：则可通过此函数获取<strong>节点1到节点7</strong>的最短的三条路径</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">最短</label><label for="__tabbed_1_2">第二短</label><label for="__tabbed_1_3">第三短</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><figure markdown="span">
+  <img alt="Image title" src="../img/k1_path.png" width="400" />
+</figure></p>
+</div>
+<div class="tabbed-block">
+<p><figure markdown="span">
+  <img alt="Image title" src="../img/k2_path.png" width="400" />
+</figure></p>
+</div>
+<div class="tabbed-block">
+<p><figure markdown="span">
+  <img alt="Image title" src="../img/k3_path.png" width="400" />
+</figure></p>
+</div>
+</div>
+</div>
 <div class="highlight"><pre><span></span><code><span class="n">res</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">shortest_paths</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">weight_name</span><span class="o">=</span><span class="s2">&quot;l&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 <span class="c1"># [[1, 2, 3, 7], [1, 4, 5, 6, 7], [1, 2, 5, 6, 7]]</span>
