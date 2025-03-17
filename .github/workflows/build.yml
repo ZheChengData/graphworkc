@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.9, 3.10, 3.11, 3.12]  # 支持的 Python 版本
+        python-version: ["3.9", "3.10", "3.11", "3.12"]  # 支持的 Python 版本
 
     steps:
       - name: Checkout code
@@ -50,7 +50,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.9, 3.10, 3.11, 3.12, 3.13]  # 支持的 Python 版本
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]  # 支持的 Python 版本
 
     steps:
       - name: Checkout code
