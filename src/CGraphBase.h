@@ -20,6 +20,7 @@
 #include <pybind11/stl.h>
 #include <pybind11/numpy.h>
 #include <pybind11/stl_bind.h>
+
 #pragma once
 
 using namespace std;
@@ -28,6 +29,16 @@ namespace py = pybind11;
 
 using Graph = unordered_map<int, unordered_map<int, unordered_map<string, double>>>;
 using NodeMap = unordered_map<int, unordered_map<string, double>>;
+
+struct RowData {
+	int seq;
+	int from_node;
+	int to_node;
+	double length;
+	int dir;
+	double prj_dis;
+	double route_dis;
+};
 
 struct dis_and_path {
 	unordered_map<int, double> cost;

@@ -255,10 +255,47 @@ PYBIND11_MODULE(graphwork, m) {
 
 
 		// K条最短路径
-		.def("shortest_paths", &GraphAlgorithms::shortest_paths,
+		.def("k_shortest_paths", &GraphAlgorithms::k_shortest_paths,
 			py::arg("source"),
 			py::arg("target"),
 			py::arg("num"),
 			py::arg("weight_name") = "")
+
+
+		// 单个OD对最短花费和路径
+		.def("shortest_path_cost", &GraphAlgorithms::shortest_path_cost,
+			py::arg("source"),
+			py::arg("target"),
+			py::arg("weight_name") = "")
+
+
+		.def("shortest_path_path", &GraphAlgorithms::shortest_path_path,
+			py::arg("source"),
+			py::arg("target"),
+			py::arg("weight_name") = "")
+
+
+		.def("shortest_path_all", &GraphAlgorithms::shortest_path_all,
+			py::arg("source"),
+			py::arg("target"),
+			py::arg("weight_name") = "")
+
+
+		.def("process", [](GraphAlgorithms& self, py::object df) { // 注意这里传入self引用
+			// 通过成员函数处理数据
+			auto net = self.convert_dataframe(df); // 调用成员函数
+			auto new_net = self.process_neg_dir(net);
+			auto seq_groups = self.group_by_seq(new_net);
+
+			// 获取排序后的唯一seq
+			std::vector<int> unique_sorted_values;
+			for (const auto& pair : seq_groups) {
+				unique_sorted_values.push_back(pair.first);
+			}
+			std::sort(unique_sorted_values.begin(), unique_sorted_values.end());
+
+			// 处理相邻对
+			return self.process_pairs(seq_groups, unique_sorted_values);
+		})
 	;
 }

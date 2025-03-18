@@ -98,10 +98,15 @@ public:
 
 
 	// 获取K条最短路径 K小于一定值时
-	vector<vector<int>> GraphAlgorithms::shortest_simple_paths_few(
+	vector<vector<int>> shortest_simple_paths_few(
 		int source,
 		int target,
 		int K,
+		const string& weight_name);
+
+	pair<double, vector<int>> single_source_to_target(
+		int source,
+		int target,
 		const string& weight_name);
 	// 调用方法 ---------------------------------------------------------------------------------------
 
@@ -243,11 +248,33 @@ public:
 
 
 	// K条最短路
-	vector<vector<int>> shortest_paths(
+	vector<vector<int>> k_shortest_paths(
 		const py::object& source,
 		const py::object& target,
 		const py::object& num_k,
 		const py::object& weight_name);
+
+
+	// 单源节点到目标点的花费
+	double shortest_path_cost(
+		const py::object& source_,
+		const py::object& target_,
+		const py::object& weight_name_);
+
+
+	// 单源节点到目标点的路径
+	vector<int> shortest_path_path(
+		const py::object& source_,
+		const py::object& target_,
+		const py::object& weight_name_);
+
+
+	// 单源节点到目标点的路径
+	pair<double,vector<int>> shortest_path_all(
+		const py::object& source_,
+		const py::object& target_,
+		const py::object& weight_name_);
+
 	// test-------------------------------------------------------------------
 	
 	vector<unordered_map<int, double>> test(
@@ -264,6 +291,45 @@ public:
 		double cut_off,
 		string weight_name);
 	
+	map<int, vector<RowData>> group_by_seq(const std::vector<RowData>& new_net);
+	vector<RowData> convert_dataframe(py::object df);
+	vector<RowData> process_neg_dir(const std::vector<RowData>& net);
+
+	std::vector<py::array_t<double>> process_pairs(
+		const std::map<int, std::vector<RowData>>& seq_groups,
+		const std::vector<int>& unique_sorted_values);
+
+	py::dict path_list_to_numpy1(
+		const vector<int>& starts_,
+		const vector<int>& ends_,
+		const string& method_,
+		const double& cut_off_,
+		const string& weight_name_,
+		const int& num_thread_);
+
+	py::array_t<double>  cost_matrix_to_numpy1(
+		const vector<int>& starts_,
+		const vector<int>& ends_,
+		const string& method_,
+		const double& cut_off_,
+		const string& weight_name_,
+		const int& num_thread_);
+
+	vector<unordered_map<int, double>> multi_multi_source_cost1(
+		const vector<vector<int>>& list_o_,
+		const string& method_,
+		const int & target_,
+		const double& cut_off_,
+		const string& weight_name_,
+		const int& num_thread_);
+
+	vector<unordered_map<int, vector<int>>> multi_multi_source_path1(
+		const vector<vector<int>>& list_o_,
+		const string& method_,
+		const int& target_,
+		const double& cut_off_,
+		const string& weight_name_,
+		const int& num_thread_);
 };
 
 

@@ -1115,12 +1115,12 @@ class CGraph:
 
         return result
 
-    def shortest_paths(self,
+    def k_shortest_paths(self,
                        source: int,
                        target: int,
                        num: int,
                        weight_name: str = None) -> list[list[int]]:
-        """**类方法 - shortest_paths：**
+        """**类方法 - k_shortest_paths：**
         - - 输入起点和目标点，和要获取的最短路数量，获得花费从小到大的最短路径序列
 
         Args:
@@ -1161,6 +1161,129 @@ class CGraph:
 
         if weight_name is None:
             weight_name = ""
-        result = self.graph.shortest_paths(source, target, num, weight_name)
+        result = self.graph.k_shortest_paths(source, target, num, weight_name)
+
+        return result
+
+    def shortest_path_cost(self,
+                       source: int,
+                       target: int,
+                       weight_name: str = None) -> float:
+        """**类方法 - shortest_path_cost：**
+        - - 输入起点和目标点，和要获取的最短路数量，获得花费从小到大的最短路径序列
+
+        Args:
+           source (int): 路径搜索的起点。
+           target (int): 路径搜索的终点。
+           weight_name (str): 要使用的权重的字段名称。默认值为None。
+
+        Raises:
+            ValueError: 如果任何输入参数的类型或值无效：<br>
+               -“source”必须是整数。<br>
+               -“target”必须是整数。<br>
+               -“weight_name”必须是字符串。<br>
+
+        Returns:
+            double: 最短路径到达目标节点的花费。 例如：<br>
+               2.0
+        """
+        if 1:
+            # 检查 source 是否是一个列表
+            if not isinstance(source, int):
+                raise ValueError(f"Invalid value for 'source': {source}. It must be a int.")
+
+            # 检查 target 是否是一个列表
+            if not isinstance(target, int):
+                raise ValueError(f"Invalid value for 'target': {target}. It must be a int.")
+
+            # 检查 weight_name 是否是一个字符串或 None
+            if weight_name is not None and not isinstance(weight_name, str):
+                raise ValueError(f"Invalid value for 'weight_name': {weight_name}. It must be either a string or None.")
+
+        if weight_name is None:
+            weight_name = ""
+        result = self.graph.shortest_path_cost(source, target, weight_name)
+
+        return result
+
+    def shortest_path_path(self,
+                       source: int,
+                       target: int,
+                       weight_name: str = None) -> list[int]:
+        """**类方法 - shortest_path_path：**
+        - - 输入起点和目标点，和要获取的最短路数量，获得花费从小到大的最短路径序列
+
+        Args:
+           source (int): 路径搜索的起点。
+           target (int): 路径搜索的终点。
+           weight_name (str): 要使用的权重的字段名称。默认值为None。
+
+        Raises:
+            ValueError: 如果任何输入参数的类型或值无效：<br>
+               -“source”必须是整数。<br>
+               -“target”必须是整数。<br>
+               -“weight_name”必须是字符串。<br>
+
+        Returns:
+            list[int]: 最短路径到达目标节点的路径。 例如：<br>
+               [1,4,5]
+        """
+        if 1:
+            # 检查 source 是否是一个列表
+            if not isinstance(source, int):
+                raise ValueError(f"Invalid value for 'source': {source}. It must be a int.")
+
+            # 检查 target 是否是一个列表
+            if not isinstance(target, int):
+                raise ValueError(f"Invalid value for 'target': {target}. It must be a int.")
+
+            # 检查 weight_name 是否是一个字符串或 None
+            if weight_name is not None and not isinstance(weight_name, str):
+                raise ValueError(f"Invalid value for 'weight_name': {weight_name}. It must be either a string or None.")
+
+        if weight_name is None:
+            weight_name = ""
+        result = self.graph.shortest_path_path(source, target, weight_name)
+
+        return result
+
+    def shortest_path_all(self,
+                       source: int,
+                       target: int,
+                       weight_name: str = None) -> tuple[float, list[int]]:
+        """**类方法 - shortest_path_all：**
+        - - 输入起点和目标点，和要获取的最短路数量，获得花费从小到大的最短路径序列
+
+        Args:
+           source (int): 路径搜索的起点。
+           target (int): 路径搜索的终点。
+           weight_name (str): 要使用的权重的字段名称。默认值为None。
+
+        Raises:
+            ValueError: 如果任何输入参数的类型或值无效：<br>
+               -“source”必须是整数。<br>
+               -“target”必须是整数。<br>
+               -“weight_name”必须是字符串。<br>
+
+        Returns:
+            tuple[float, list[int]]: 最短路径到达目标节点的花费和路径。 例如：<br>
+               [2.0, [1, 4, 5]]
+        """
+        if 1:
+            # 检查 source 是否是一个列表
+            if not isinstance(source, int):
+                raise ValueError(f"Invalid value for 'source': {source}. It must be a int.")
+
+            # 检查 target 是否是一个列表
+            if not isinstance(target, int):
+                raise ValueError(f"Invalid value for 'target': {target}. It must be a int.")
+
+            # 检查 weight_name 是否是一个字符串或 None
+            if weight_name is not None and not isinstance(weight_name, str):
+                raise ValueError(f"Invalid value for 'weight_name': {weight_name}. It must be either a string or None.")
+
+        if weight_name is None:
+            weight_name = ""
+        result = self.graph.shortest_path_all(source, target, weight_name)
 
         return result

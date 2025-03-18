@@ -45,5 +45,14 @@ comments: true
 <a id="path_list_to_dict"></a>
 ::: src.graphworkc.CGraph.path_list_to_dict
 
-<a id="shortest_paths"></a>
-::: src.graphworkc.CGraph.shortest_paths
+<a id="k_shortest_paths"></a>
+::: src.graphworkc.CGraph.k_shortest_paths
+
+<a id="shortest_path_cost"></a>
+::: src.graphworkc.CGraph.shortest_path_cost
+
+<a id="shortest_path_path"></a>
+::: src.graphworkc.CGraph.shortest_path_path
+
+<a id="shortest_path_all"></a>
+::: src.graphworkc.CGraph.shortest_path_all
