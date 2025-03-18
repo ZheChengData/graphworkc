@@ -23,6 +23,7 @@ def t_single_source_cost(link: pd.DataFrame = None):
     a = time.time()
     gw_res = g.single_source_cost(start=355061, weight_name='l')  # -> dict
     b = time.time()
+
     print(rf'single_source: graphworkc: {b - a}')
     c = time.time()
     nx_res = nx.single_source_dijkstra_path_length(ng, 355061, weight='l')
@@ -590,13 +591,13 @@ def t_cost_matrix(link: pd.DataFrame = None, num: int = 50):
     n = link.sample(num)
     n_list = list(n['from_node'].unique())
     print(len(n_list))
-    g = gw.GraphAlgorithms()
+    g = gw.CGraph()
     g.add_edges([(f, t, {'l': l}) for f, t, l in zip(link['from_node'],
                                                      link['to_node'], link['length'])])
 
     a = time.time()
-    cost_mat = g.cost_matrix_to_numpy(starts=n_list,
-                                      ends=n_list, weight_name='l',
+    cost_mat = g.cost_matrix_to_numpy(start_nodes=n_list,
+                                      end_nodes=n_list, weight_name='l',
                                       num_thread=16)  # -> list[dict]
     b = time.time()
     print(cost_mat)
@@ -606,22 +607,43 @@ def t_cost_matrix(link: pd.DataFrame = None, num: int = 50):
     print(cost_mat.shape)
 
 
+def t_od_stp(link):
+    g = gw.CGraph()
+    g.add_edges([(f, t, {'l': l}) for f, t, l in zip(link['from_node'],
+                                                     link['to_node'], link['length'])])
+
+    ng = nx.DiGraph()
+    ng.add_edges_from([(f, t, {'l': l}) for f, t, l in zip(link['from_node'],
+                                                           link['to_node'], link['length'])])
+
+    a = time.time()
+    res1 = g.shortest_path_path(355061, 118757, weight_name='l')
+    b = time.time()
+    print(rf'graphworkc costs {b - a}secs')
+
+    c = time.time()
+    res2 = nx.shortest_path(ng, 355061, 118757, weight='l')
+    d = time.time()
+    print(rf'networkx costs {d - c}secs')
+
+
 if __name__ == '__main__':
     net = pd.read_csv("data/link.csv", encoding='gbk')
     neg_net = net[net['dir'] == 0].copy()
     neg_net[['from_node', 'to_node']] = neg_net[['to_node', 'from_node']]
     net = pd.concat([neg_net, net]).reset_index(drop=True)
 
-    # t_single_source_cost(link=net)
+    t_single_source_cost(link=net)
     # t_single_source_path(link=net)
     # t_single_source_all(link=net)
     # t_multi_source_cost(link=net)
     # t_multi_source_path(link=net)
     # t_multi_source_all(link=net)
-    t_multi_single_source_cost(link=net, num=20)
-    t_multi_single_source_path(link=net, num=20)
-    t_multi_single_source_all(link=net, num=20)
+    # t_multi_single_source_cost(link=net, num=20)
+    # t_multi_single_source_path(link=net, num=20)
+    # t_multi_single_source_all(link=net, num=20)
     # t_multi_multi_source_cost(link=net, num=5)
     # t_multi_multi_source_path(link=net, num=5)
     # t_multi_multi_source_all(link=net, num=5)
-    # t_cost_matrix(link=net, num=2000)
+    # t_cost_matrix(link=net, num=500)
+    t_od_stp(link=net)
