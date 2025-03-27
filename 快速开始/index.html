@@ -575,7 +575,16 @@
         <li class="md-nav__item">
   <a href="#od-_1" class="md-nav__link">
     <span class="md-ellipsis">
-      多OD-最短路路径字典生成
+      多OD-最短路路径字典生成（多对多生成）
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#od-_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      多OD-最短路路径字典生成（一对一生成）：
     </span>
   </a>
   
@@ -591,7 +600,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#od-_2" class="md-nav__link">
+  <a href="#od-_3" class="md-nav__link">
     <span class="md-ellipsis">
       单OD-最短路路径计算
     </span>
@@ -906,7 +915,16 @@
         <li class="md-nav__item">
   <a href="#od-_1" class="md-nav__link">
     <span class="md-ellipsis">
-      多OD-最短路路径字典生成
+      多OD-最短路路径字典生成（多对多生成）
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#od-_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      多OD-最短路路径字典生成（一对一生成）：
     </span>
   </a>
   
@@ -922,7 +940,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#od-_2" class="md-nav__link">
+  <a href="#od-_3" class="md-nav__link">
     <span class="md-ellipsis">
       单OD-最短路路径计算
     </span>
@@ -1114,7 +1132,7 @@
 <span class="nb">print</span><span class="p">(</span><span class="n">m_all</span><span class="o">.</span><span class="n">paths</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="od-">多OD-最短路花费矩阵生成</h2>
-<p><a href="../Fun%26API/GraphAlgorithms/#cost_matrix_to_numpy">cost_matrix_to_numpy</a>函数根据输入的起点列表和终点列表，计算生成获得一个开销矩阵</p>
+<p><a href="../Fun%26API/GraphAlgorithms/#cost_matrix">cost_matrix</a>函数根据输入的起点列表和终点列表，计算生成获得一个开销矩阵</p>
 <table>
 <thead>
 <tr>
@@ -1176,20 +1194,29 @@
 </ul>
 <div class="highlight"><pre><span></span><code><span class="n">start_nodes_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
 <span class="n">end_nodes_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
-<span class="n">s_matrix</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">cost_matrix_to_numpy</span><span class="p">(</span><span class="n">start_nodes_list</span><span class="p">,</span> <span class="n">end_nodes_list</span><span class="p">,</span>
+<span class="n">s_matrix</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">cost_matrix</span><span class="p">(</span><span class="n">start_nodes_list</span><span class="p">,</span> <span class="n">end_nodes_list</span><span class="p">,</span>
                                   <span class="n">weight_name</span><span class="o">=</span><span class="s2">&quot;l&quot;</span><span class="p">,</span> <span class="n">num_thread</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">s_matrix</span><span class="p">)</span>
 <span class="c1"># [[3.24 4.23]</span>
 <span class="c1"># [3.96 2.97]]</span>
 </code></pre></div>
-<h2 id="od-_1">多OD-最短路路径字典生成</h2>
-<p><a href="../Fun%26API/GraphAlgorithms/#path_list_to_dict">path_list_to_dict</a>函数根据输入的起点列表和终点列表，计算生成获得一个路径字典：</p>
+<h2 id="od-_1">多OD-最短路路径字典生成（多对多生成）</h2>
+<p><a href="../Fun%26API/GraphAlgorithms/#path_dict">path_dict</a>函数根据输入的起点列表和终点列表，计算生成获得一个路径字典：</p>
 <div class="highlight"><pre><span></span><code><span class="n">start_nodes_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
 <span class="n">end_nodes_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
-<span class="n">s_list</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">path_list_to_dict</span><span class="p">(</span><span class="n">start_nodes_list</span><span class="p">,</span> <span class="n">end_nodes_list</span><span class="p">,</span> 
+<span class="n">s_list</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">path_list</span><span class="p">(</span><span class="n">start_nodes_list</span><span class="p">,</span> <span class="n">end_nodes_list</span><span class="p">,</span> 
                              <span class="n">weight_name</span><span class="o">=</span><span class="s2">&quot;l&quot;</span><span class="p">,</span> <span class="n">num_thread</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">s_list</span><span class="p">)</span>
 <span class="c1"># {(1, 3): [1, 2, 3], (1, 7): [1, 2, 3, 7], (4, 3): [4, 5, 6, 7, 3], (4, 7): [4, 5, 6, 7]}</span>
+</code></pre></div>
+<h2 id="od-_2">多OD-最短路路径字典生成（一对一生成）：</h2>
+<p><a href="../Fun%26API/GraphAlgorithms/#path_dict_pairwise">path_dict_pairwise</a>函数根据输入的起点列表和终点列表，计算生成获得一个一一对应的路径字典(起点列表的第i个序列和终点列表的第i个序列生成一个OD对)：</p>
+<div class="highlight"><pre><span></span><code><span class="n">start_nodes_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">end_nodes_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+<span class="n">s_list</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">path_dict_pairwise</span><span class="p">(</span><span class="n">start_nodes_list</span><span class="p">,</span> <span class="n">end_nodes_list</span><span class="p">,</span> 
+                             <span class="n">weight_name</span><span class="o">=</span><span class="s2">&quot;l&quot;</span><span class="p">,</span> <span class="n">num_thread</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s_list</span><span class="p">)</span>
+<span class="c1"># {(1, 3): [1, 2, 3], (4, 7): [4, 5, 6, 7]}</span>
 </code></pre></div>
 <h2 id="k">寻找K条最短路</h2>
 <p><a href="../Fun%26API/GraphAlgorithms/#k_shortest_paths">k_shortest_paths</a>函数根据输入的<strong>起点</strong>和<strong>终点</strong>，返回两点之间<strong>最短的前K条路径</strong>：</p>
@@ -1217,7 +1244,7 @@
 <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 <span class="c1"># [[1, 2, 3, 7], [1, 4, 5, 6, 7], [1, 2, 5, 6, 7]]</span>
 </code></pre></div>
-<h2 id="od-_2">单OD-最短路路径计算</h2>
+<h2 id="od-_3">单OD-最短路路径计算</h2>
 <figure>
   <img alt="Image title" src="../img/exa_multi_source_path.png" width="250" />
   <figcaption>示例：以1为起点，7为终点</figcaption>

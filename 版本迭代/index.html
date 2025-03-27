@@ -678,6 +678,39 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#v121" class="md-nav__link">
+    <span class="md-ellipsis">
+      v1.2.1
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.2.1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      更新日期
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      更新说明
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -877,6 +910,39 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#v121" class="md-nav__link">
+    <span class="md-ellipsis">
+      v1.2.1
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="v1.2.1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      更新日期
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      更新说明
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -955,6 +1021,36 @@
 <li>新增函数：shortest_path_all，支持输入单个OD对获取最短路径的花费和路径序列；</li>
 <li>适应系统环境增加：支持Linux上的python3.９－3.11环境下载使用本python包；</li>
 </ul>
+<h2 id="v121">v1.2.1</h2>
+<h3 id="_12">更新日期</h3>
+<ul>
+<li>2025.03.27</li>
+</ul>
+<h3 id="_13">更新说明</h3>
+<ul>
+<li>
+<p>修改函数名称：cost_matrix_to_numpy改名为cost_matrix；</p>
+</li>
+<li>
+<p>修改函数名称：path_list_to_dict改名为path_dict；</p>
+</li>
+<li>
+<p>新增函数：path_dict_pairwise，可以一一对应的获取每个OD对的路径；</p>
+</li>
+<li>
+<p>函数优化：cost_matrix：添加权重预处理，双向Dijkstra定向搜索；</p>
+</li>
+<li>
+<p>性能优化：</p>
+</li>
+</ul>
+<p>​ 1、提升底层算法multi_source_dijkstra_cost的计算性能，提升至上一版本的2-3倍；</p>
+<p>​ 2、优化多线程使用，多线程创建销毁只进行一次；</p>
+<ul>
+<li>bug修复：</li>
+</ul>
+<p>​ 1、修复remove_edge部分数据结构没有相应更改的问题；</p>
+<p>​ 2、更改shortest_path_all没找到目标路径时不返回错误的问题；</p>
 
 
 
