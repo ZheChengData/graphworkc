@@ -39,11 +39,14 @@ comments: true
 <a id="multi_multi_source_all"></a>
 ::: src.graphworkc.CGraph.multi_multi_source_all
 
-<a id="cost_matrix_to_numpy"></a>
-::: src.graphworkc.CGraph.cost_matrix_to_numpy
+<a id="cost_matrix"></a>
+::: src.graphworkc.CGraph.cost_matrix
 
-<a id="path_list_to_dict"></a>
-::: src.graphworkc.CGraph.path_list_to_dict
+<a id="path_dict"></a>
+::: src.graphworkc.CGraph.path_dict
+
+<a id="path_dict_pairwise"></a>
+::: src.graphworkc.CGraph.path_dict_pairwise
 
 <a id="k_shortest_paths"></a>
 ::: src.graphworkc.CGraph.k_shortest_paths

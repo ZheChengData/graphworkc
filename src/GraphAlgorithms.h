@@ -8,8 +8,17 @@ public:
 
 	// 核心算法 ---------------------------------------------------------------------------------------
 	// 多源花费
-	unordered_map<int, double> multi_source_dijkstra_cost(
-		const unordered_map<int, vector<pair<int, double>>>& g,
+	py::dict multi_source_dijkstra_cost(
+		const vector< vector<pair<int, double>> >& g,
+		const vector<int>& sources,
+		int& target,
+		double& cut_off,
+		string& weight_name);
+
+
+	// 多源花费 多线程
+	unordered_map<int, double> multi_source_dijkstra_cost_threading(
+		const vector< vector<pair<int, double>> >& g,
 		const vector<int>& sources,
 		int& target,
 		double& cut_off,
@@ -18,7 +27,14 @@ public:
 
 	// 多源路径
 	unordered_map<int, vector<int>> multi_source_dijkstra_path(
-		const unordered_map<int, vector<pair<int, double>>>& g,
+		const vector< vector<pair<int, double>> >& g,
+		const vector<int>& sources,
+		int target,
+		double cut_off,
+		string weight_name);
+
+	unordered_map<int, vector<int>> multi_source_dijkstra_path_threading(
+		const vector<vector<pair<int, double>>>& g,
 		const vector<int>& sources,
 		int target,
 		double cut_off,
@@ -27,7 +43,15 @@ public:
 
 	// 多源路径花费
 	dis_and_path multi_source_dijkstra(
-		const unordered_map<int, vector<pair<int, double>>>& g,
+		const vector<vector<pair<int, double>>>& g,
+		const vector<int>& sources,
+		int target,
+		double cut_off,
+		string weight_name);
+
+
+	dis_and_path multi_source_dijkstra_threading(
+		const vector<vector<pair<int, double>>>& g,
 		const vector<int>& sources,
 		int target,
 		double cut_off,
@@ -36,8 +60,9 @@ public:
 
 	// 多源路径花费形心点
 	unordered_map<int, double> multi_source_dijkstra_cost_centroid(
+		const vector< vector<pair<int, double>>>& g,
 		const vector<int>& sources,
-		int target,
+		const unordered_set<int>& targets,
 		double cut_off,
 		string weight_name);
 
@@ -104,15 +129,45 @@ public:
 		int K,
 		const string& weight_name);
 
+
+	// 获取单个OD对的花费
 	pair<double, vector<int>> single_source_to_target(
 		int source,
 		int target,
 		const string& weight_name);
+
+
+	// 获取非全勤权重列表
+	vector<vector<pair<int, double>>>& get_not_full_weight_map();
 	// 调用方法 ---------------------------------------------------------------------------------------
+	
+	// 单源最短路径
+	py::dict single_source_cost(
+		const py::object& o_,
+		const py::object& method_,
+		const py::object& target_,
+		const py::object& cut_off_,
+		const py::object& weight_name_);
+
+
+	unordered_map<int, vector<int>> single_source_path(
+		const py::object& o_,
+		const py::object& method_,
+		const py::object& target_,
+		const py::object& cut_off_,
+		const py::object& weight_name_);
+
+
+	dis_and_path single_source_all(
+		const py::object& o_,
+		const py::object& method_,
+		const py::object& target_,
+		const py::object& cut_off_,
+		const py::object& weight_name_);
 
 
 	// 多源最短路径
-	unordered_map<int, double> multi_source_cost(
+	py::dict multi_source_cost(
 		const py::object& list_o,
 		const py::object& method,
 		const py::object& target,
@@ -134,31 +189,6 @@ public:
 		const py::object& target,
 		const py::object& cut_off,
 		const py::object& weight_name);
-
-
-	// 单源最短路径
-	unordered_map<int, double> single_source_cost(
-		const py::object& o_,
-		const py::object& method_,
-		const py::object& target_,
-		const py::object& cut_off_,
-		const py::object& weight_name_);
-
-
-	unordered_map<int, std::vector<int>> single_source_path(
-		const py::object& o_,
-		const py::object& method_,
-		const py::object& target_,
-		const py::object& cut_off_,
-		const py::object& weight_name_);
-
-
-	dis_and_path single_source_all(
-		const py::object& o_,
-		const py::object& method_,
-		const py::object& target_,
-		const py::object& cut_off_,
-		const py::object& weight_name_);
 
 
 	// 多个单源最短路径计算
@@ -190,7 +220,7 @@ public:
 
 
 	// 多个多源最短路径计算
-	vector<unordered_map<int, double>> multi_multi_source_cost(
+	vector<unordered_map <int, double>> multi_multi_source_cost(
 		const py::object& list_o_,
 		const py::object& method_,
 		const py::object& target_,
@@ -218,7 +248,7 @@ public:
 
 
 	// 花费矩阵
-	py::array_t<double> cost_matrix_to_numpy(
+	py::array_t<double> cost_matrix(
 		const py::object& starts,
 		const py::object& ends,
 		const py::object& method_,
@@ -227,8 +257,8 @@ public:
 		const py::object& num_thread_);
 
 
-	// 路径字典
-	py::dict path_list_to_numpy(
+	// 路径字典：所有起点到所有终点
+	py::dict path_dict(
 		const py::object& starts_,
 		const py::object& ends_,
 		const py::object& method_,
@@ -237,8 +267,18 @@ public:
 		const py::object& num_thread_);
 
 
+	// 路径字典：OD一一对应
+	py::dict path_dict_pairwise(
+		const py::object& starts_,
+		const py::object& ends_,
+		const py::object& method_,
+		const py::object& weight_name_,
+		const py::object& num_thread_);
+
+
 	// 多个多源最短花费(带形心)
 	vector<unordered_map<int, double>> multi_multi_source_cost_centroid(
+		const vector< vector<pair<int, double>>>& g,
 		const py::object& list_o_,
 		const py::object& method_,
 		const py::object& target_,
@@ -295,7 +335,7 @@ public:
 	vector<RowData> convert_dataframe(py::object df);
 	vector<RowData> process_neg_dir(const std::vector<RowData>& net);
 
-	std::vector<py::array_t<double>> process_pairs(
+	vector<py::array_t<double>> process_pairs(
 		const std::map<int, std::vector<RowData>>& seq_groups,
 		const std::vector<int>& unique_sorted_values);
 
@@ -315,7 +355,7 @@ public:
 		const string& weight_name_,
 		const int& num_thread_);
 
-	vector<unordered_map<int, double>> multi_multi_source_cost1(
+	vector<py::dict> multi_multi_source_cost1(
 		const vector<vector<int>>& list_o_,
 		const string& method_,
 		const int & target_,

@@ -67,6 +67,7 @@ PYBIND11_MODULE(graphwork, m) {
 		return repr;
 	});
 
+
 	py::class_<dis_and_path>(m, "dis_and_path")
 		.def(py::init<>())
 		.def_readwrite("cost", &dis_and_path::cost)
@@ -76,9 +77,18 @@ PYBIND11_MODULE(graphwork, m) {
 			" paths=" + to_string(a.paths.size()) + ">";
 	});
 
+
+	py::class_<dis_and_path_1>(m, "dis_and_path_1")
+		.def(py::init<>())
+		.def_readwrite("cost", &dis_and_path_1::cost)
+		.def_readwrite("paths", &dis_and_path_1::paths)
+		.def("__repr__", [](const dis_and_path_1 &a) {
+		return "<dis_and_path cost=" + to_string(a.cost.size()) +
+			" paths=" + to_string(a.paths.size()) + ">";
+	});
+
 	py::class_<CGraph>(m, "CGraph")
 		.def(py::init<>())
-
 
 		// 获取图信息
 		.def("get_graph_info", &CGraph::get_graph_info)
@@ -124,7 +134,6 @@ PYBIND11_MODULE(graphwork, m) {
 
 	py::class_<GraphAlgorithms, CGraph>(m, "GraphAlgorithms")
 		.def(py::init<>())
-
 
 		// 多源最短路径
 		.def("multi_source_cost", &GraphAlgorithms::multi_source_cost,
@@ -235,7 +244,7 @@ PYBIND11_MODULE(graphwork, m) {
 
 
 		// 花费矩阵
-		.def("cost_matrix_to_numpy", &GraphAlgorithms::cost_matrix_to_numpy,
+		.def("cost_matrix", &GraphAlgorithms::cost_matrix,
 			py::arg("starts"),
 			py::arg("ends"),
 			py::arg("method") = "Dijkstra",
@@ -244,12 +253,21 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("num_thread") = 1)
 
 
-		// 路径列表
-		.def("path_list_to_dict", &GraphAlgorithms::path_list_to_numpy,
+		// 路径字典:
+		.def("path_dict", &GraphAlgorithms::path_dict,
 			py::arg("starts"),
 			py::arg("ends"),
 			py::arg("method") = "Dijkstra",
 			py::arg("cut_off") = numeric_limits<double>::infinity(),
+			py::arg("weight_name") = "",
+			py::arg("num_thread") = 1)
+
+
+		// 路径字典: 一一对应
+		.def("path_dict_pairwise", &GraphAlgorithms::path_dict_pairwise,
+			py::arg("starts"),
+			py::arg("ends"),
+			py::arg("method") = "Dijkstra",
 			py::arg("weight_name") = "",
 			py::arg("num_thread") = 1)
 

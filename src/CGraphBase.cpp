@@ -22,24 +22,23 @@ void CGraph::basic_add_edge(
 	bool is_o_centroid = o_node.count("centroid_") && o_node.at("centroid_") == 1;
 	bool is_d_centroid = d_node.count("centroid_") && d_node.at("centroid_") == 1;
 
-
 	// 根据节点的形心属性决定加边逻辑
 	if (m_node_map[o]["centroid_"] == 1 && m_node_map[d]["centroid_"] == 1) {
 		m_centroid_start_map[o][d] = attribute_dict;
 		m_centroid_end_map[d][o] = attribute_dict;
 		
 	}
+	// 如果起点是形心点
 	else if (m_node_map[o]["centroid_"] == 1) {
-		// 如果起点是形心点
 		m_centroid_start_map[o][d] = attribute_dict;
 		
 	}
+	// 如果终点是形心点
 	else if (m_node_map[d]["centroid_"] == 1) {
-		// 如果终点是形心点
 		m_centroid_end_map[d][o] = attribute_dict;
 	}
+	// 非形心边
 	else {
-		// 非形心边
 		G[o][d] = attribute_dict;
 		G[d];
 	}
@@ -49,41 +48,55 @@ void CGraph::basic_add_edge(
 	// 更新边的计数
 	number_link += 1;
 
+	// 如果节点没被录入，则录入节点
+	if (!map_id_to_index.count(o)) {
+		vec_index_to_id.resize(vec_index_to_id.size() + 1); // 扩展数组
+		map_id_to_index[o] = cur_max_index; // 填充数据
+		vec_index_to_id[cur_max_index] = o;
+		cur_max_index++;
+	}
+	if (!map_id_to_index.count(d)) {
+		vec_index_to_id.resize(vec_index_to_id.size() + 1); // 扩展数组
+		map_id_to_index[d] = cur_max_index; // 填充数据
+		vec_index_to_id[cur_max_index] = d;
+		cur_max_index++;
+	}
+
 	// 遍历所有字段并更新 field_freq 和 full_field_map
 	for (const auto& field : attribute_dict) {
 		const string& field_name = field.first;
 
 		// 更新 field_freq
-		if (field_freq.find(field_name) == field_freq.end()) {
-			// 新字段，初始化
-			field_freq[field_name] = 1;
-		}
-		else {
-			// 字段已存在，值加 1
-			field_freq[field_name] += 1;
-		}
+		if (field_freq.find(field_name) == field_freq.end()) field_freq[field_name] = 1;
+		else field_freq[field_name] += 1;
 
 		// 如果该字段的值 / number_link == 1，说明该字段已完全出现
 		if (field_freq[field_name] / number_link == 1) {
 			// 查找 field_name 在 field_vec 中的位置
 			auto it = find(field_vec.begin(), field_vec.end(), field_name);
 			if (it == field_vec.end()) {
-				// 如果没有找到该字段，说明是新字段，添加到 field_vec 中
-				field_vec.push_back(field_name);
-				// 在 full_field_map 中新增一个 unordered_map
+				field_vec.push_back(field_name); // 如果没有找到该字段，说明是新字段，添加到 field_vec 中
 				full_field_map.push_back(unordered_map<int, vector<pair<int, double>>>());
 				full_field_reverse_map.push_back(unordered_map<int, vector<pair<int, double>>>());
-				// 获取新增字段的位置（索引）
-				it = find(field_vec.begin(), field_vec.end(), field_name);
+				index_to_id_next_vec.resize(index_to_id_next_vec.size() + 1);
+				it = find(field_vec.begin(), field_vec.end(), field_name); // 获取新增字段的位置（索引）
+			}
+			int field_index = distance(field_vec.begin(), it); // 获取字段在 field_vec 中的位置
+			
+			// 如果不存在，则创建一个空的列表
+			// 确保 field_index 的索引不会超出 index_to_id_next_vec 的大小
+			if (field_index >= index_to_id_next_vec.size()) {
+				index_to_id_next_vec.resize(field_index + 1); // 扩展 vector
 			}
 
-			// 获取字段在 field_vec 中的位置
-			int field_index = distance(field_vec.begin(), it);
+			// 确保 map_id_to_index[o] 的索引不会超出 index_to_id_next_vec[field_index] 的大小
+			if (map_id_to_index[o] >= index_to_id_next_vec[field_index].size()) {
+				index_to_id_next_vec[field_index].resize(map_id_to_index[o] + 1); // 扩展 vector
+			}
+			// 直接 emplace_back 添加 {map_id_to_index[d], field.second}
+			index_to_id_next_vec[field_index][map_id_to_index[o]].emplace_back(map_id_to_index[d], field.second);
 
-			// 更新 full_field_map 中对应位置的 unordered_map
 			full_field_map[field_index][o].push_back({ d, field.second });
-
-			// 更新 full_field_reserve_map 中对应位置的 unordered_map（同步更新）
 			full_field_reverse_map[field_index][d].push_back({ o, field.second });
 		}
 	}
@@ -114,13 +127,68 @@ void CGraph::basic_remove_edge(
 	erase_edge(m_centroid_end_map, d, o);
 
 	// 更新邻接表
-	if (node_in_list[d].erase(o) && node_in_list[d].empty()) {
-		node_in_list.erase(d);
-	}
-	if (node_out_list[o].erase(d) && node_out_list[o].empty()) {
-		node_out_list.erase(o);
+	if (node_in_list[d].erase(o) && node_in_list[d].empty()) node_in_list.erase(d);
+	if (node_out_list[o].erase(d) && node_out_list[o].empty()) node_out_list.erase(o);
+
+	// 删除 full_field_map 中的边
+	for (auto& field_map : full_field_map) {
+		// 查找 o -> d 边并删除
+		auto it = field_map.find(o);
+		if (it != field_map.end()) {
+			auto& edges = it->second;
+			for (auto edge_it = edges.begin(); edge_it != edges.end(); ) {
+				if (edge_it->first == d) {
+					edge_it = edges.erase(edge_it); // 删除该边
+					edge_removed++;
+				}
+				else {
+					++edge_it;
+				}
+			}
+			// 如果该节点的边为空，移除该节点
+			if (edges.empty()) {
+				field_map.erase(it);
+			}
+		}
 	}
 
+	// 删除 full_field_reverse_map 中的边
+	for (auto& field_map : full_field_reverse_map) {
+		// 查找 d -> o 边并删除
+		auto it = field_map.find(d);
+		if (it != field_map.end()) {
+			auto& edges = it->second;
+			for (auto edge_it = edges.begin(); edge_it != edges.end(); ) {
+				if (edge_it->first == o) {
+					edge_it = edges.erase(edge_it); // 删除该边
+					edge_removed++;
+				}
+				else {
+					++edge_it;
+				}
+			}
+			// 如果该节点的边为空，移除该节点
+			if (edges.empty()) {
+				field_map.erase(it);
+			}
+		}
+	}
+
+	// 删除 index_to_id_next_vec 中的对应边
+	for (auto& level1 : index_to_id_next_vec) {
+		for (auto& level2 : level1) {
+			for (auto it = level2.begin(); it != level2.end(); ) {
+				// 检查是否是要删除的边 (o -> d)
+				if (it->first == d) {
+					// 删除边
+					it = level2.erase(it);
+				}
+				else {
+					++it;
+				}
+			}
+		}
+	}
 
 	// 更新计数器
 	if (edge_removed > 0) number_link = max(0, number_link - 1);
@@ -128,35 +196,68 @@ void CGraph::basic_remove_edge(
 
 
 // 设置形心点
-void CGraph::basic_set_centroid(
-	int o)
-{
+void CGraph::basic_set_centroid(int o) {
 	// 检查节点是否存在
 	if (!m_node_map.count(o)) {
 		py::print("Error: Node", o, "does not exist");
 		return;
 	}
 
-	// 若已是行星点则跳过
+	// 若已是形心点则跳过
 	auto& node_attr = m_node_map[o];
 	if (node_attr.count("centroid_") && node_attr["centroid_"] == 1) {
 		py::print("Warning: Node", o, "is already a centroid");
 		return;
 	}
 
-	// 标记为行星点
+	// 标记为形心点
 	node_attr["centroid_"] = 1;
 
-	// 迁移出边到行星起点容器
+	// 获取节点 o 的索引
+	auto o_it = map_id_to_index.find(o);
+	if (o_it == map_id_to_index.end()) {
+		py::print("Error: Node", o, "has no index mapping");
+		return;
+	}
+	const int o_index = o_it->second;
+
+	// 迁移出边到形心起点容器（并更新索引邻接表）
 	if (node_out_list.count(o)) {
-		m_centroid_start_map[o] = move(G[o]); // 移动语义提升性能
+		// 遍历所有权重字段，清空该节点的出边
+		for (auto& field_adj : index_to_id_next_vec) { // field_adj 对应一个权重字段
+			if (o_index < field_adj.size()) {
+				field_adj[o_index].clear(); // 清空该字段下该节点的所有出边
+			}
+		}
+
+		m_centroid_start_map[o] = move(G[o]);
 		G.erase(o);
 	}
 
-	// 迁移入边到行星终点容器
+	// 迁移入边到形心终点容器（并更新索引邻接表）
 	if (node_in_list.count(o)) {
 		for (int i : node_in_list[o]) {
 			if (G[i].count(o)) {
+				// 获取来源节点 i 的索引
+				auto i_it = map_id_to_index.find(i);
+				if (i_it == map_id_to_index.end()) continue;
+				const int i_index = i_it->second;
+
+				// 遍历所有权重字段，删除 i 到 o 的边
+				for (auto& field_adj : index_to_id_next_vec) {
+					if (i_index >= field_adj.size()) continue;
+					auto& adj_list = field_adj[i_index];
+					// 删除邻接表中目标为 o_index 的边
+					for (auto it = adj_list.begin(); it != adj_list.end();) {
+						if (it->first == o_index) {
+							it = adj_list.erase(it);
+						}
+						else {
+							++it;
+						}
+					}
+				}
+
 				m_centroid_end_map[o][i] = std::move(G[i][o]);
 				G[i].erase(o);
 			}
@@ -180,7 +281,8 @@ py::dict CGraph::get_graph_info() {
 
 
 // 获取点的基本信息 待修改
-py::dict CGraph::get_node_info(const py::object& id)
+py::dict CGraph::get_node_info(
+	const py::object& id)
 {
 	py::dict result;
 
@@ -208,7 +310,8 @@ py::dict CGraph::get_node_info(const py::object& id)
 // 获取边的基本信息
 py::dict CGraph::get_link_info(
 	const py::object& start_,
-	const py::object& end_) {
+	const py::object& end_) 
+{
 	py::dict result;
 
 	try {
@@ -262,7 +365,9 @@ void CGraph::add_edge(
 
 
 // 添加多条边
-void CGraph::add_edges(const py::list& edges_) {
+void CGraph::add_edges(
+	const py::list& edges_)
+{
 	// 遍历每个边的三元组
 	for (const auto& edge : edges_) {
 		try {
@@ -292,7 +397,8 @@ void CGraph::add_edges(const py::list& edges_) {
 // 删除一条边
 void CGraph::remove_edge(
 	const py::object& start_,
-	const py::object& end_) {
+	const py::object& end_) 
+{
 	// 检查 start 和 end 是否是整数类型
 	if (!py::isinstance<py::int_>(start_) || !py::isinstance<py::int_>(end_)) {
 		std::cout << "Error: Node IDs must be of type 'int'." << std::endl;
@@ -309,7 +415,9 @@ void CGraph::remove_edge(
 
 
 // 删除多条边
-void CGraph::remove_edges(const py::list& edges_) {
+void CGraph::remove_edges(
+	const py::list& edges_)
+{
 	// 遍历每个二元元组（起点，终点）
 	for (const auto& edge : edges_) {
 		try {

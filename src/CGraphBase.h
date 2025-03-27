@@ -45,6 +45,11 @@ struct dis_and_path {
 	unordered_map<int, vector<int>> paths;
 };
 
+struct dis_and_path_1 {
+	py::dict cost;
+	py::dict paths;
+};
+
 struct shortest_Path {
 	double length;
 	vector<int> nodes;
@@ -98,10 +103,15 @@ public:
 	unordered_map<int, unordered_set<int>> node_in_list; // 节点前导点 
 	unordered_map<int, unordered_set<int>> node_out_list; // 节点邻接点
 
+	vector< string > field_vec; // 全勤字段存储序列
 	unordered_map<string, int> field_freq; // 字段出现数
 	vector< unordered_map<int, vector<pair<int, double>>> > full_field_map; // 全勤字段数据存储表
-	vector< string > field_vec; // 全勤字段存储序列
 	vector< unordered_map<int, vector<pair<int, double>>> > full_field_reverse_map; // 反向全勤字段数据存储表
+
+	int cur_max_index = 0; // 当前到达的索引
+	vector<int> vec_index_to_id;// 索引到节点的列表
+	unordered_map<int, int> map_id_to_index; // 节点到索引的映射
+	vector < vector< vector<pair<int, double>> > > index_to_id_next_vec;// 节点对应的索引的邻接表
 
 	// 初始化
 	CGraph() {
