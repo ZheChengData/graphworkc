@@ -306,14 +306,42 @@ PYBIND11_MODULE(graphwork, m) {
 			auto seq_groups = self.group_by_seq(new_net);
 
 			// 获取排序后的唯一seq
-			std::vector<int> unique_sorted_values;
+			vector<int> unique_sorted_values;
 			for (const auto& pair : seq_groups) {
 				unique_sorted_values.push_back(pair.first);
 			}
-			std::sort(unique_sorted_values.begin(), unique_sorted_values.end());
+			sort(unique_sorted_values.begin(), unique_sorted_values.end());
 
 			// 处理相邻对
 			return self.process_pairs(seq_groups, unique_sorted_values);
 		})
+
+
+		.def("calc_global_cache", &GraphAlgorithms::calc_global_cache,
+			py::arg("o_list"),
+			py::arg("cut_off") = numeric_limits<double>::infinity(),
+			py::arg("thread_num") = 1,
+			py::arg("weight_name") = "")
+
+
+		.def("del_temp_cache", &GraphAlgorithms::del_temp_cache)
+
+
+		.def("has_path", &GraphAlgorithms::has_path,
+			py::arg("o"),
+			py::arg("d"),
+			py::arg("use_cache") = true,
+			py::arg("cut_off") = numeric_limits<double>::infinity(),
+			py::arg("weight_name") = "")
+
+
+		.def("gotrackit_calc", &GraphAlgorithms::gotrackit_calc,
+			py::arg("seq_k_candidate_info"),
+			py::arg("gps_adj_dis_map"),
+			py::arg("use_global_cache"),
+			py::arg("not_conn_cost"),
+			py::arg("num_thread") = 1,
+			py::arg("cut_off") = numeric_limits<double>::infinity(),
+			py::arg("weight_name") = "")
 	;
 }

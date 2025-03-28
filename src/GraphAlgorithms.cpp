@@ -2433,186 +2433,289 @@ pair<double, vector<int>> GraphAlgorithms::shortest_path_all(
 }
 
 // test -------------------------------------------------------------------------------------------
-unordered_map<int, double> GraphAlgorithms::test1(
-	const vector<int>& sources,
-	int target,
-	double cut_off,
-	string weight_name)
+// 1.计算全局变量,存储结果
+bool GraphAlgorithms::calc_global_cache(
+	const py::object& o_list_,
+	const py::object& cut_off_,
+	const py::object& thread_num_,
+	const py::object& weight_name_)
 {
-	unordered_map<int, double> dist;
-	priority_queue<pair<double, int>, vector<pair<double, int>>, greater<>> pq;
+	try {
+		// 1. 计算获得需求结果
+		py::object method_ = py::cast("Dijkstra");
+		py::object target_ = py::cast(-1);
 
-	// 初始化源节点
-	for (const auto& s : sources) {
-		dist[s] = 0.0;
-		pq.emplace(0.0, s);
+		// 调用 multi_single_source_all 获取当前结果
+		vector<dis_and_path> cur_res = multi_single_source_all(
+			o_list_,
+			method_,
+			target_,
+			cut_off_,
+			weight_name_,
+			thread_num_);
+
+		// 2. 将结果加入全局变量
+		auto o_list = o_list_.cast<vector<int>>();
+		for (int i = 0; i < o_list.size(); i++) {
+			global_cache_result[i] = cur_res[i];
+		}
+
+		return true;  // 如果没有异常，返回 true
+	}
+	catch (const py::error_already_set& e) {
+		// 捕获 Python 相关的异常
+		std::cerr << "Python exception occurred: " << e.what() << std::endl;
+	}
+	catch (const std::exception& e) {
+		// 捕获标准 C++ 异常
+		std::cerr << "Standard exception occurred: " << e.what() << std::endl;
 	}
 
-	while (!pq.empty()) {
-		auto current = pq.top();
-		double d = current.first;
-		int u = current.second;
-		pq.pop();
+	return false;  // 如果发生异常，返回 false
+}
 
-		if (d > dist[u]) continue;
-		if (u == target) break;
-		if (d > cut_off) continue;
 
-		// 检查节点是否存在邻接表
-		auto u_it = G_temp.find(u);
-		if (u_it == G_temp.end()) continue;
+// 2.删除临时变量
+bool GraphAlgorithms::del_temp_cache()
+{
+	try {
+		// 清空 temp_cache_result
+		temp_cache_result.clear();
 
-		const auto& neighbors = u_it->second;
-		for (const auto& edge : neighbors) {
-			int v = edge.first;
-			double weight = edge.second;  // 直接获取预存的权重值
+		// 检查容器是否为空（清空是否成功）
+		if (temp_cache_result.empty()) {
+			return true; // 清空成功
+		}
+		else {
+			throw std::runtime_error("Failed to clear temp_cache_result.");
+		}
+	}
+	catch (const std::exception& e) {
+		std::cerr << "Error: " << e.what() << std::endl;
+		return false; // 捕获异常并返回 false
+	}
+}
 
-			double new_dist = d + weight;
-			if (!dist.count(v) || new_dist < dist[v]) {
-				dist[v] = new_dist;
-				pq.emplace(new_dist, v);
+
+// 3.是否存在路径
+tuple<bool, vector<int>, double> GraphAlgorithms::has_path(
+	const py::object& o_,
+	const py::object& d_,
+	const py::object& use_cache_,
+	const py::object& cut_off_,
+	const py::object& weight_name_)
+{
+	try {
+		// 1.初始化
+		auto o = o_.cast<int>();
+		auto d = d_.cast<int>();
+		auto use_cache = use_cache_.cast<bool>();
+		auto cut_off = cut_off_.cast<double>();
+		auto weight_name = weight_name_.cast<string>();
+
+		// 2.计算结果
+		if (use_cache) {
+			// 检查是否存在起点 o
+			if (global_cache_result.find(o) != global_cache_result.end()) {
+				// 获取与起点 o 关联的 dis_and_path
+				dis_and_path& dp = global_cache_result[o];
+
+				// 检查 cost 中是否存在终点 d 的值
+				if (dp.cost.find(d) != dp.cost.end()) {
+					return { true, dp.paths[d], dp.cost[d] };  // 找到了 cost 值
+				}
+
+				// 如果找不到
+				return { false, {}, -1 };  // 没有找到对应关系
+			}
+			else {
+				// 如果没有找到起点 o 对应的缓存
+				return { false, {}, -1 };
+			}
+		}
+		else {
+			// 1.初始化
+			const auto& weight_map = get_weight_map(weight_name);
+			const auto& reverse_map = get_weight_reverse_map(weight_name);
+			const set<int> ignore_nodes;
+			const set<pair<int, int>> ignore_edges;
+
+			// 双向Dijkstra计算最短路径 
+			auto cur_res = bidirectional_dijkstra_ignore(
+				reverse_map,
+				weight_map,
+				{ o },
+				d,
+				cut_off,
+				ignore_nodes,
+				ignore_edges);
+
+			// 检查是否包含目标 d 的相关结果
+			if (cur_res.cost.find(d) != cur_res.cost.end()) {
+				return { true, cur_res.paths[d], cur_res.cost[d] };
+			}
+			else {
+				return { false, {}, -1 };
 			}
 		}
 	}
-
-	return dist;
+	catch (const std::exception& e) {
+		// 捕获标准异常并返回
+		std::cerr << "Standard exception caught: " << e.what() << std::endl;
+		return { false, {}, -1 };
+	}
+	catch (const py::error_already_set& e) {
+		// 捕获 Python 异常并返回
+		std::cerr << "Python exception caught: " << e.what() << std::endl;
+		return { false, {}, -1 };
+	}
 }
 
-vector<unordered_map<int, double>> GraphAlgorithms::test(
-	const py::object& list_o_,
-	const py::object& method_,
-	const py::object& target_,
+
+
+// 4.计算gotrackit_calc
+tuple<vector<int>, vector<int>, vector<int>, vector<int>, vector<double>> GraphAlgorithms::gotrackit_calc(
+	const py::object& seq_k_candidate_info,
+	const py::object& gps_adj_dis_map_,
+	const py::object& use_global_cache_,
+	const py::object& not_conn_cost_,
+	const py::object& num_thread_,
 	const py::object& cut_off_,
-	const py::object& weight_name_,
-	const py::object& num_thread_)
+	const py::object& weight_name_)
 {
-	auto list_o = list_o_.cast<vector<int>>();
-	auto method = method_.cast<string>();
-	auto target = target_.cast<int>();
+	// 1.初始化
+	auto gps_adj_dis_map = gps_adj_dis_map_.cast<unordered_map<int, double>>();
+	auto use_global_cache = use_global_cache_.cast<bool>();
+	auto not_conn_cost = not_conn_cost_.cast<double>();
+	auto num_thread = num_thread_.cast<int>();
 	auto cut_off = cut_off_.cast<double>();
 	auto weight_name = weight_name_.cast<string>();
-	auto num_thread = num_thread_.cast<int>();
+	vector<int> f_list;
+	vector<int> t_list;
+	vector<int> fl_list;
+	vector<int> tl_list;
+	vector<double> gap_list;
 
-	// 权重处理
-	auto start = chrono::steady_clock::now();
-	G_temp.clear();
-	for (auto& entry : G) {
-		int u = entry.first;
-		auto& edges = entry.second;
-		for (auto& edge : edges) {
-			int v = edge.first;
-			auto& attrs = edge.second;
-			double weight = 1.0;
-			auto attr_it = attrs.find(weight_name);
-			if (attr_it != attrs.end()) {
-				weight = attr_it->second;
+	vector<RowData> net = convert_dataframe(seq_k_candidate_info);
+	map<int, vector<RowData>> seq_groups = group_by_seq(net);
+
+	// 2.获取排序后的唯一seq列表
+	vector<int> unique_sorted_values;
+	for (const auto& pair : seq_groups) {
+		unique_sorted_values.push_back(pair.first);
+	}
+	sort(unique_sorted_values.begin(), unique_sorted_values.end());
+
+	// 3.处理相邻seq对
+	if (use_global_cache == false) {
+		vector<py::array_t<double>> list_res;
+		// 遍历每个seq对
+		for (size_t i = 0; i < unique_sorted_values.size() - 1; ++i) 
+		{
+			int front = unique_sorted_values[i]; // 获取seq对的id
+			int back = unique_sorted_values[i + 1];
+
+			const auto& net_0 = seq_groups.at(front); // 获取seq对的网络
+			const auto& net_1 = seq_groups.at(back);
+
+			vector<int> from_nodes_0, from_nodes_1; // 获取起点列
+			for (const auto& row : net_0) from_nodes_0.push_back(row.from_node);
+			for (const auto& row : net_1) from_nodes_1.push_back(row.from_node);
+
+			// 获取所有花费和路径
+			py::array_t<double> cur_cost_matrix = cost_matrix_1(
+				from_nodes_0,
+				from_nodes_1,
+				"Dijkstra",
+				cut_off,
+				weight_name,
+				num_thread);
+
+			py::object from_nodes_0_p = py::cast(from_nodes_0);
+			py::object from_nodes_1_p = py::cast(from_nodes_1);
+			py::object method_p = py::cast("Dijkstra");
+			py::dict cur_path_dict = path_dict(
+				from_nodes_0_p,
+				from_nodes_1_p,
+				method_p,
+				cut_off_,
+				weight_name_,
+				num_thread_);
+
+
+			// 主循环遍历计算
+			size_t rows = net_0.size();
+			size_t cols = net_1.size();
+			py::array_t<double> numpy_x({ rows, cols });
+			auto buf = numpy_x.mutable_unchecked<2>();
+
+			// 遍历C1
+			for (size_t idx0 = 0; idx0 < net_0.size(); ++idx0) 
+			{
+				const auto& row_from = net_0[idx0]; // 取到路段行L1
+
+				// 遍历C2
+				for (size_t idx1 = 0; idx1 < net_1.size(); ++idx1)
+				{
+					const auto& row_to = net_1[idx1]; // 取到路段行L2
+					double cur_x = not_conn_cost; // 常数
+					auto key = py::make_tuple(row_from.from_node, row_to.from_node); // 索引
+					auto& path = cur_path_dict[key].cast<vector<int>>(); // 获得当前路径
+					double cur_cost = cur_cost_matrix.at(idx0, idx1); // 获得当前花费
+
+					// 条件1
+					if (row_from.single_link_id == row_to.single_link_id) {
+						cur_x = cur_cost - row_from.route_dis + row_to.route_dis + gps_adj_dis_map[front];
+					}
+					// 条件2
+					else {
+						if (cur_path_dict.contains(key)) {
+							
+							if (path.size() > 1 && // 路径长度大于1
+								path[1] == row_from.to_node && // Q2
+								(path[path.size() - 2] != row_to.to_node)) // Q-2
+							{ 
+								cur_x = cur_cost - row_from.route_dis + row_to.route_dis + gps_adj_dis_map[front];
+							}
+						}
+						else if (row_from.from_node == row_to.to_node &&
+							row_from.to_node == row_to.from_node)
+						{
+							cur_x = cur_cost - row_from.route_dis + row_to.route_dis + gps_adj_dis_map[front];
+						}
+					}
+
+					f_list.push_back(front);
+					t_list.push_back(back);
+					fl_list.push_back(row_from.single_link_id);
+					tl_list.push_back(row_to.single_link_id);
+					gap_list.push_back(cur_x);
+				}
 			}
 
-			G_temp[u].emplace_back(v, weight);
+
 		}
 	}
-	auto end = chrono::steady_clock::now();
-	auto duration = chrono::duration_cast<std::chrono::milliseconds>(end - start);
-	std::cout << "权重 耗时：" << duration.count() << " 毫秒" << std::endl;
-
-	// 结果计算
-	auto start1 = std::chrono::steady_clock::now();
-	vector<unordered_map<int, double>> final_result(list_o.size());
-	vector<future<void>> futures;  // 用来管理异步任务
-
-	size_t max_threads = std::thread::hardware_concurrency();
-	if (num_thread > max_threads) num_thread = max_threads;
-
-	// 使用 std::async 启动多个线程
-	for (size_t i = 0; i < list_o.size(); ++i) {
-		futures.push_back(std::async(std::launch::async, [&, i]() {
-			vector<int> cur_list = { list_o[i] };
-			unordered_map<int, double> result;
-
-			if (method == "Dijkstra") {
-				result = test1(cur_list, target, cut_off, weight_name);
-			}
-
-			std::lock_guard<std::mutex> lock(result_mutex); // 锁保护结果
-			final_result[i] = result;
-		}));
+	else {
 	}
 
-	// 等待所有任务完成
-	for (auto& fut : futures) {
-		fut.get();
-	}
-
-	auto end1 = std::chrono::steady_clock::now();
-	auto duration1 = chrono::duration_cast<std::chrono::milliseconds>(end1 - start1);
-	std::cout << "计算耗时：" << duration1.count() << " 毫秒" << std::endl;
-
-	return final_result;
+	// 4.返回结果
+	return {
+		f_list,
+		t_list,
+		fl_list,
+		tl_list,
+		gap_list
+	};
 }
 
-std::vector<RowData> GraphAlgorithms::convert_dataframe(py::object df)
-{
-	std::vector<RowData> rows;
 
-	py::array seq_array = df.attr("seq").cast<py::array>();
-	py::array from_node_array = df.attr("from_node").cast<py::array>();
-	py::array to_node_array = df.attr("to_node").cast<py::array>();
-	py::array length_array = df.attr("length").cast<py::array>();
-	py::array dir_array = df.attr("dir").cast<py::array>();
-	py::array prj_dis_array = df.attr("prj_dis").cast<py::array>();
-	py::array route_dis_array = df.attr("route_dis").cast<py::array>();
+// 处理相邻对
+vector<py::array_t<double>> GraphAlgorithms::process_pairs(
+	const map<int, vector<RowData>>& seq_groups,
+	const vector<int>& unique_sorted_values) {
 
-	auto seq = seq_array.unchecked<int>();
-	auto from_node = from_node_array.unchecked<int>();
-	auto to_node = to_node_array.unchecked<int>();
-	auto length = length_array.unchecked<double>();
-	auto dir = dir_array.unchecked<int>();
-	auto prj_dis = prj_dis_array.unchecked<double>();
-	auto route_dis = route_dis_array.unchecked<double>();
-
-	for (py::ssize_t i = 0; i < seq.shape(0); ++i) {
-		RowData row;
-		row.seq = seq(i);
-		row.from_node = from_node(i);
-		row.to_node = to_node(i);
-		row.length = length(i);
-		row.dir = dir(i);
-		row.prj_dis = prj_dis(i);
-		row.route_dis = route_dis(i);
-		rows.push_back(row);
-	}
-
-	return rows;
-}
-
-std::vector<RowData> GraphAlgorithms::process_neg_dir(const std::vector<RowData>& net) 
-{
-	std::vector<RowData> new_net;
-	for (const auto& row : net) {
-		if (row.dir == 0) {
-			RowData neg_row = row;
-			std::swap(neg_row.from_node, neg_row.to_node);
-			new_net.push_back(neg_row);
-		}
-		new_net.push_back(row);
-	}
-	return new_net;
-}
-
-std::map<int, vector<RowData>> GraphAlgorithms::group_by_seq(const std::vector<RowData>& new_net) 
-{
-	std::map<int, std::vector<RowData>> seq_groups;
-	for (const auto& row : new_net) {
-		seq_groups[row.seq].push_back(row);
-	}
-	return seq_groups;
-}
-
-std::vector<py::array_t<double>> GraphAlgorithms::process_pairs(
-	const std::map<int, std::vector<RowData>>& seq_groups,
-	const std::vector<int>& unique_sorted_values) {
-
-	std::vector<py::array_t<double>> list_res;
+	vector<py::array_t<double>> list_res;
 
 	for (size_t i = 0; i < unique_sorted_values.size() - 1; ++i) {
 		int front = unique_sorted_values[i];
@@ -2627,8 +2730,7 @@ std::vector<py::array_t<double>> GraphAlgorithms::process_pairs(
 		for (const auto& row : net_1) from_nodes_1.push_back(row.from_node);
 
 		// 调用C++内部函数
-
-		py::array_t<double> cost_matrix = cost_matrix_to_numpy1(
+		py::array_t<double> cost_matrix = cost_matrix_1(
 			from_nodes_0,
 			from_nodes_1,
 			"Dijkstra",
@@ -2651,30 +2753,30 @@ std::vector<py::array_t<double>> GraphAlgorithms::process_pairs(
 		auto buf = numpy_x.mutable_unchecked<2>();
 
 		for (size_t idx0 = 0; idx0 < net_0.size(); ++idx0) {
-			const auto& row0 = net_0[idx0];
+			const auto& row_from = net_0[idx0];
 			for (size_t idx1 = 0; idx1 < net_1.size(); ++idx1) {
-				const auto& row1 = net_1[idx1];
+				const auto& row_to = net_1[idx1];
 				double cur_x = 9999.0;
 
 				// 条件1
-				if (row0.from_node == row1.from_node && row0.to_node == row1.to_node) {
-					cur_x = cost_matrix.at(idx0, idx1) - row0.route_dis + row1.route_dis;
+				if (row_from.from_node == row_to.from_node && row_from.to_node == row_to.to_node) {
+					cur_x = cost_matrix.at(idx0, idx1) - row_from.route_dis + row_to.route_dis;
 				}
 				// 条件2
 				else {
-					//auto key = std::make_pair(row0.from_node, row1.from_node);
-					auto key = py::make_tuple(row0.from_node, row1.from_node);  // 将 std::pair 转换为 py::tuple
+					//auto key = std::make_pair(row_from.from_node, row_to.from_node);
+					auto key = py::make_tuple(row_from.from_node, row_to.from_node);  // 将 std::pair 转换为 py::tuple
 					if (path_dict.contains(key)) {  
 						const auto& path = path_dict[key].cast<std::vector<int>>();  // 将字典值转换为 std::vector<int>
 						//const auto& path = path_dict[key];
 						if (path.size() > 1 &&
-							path[1] == row0.to_node &&
-							(path[path.size() - 2] != row1.to_node)) {
-							cur_x = cost_matrix.at(idx0, idx1) - row0.route_dis + row1.route_dis;
+							path[1] == row_from.to_node &&
+							(path[path.size() - 2] != row_to.to_node)) {
+							cur_x = cost_matrix.at(idx0, idx1) - row_from.route_dis + row_to.route_dis;
 						}
 					}
-					else if (row0.from_node == row1.to_node && row0.to_node == row1.from_node) {
-						cur_x = cost_matrix.at(idx0, idx1) - row0.route_dis + row1.route_dis;
+					else if (row_from.from_node == row_to.to_node && row_from.to_node == row_to.from_node) {
+						cur_x = cost_matrix.at(idx0, idx1) - row_from.route_dis + row_to.route_dis;
 					}
 				}
 
@@ -2688,8 +2790,77 @@ std::vector<py::array_t<double>> GraphAlgorithms::process_pairs(
 	return list_res;
 }
 
+
+// 将dataframe转换为高效的c++结构
+vector<RowData> GraphAlgorithms::convert_dataframe(py::object df)
+{
+	std::vector<RowData> rows;
+
+	py::array seq_array = df.attr("seq").cast<py::array>();
+	py::array single_link_id_array = df.attr("single_link_id").cast<py::array>();
+	py::array from_node_array = df.attr("from_node").cast<py::array>();
+	py::array to_node_array = df.attr("to_node").cast<py::array>();
+	py::array length_array = df.attr("length").cast<py::array>();
+	py::array dir_array = df.attr("dir").cast<py::array>();
+	py::array prj_dis_array = df.attr("prj_dis").cast<py::array>();
+	py::array route_dis_array = df.attr("route_dis").cast<py::array>();
+
+	auto seq = seq_array.unchecked<int>();
+	auto single_link_id = single_link_id_array.unchecked<int>();
+	auto from_node = from_node_array.unchecked<int>();
+	auto to_node = to_node_array.unchecked<int>();
+	auto length = length_array.unchecked<double>();
+	auto dir = dir_array.unchecked<int>();
+	auto prj_dis = prj_dis_array.unchecked<double>();
+	auto route_dis = route_dis_array.unchecked<double>();
+
+	for (py::ssize_t i = 0; i < seq.shape(0); ++i) {
+		RowData row;
+		row.seq = seq(i);
+		row.single_link_id = single_link_id(i);
+		row.from_node = from_node(i);
+		row.to_node = to_node(i);
+		row.length = length(i);
+		row.dir = dir(i);
+		row.prj_dis = prj_dis(i);
+		row.route_dis = route_dis(i);
+		rows.push_back(row);
+	}
+
+	return rows;
+}
+
+
+// 根据dir生成反向边
+vector<RowData> GraphAlgorithms::process_neg_dir(const vector<RowData>& net)
+{
+	std::vector<RowData> new_net;
+	for (const auto& row : net) {
+		if (row.dir == 0) {
+			RowData neg_row = row;
+			std::swap(neg_row.from_node, neg_row.to_node);
+			new_net.push_back(neg_row);
+		}
+		new_net.push_back(row);
+	}
+	return new_net;
+}
+
+
+// 按seq分组
+map<int, vector<RowData>> GraphAlgorithms::group_by_seq(const std::vector<RowData>& new_net)
+{
+	std::map<int, std::vector<RowData>> seq_groups;
+	for (const auto& row : new_net) {
+		seq_groups[row.seq].push_back(row);
+	}
+	return seq_groups;
+}
+
+
+
 // 花费矩阵
-py::array_t<double>  GraphAlgorithms::cost_matrix_to_numpy1(
+py::array_t<double>  GraphAlgorithms::cost_matrix_1(
 	const vector<int>& starts_,
 	const vector<int>& ends_,
 	const string& method_,
@@ -2697,107 +2868,145 @@ py::array_t<double>  GraphAlgorithms::cost_matrix_to_numpy1(
 	const string& weight_name_,
 	const int& num_thread_)
 {
-	//// 逻辑运行
-	//GTemp = G;
-	//// 获取起点列表和终点列表及其大小
-	//auto starts = starts_;
-	//auto ends = ends_;
-	//auto method = method_;
-	//auto cut_off = cut_off_;
-	//auto weight_name = weight_name_;
-	//auto num_thread = num_thread_;
-	//size_t num_starts = starts.size();
-	//size_t num_ends = ends.size();
+	// 1.输入初始化
+	auto starts = starts_;
+	auto ends = ends_;
+	auto weight_name = weight_name_;
+	py::object target_ = py::int_(-1);
+	size_t num_starts = starts.size();
+	size_t num_ends = ends.size();
 
-	//// 将行星点加入临时图
-	//for (auto i : starts) {
-	//	if (m_node_map[i]["centroid_"] == 1) {
-	//		GTemp[i] = m_centroid_start_map[i];
-	//	}
-	//}
+	// 2.获取目标节点集合
+	std::unordered_set<int> targets(ends.begin(), ends.end());  // 目标集合用于快速查找
+	for (int end : ends) {
+		// 判断该点是否是形心点
+		if (m_node_map[end]["centroid_"] == 1) {
+			// 如果是形心点，遍历其入边
+			auto it = m_centroid_end_map.find(end);  // 查找该终点是否存在
+			if (it != m_centroid_end_map.end()) {
+				// 找到入边起点并加入 targets 集合
+				for (const auto& entry : it->second) {
+					int start = entry.first;  // 获取入边的起点
+					targets.insert(start);    // 将起点加入目标集合
+				}
+			}
+			targets.erase(end);
+		}
+	}
+	py::set target_set;  // 创建一个 py::set
+	for (int val : targets) {
+		target_set.add(val);  // 使用 add() 方法添加元素
+	}
 
-	//// 创建一个二维数组来存储所有起点到终点的花费
-	//py::array_t<double> result({ num_starts, num_ends });
-	//py::buffer_info buf_info = result.request();
-	//double* ptr = static_cast<double*>(buf_info.ptr);
+	// 3.将形心点加入临时图
+	GTemp = G;
+	for (auto i : starts) {
+		if (m_node_map[i]["centroid_"] == 1) {
+			GTemp[i] = m_centroid_start_map[i];
+		}
+	}
 
-	//py::object target_ = py::int_(-1);
-	//vector<vector<int>> multi_list_;
+	// 4.权重字典初始化
+	vector<vector<pair<int, double>>> weight_vec(cur_max_index + 1);
+	for (auto& entry : GTemp) {
+		int u = entry.first;
+		auto& edges = entry.second;
+		for (auto& edge : edges) {
+			int v = edge.first;
+			auto& attrs = edge.second;
+			double weight = 1.0;
+			auto attr_it = attrs.find(weight_name);
+			if (attr_it != attrs.end()) {
+				weight = attr_it->second;
+			}
+			weight_vec[map_id_to_index[u]].emplace_back(map_id_to_index[v], weight);
+		}
+	}
 
-	//// 这里根据num_thread来分批处理
-	//size_t num_batches = (num_starts + num_thread - 1) / num_thread;  // 计算批次数
+	// 5.最终结果矩阵构建
+	py::array_t<double> result({ num_starts, num_ends });
+	py::buffer_info buf_info = result.request();
+	double* ptr = static_cast<double*>(buf_info.ptr);
 
-	//// 循环每个批次
-	//for (size_t batch_idx = 0; batch_idx < num_batches; ++batch_idx) {
-	//	// 计算当前批次的起点范围
-	//	size_t start_idx = batch_idx * num_thread;
-	//	size_t end_idx = min((batch_idx + 1) * num_thread, num_starts);
+	vector<vector<int>> multi_list_;
 
-	//	// 生成当前批次的multi_list_
-	//	multi_list_.clear();
-	//	for (size_t i = start_idx; i < end_idx; ++i) {
-	//		vector<int> cur_vec{ starts[i] };
-	//		multi_list_.push_back(cur_vec);
-	//	}
+	// 6.循环计算处理每个批次
+	const size_t num_thread = static_cast<size_t>(num_thread_);
+	const size_t batch_size = 10 * num_thread;
+	const size_t num_batches = (num_starts + batch_size - 1) / batch_size;
 
-	//	// 转换成 py::object（已经是 py::list 类型）
-	//	py::object multi_list_obj = py::cast(multi_list_);
+	for (size_t batch_idx = 0; batch_idx < num_batches; ++batch_idx) {
+		// 计算当前批次的起点范围
+		size_t start_idx = batch_idx * batch_size;
+		const size_t end_idx = std::min(start_idx + batch_size, num_starts);
 
-	//	// 计算当前批次的多源最短路径
-	//	vector<unordered_map<int, double>> multi_result = multi_multi_source_cost1(multi_list_, method, -1, cut_off, weight_name, num_thread);
+		// 生成当前批次的multi_list_
+		vector<vector<int>> multi_list_;
+		for (size_t i = start_idx; i < end_idx; ++i) {
+			multi_list_.push_back({ starts[i] });
+		}
 
-	//	// 填充当前批次的 cost matrix
-	//	for (size_t i = start_idx; i < end_idx; ++i) {
-	//		for (size_t j = 0; j < num_ends; ++j) {
-	//			// 如果起点等于终点，直接返回0
-	//			if (starts[i] == ends[j]) {
-	//				ptr[i * num_ends + j] = 0;
-	//				continue;
-	//			}
+		// 调用多源计算函数（内部多线程）
+		py::object multi_list_obj = py::cast(multi_list_);
+		py::object method_obj = py::cast(method_);
+		py::object cut_off_obj = py::cast(cut_off_);
+		py::object weight_name_obj = py::cast(weight_name_);
+		py::object num_thread_obj = py::cast(num_thread_);
+		vector<unordered_map<int, double>> multi_result = multi_multi_source_cost_centroid(
+			weight_vec, multi_list_obj, method_obj, target_set, cut_off_obj, weight_name_obj, num_thread_obj);
 
-	//			// 如果终点是行星点
-	//			if (m_node_map[ends[j]]["centroid_"] != 1) {
-	//				auto it = multi_result[i - start_idx].find(ends[j]);
-	//				if (it != multi_result[i - start_idx].end()) {
-	//					ptr[i * num_ends + j] = it->second;
-	//				}
-	//				else {
-	//					ptr[i * num_ends + j] = -1; // 默认值
-	//				}
-	//			}
+		// 填充当前批次的 cost matrix
+		for (size_t i = start_idx; i < end_idx; ++i) {
+			for (size_t j = 0; j < num_ends; ++j) {
+				// 如果起点等于终点，直接返回0
+				if (starts[i] == ends[j]) {
+					ptr[i * num_ends + j] = 0;
+					continue;
+				}
 
-	//			// 如果终点不是行星点
-	//			else {
-	//				if (m_centroid_end_map[ends[j]].size() == 0) {
-	//					ptr[i * num_ends + j] = -1;
-	//				}
-	//				else {
-	//					double minest_cost = numeric_limits<double>::infinity();
-	//					// 遍历前导图
-	//					for (const auto& pair : m_centroid_end_map[ends[j]]) {
-	//						// 1. 判断 pair.second[weight_name] 是否存在
-	//						const auto& weight_it = pair.second.find(weight_name);
-	//						const double weight_value = (weight_it != pair.second.end()) ? weight_it->second : 1.0;
+				// 如果终点是形心点
+				if (m_node_map[ends[j]]["centroid_"] != 1) {
+					auto it = multi_result[i - start_idx].find(ends[j]);
+					if (it != multi_result[i - start_idx].end()) {
+						ptr[i * num_ends + j] = it->second;
+					}
+					else {
+						ptr[i * num_ends + j] = -1; // 默认值
+					}
+				}
 
-	//						// 2. 判断 multi_result[i][pair.first] 是否存在
-	//						const auto& result_it = multi_result[i - start_idx].find(pair.first);
-	//						if (result_it == multi_result[i - start_idx].end()) {
-	//							continue; // 跳过本次循环
-	//						}
+				// 如果终点不是形心点
+				else {
+					if (m_centroid_end_map[ends[j]].size() == 0) {
+						ptr[i * num_ends + j] = -1;
+					}
+					else {
+						double minest_cost = numeric_limits<double>::infinity();
+						// 遍历前导图
+						for (const auto& pair : m_centroid_end_map[ends[j]]) {
+							// 1. 判断 pair.second[weight_name] 是否存在
+							const auto& weight_it = pair.second.find(weight_name);
+							const double weight_value = (weight_it != pair.second.end()) ? weight_it->second : 1.0;
 
-	//						// 3. 计算当前成本
-	//						const double cur_cost = weight_value + result_it->second;
-	//						minest_cost = std::min(minest_cost, cur_cost);
-	//					}
-	//					// 最终赋值逻辑（需处理全跳过的边界情况）
-	//					ptr[i * num_ends + j] = (minest_cost != std::numeric_limits<double>::infinity()) ? minest_cost : -1;
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
-	py::array_t<double> result;
-	return result; // 返回NumPy数组
+							// 2. 判断 multi_result[i][pair.first] 是否存在
+							const auto& result_it = multi_result[i - start_idx].find(pair.first);
+							if (result_it == multi_result[i - start_idx].end()) {
+								continue; // 跳过本次循环
+							}
+
+							// 3. 计算当前成本
+							const double cur_cost = weight_value + result_it->second;
+							minest_cost = std::min(minest_cost, cur_cost);
+						}
+						// 最终赋值逻辑（需处理全跳过的边界情况）
+						ptr[i * num_ends + j] = (minest_cost != std::numeric_limits<double>::infinity()) ? minest_cost : -1;
+					}
+				}
+			}
+		}
+	}
+
+	return result;
 }
 
 
@@ -2859,7 +3068,7 @@ py::dict GraphAlgorithms::path_list_to_numpy1(
 }
 
 // 多个多源最短路径计算
-vector<py::dict> GraphAlgorithms::multi_multi_source_cost1(
+vector<unordered_map<int, double>> GraphAlgorithms::multi_multi_source_cost1(
 	const vector<vector<int>>& list_o_,
 	const string& method_,
 	const int & target_,
@@ -2887,7 +3096,7 @@ vector<py::dict> GraphAlgorithms::multi_multi_source_cost1(
 
 
 	// 逻辑执行
-	vector<py::dict> final_result(list_o.size());  // 初始化 final_result 容器，大小与 list_o 相同
+	vector<unordered_map<int, double>> final_result(list_o.size());  // 初始化 final_result 容器，大小与 list_o 相同
 	vector<thread> threads;
 	atomic<size_t> index(0);
 	size_t max_threads = std::thread::hardware_concurrency();
@@ -2908,7 +3117,7 @@ vector<py::dict> GraphAlgorithms::multi_multi_source_cost1(
 
 					// 执行 Dijkstra 或其他算法
 					if (method == "Dijkstra") {
-						py::dict result = multi_source_dijkstra_cost(cur_weight_map, cur_list, target, cut_off, weight_name);
+						unordered_map<int, double> result = multi_source_dijkstra_cost_threading(cur_weight_map, cur_list, target, cut_off, weight_name);
 
 						// 使用互斥锁保护对 final_result 的访问
 						std::lock_guard<std::mutex> lock(result_mutex);
@@ -2940,53 +3149,66 @@ vector<unordered_map<int, vector<int>>> GraphAlgorithms::multi_multi_source_path
 	const int& num_thread_)
 {
 	auto list_o = list_o_;
-	//auto method = method_;
-	//auto target = target_;
-	//auto cut_off = cut_off_;
-	//auto weight_name = weight_name_;
-	//auto num_thread = num_thread_;
+	auto method = method_;
+	auto target = target_;
+	auto cut_off = cut_off_;
+	auto weight_name = weight_name_;
+	auto num_thread = num_thread_;
 
-	//const auto& weight_map = get_weight_map(weight_name);
-	//// 逻辑执行
+	// 2.权重预处理
+	int weight_index = -1;
+	for (int i = 0; i < field_vec.size(); i++) {
+		if (field_vec[i] == weight_name) {
+			weight_index = i;
+			break;
+		}
+	}
+	vector< vector<pair<int, double>> >& cur_weight_map = (weight_index != -1)
+		? index_to_id_next_vec[weight_index]
+		: get_not_full_weight_map();
+
+	// 逻辑执行
 	vector<unordered_map<int, vector<int>>> final_result(list_o.size());  // 初始化 final_result 容器，大小与 list_o 相同
-	//vector<thread> threads;
-	//atomic<size_t> index(0);
-	//size_t max_threads = std::thread::hardware_concurrency();
-	//if (num_thread >= max_threads) num_thread = max_threads - 1;
+	vector<thread> threads;
+	atomic<size_t> index(0);
+	size_t max_threads = std::thread::hardware_concurrency();
+	if (num_thread >= max_threads) num_thread = max_threads - 1;
 
-	//// 使用互斥锁来保护 final_result 的访问
-	//std::mutex result_mutex;
 
-	//while (index < list_o.size()) {
-	//	// 启动最大数量的线程
-	//	while (threads.size() < num_thread && index < list_o.size()) {
-	//		threads.push_back(thread([&]() {
-	//			size_t i = index++;  // 获取当前线程处理的节点索引
-	//			if (i < list_o.size()) {
-	//				// 每个线程处理一个节点
-	//				vector<int> cur_list;
-	//				cur_list = list_o[i];
 
-	//				// 执行 Dijkstra 或其他算法
-	//				if (method == "Dijkstra") {
-	//					unordered_map<int, vector<int>> result = multi_source_dijkstra_path_threading(weight_map, cur_list, target, cut_off, weight_name);
+	// 使用互斥锁来保护 final_result 的访问
+	std::mutex result_mutex;
 
-	//					// 使用互斥锁保护对 final_result 的访问
-	//					std::lock_guard<std::mutex> lock(result_mutex);
-	//					final_result[i] = result;  // 确保将结果存储在正确的索引位置
-	//				}
-	//			}
-	//		}));
-	//	}
+	while (index < list_o.size()) {
+		// 启动最大数量的线程
+		while (threads.size() < num_thread && index < list_o.size()) {
+			threads.push_back(thread([&]() {
+				size_t i = index++;  // 获取当前线程处理的节点索引
+				if (i < list_o.size()) {
+					// 每个线程处理一个节点
+					vector<int> cur_list;
+					cur_list = list_o[i];
 
-	//	// 等待线程池中的线程完成
-	//	for (auto& t : threads) {
-	//		if (t.joinable()) {
-	//			t.join();
-	//		}
-	//	}
-	//	threads.clear();
-	//}
+					// 执行 Dijkstra 或其他算法
+					if (method == "Dijkstra") {
+						unordered_map<int, vector<int>> result = multi_source_dijkstra_path_threading(cur_weight_map, cur_list, target, cut_off, weight_name);
+
+						// 使用互斥锁保护对 final_result 的访问
+						std::lock_guard<std::mutex> lock(result_mutex);
+						final_result[i] = result;  // 确保将结果存储在正确的索引位置
+					}
+				}
+			}));
+		}
+
+		// 等待线程池中的线程完成
+		for (auto& t : threads) {
+			if (t.joinable()) {
+				t.join();
+			}
+		}
+		threads.clear();
+	}
 
 	return final_result;
 }

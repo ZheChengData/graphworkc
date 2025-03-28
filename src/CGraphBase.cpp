@@ -174,17 +174,26 @@ void CGraph::basic_remove_edge(
 		}
 	}
 
-	// 删除 index_to_id_next_vec 中的对应边
-	for (auto& level1 : index_to_id_next_vec) {
-		for (auto& level2 : level1) {
-			for (auto it = level2.begin(); it != level2.end(); ) {
-				// 检查是否是要删除的边 (o -> d)
-				if (it->first == d) {
-					// 删除边
-					it = level2.erase(it);
-				}
-				else {
-					++it;
+	// 假设 o 是源节点ID，d 是目标节点ID
+	if (map_id_to_index.find(o) != map_id_to_index.end()) {
+		int o_index = map_id_to_index[o];  // 全局映射到索引
+
+		// 遍历所有权重字段（第一层）
+		for (auto& weight_field : index_to_id_next_vec) {  // 第一层：不同权重字段
+			// 检查索引是否在有效范围内
+			if (o_index < weight_field.size()) {
+				// 获取该权重字段下节点 o 的邻接表
+				auto& adjacency_list = weight_field[o_index];
+
+				// 删除邻接表中目标为 d 的边
+				auto it = adjacency_list.begin();
+				while (it != adjacency_list.end()) {
+					if (it->first == map_id_to_index[d]) {
+						it = adjacency_list.erase(it);  // 删除边
+					}
+					else {
+						++it;
+					}
 				}
 			}
 		}

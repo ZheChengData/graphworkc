@@ -316,24 +316,43 @@ public:
 		const py::object& weight_name_);
 
 	// test-------------------------------------------------------------------
-	
-	vector<unordered_map<int, double>> test(
-		const py::object& list_o_,
-		const py::object& method_,
-		const py::object& target_,
-		const py::object& cut_off_,
-		const py::object& weight_name_,
-		const py::object& num_thread_);
+	// 定义全局变量和局部变量
+	unordered_map<int, dis_and_path> global_cache_result;
+	unordered_map<int, dis_and_path> temp_cache_result;
 
-	unordered_map<int, double> test1(
-		const vector<int>& sources,
-		int target,
-		double cut_off,
-		string weight_name);
-	
-	map<int, vector<RowData>> group_by_seq(const std::vector<RowData>& new_net);
+	// 1.计算全局变量
+	bool calc_global_cache(
+		const py::object& o_list_,
+		const py::object& cut_off_, 
+		const py::object& thread_num_,
+		const py::object& weight_name_);
+
+	// 2.删除临时变量
+	bool del_temp_cache();
+
+
+	// 3.是否存在路径
+	tuple<bool, vector<int>, double> has_path(
+		const py::object& o_,
+		const py::object& d_,
+		const py::object& use_cache_,
+		const py::object& cut_off_,
+		const py::object& weight_name_);
+
+
+	// 4.计算gotrackit_calc
+	tuple<vector<int>, vector<int>, vector<int>, vector<int>, vector<double>> gotrackit_calc(
+		const py::object& seq_k_candidate_info,
+		const py::object& gps_adj_dis_map,
+		const py::object& use_global_cache,
+		const py::object& num_threading,
+		const py::object& not_conn_cost,
+		const py::object& cut_off,
+		const py::object& weight_name_);
+
 	vector<RowData> convert_dataframe(py::object df);
 	vector<RowData> process_neg_dir(const std::vector<RowData>& net);
+	map<int, vector<RowData>> group_by_seq(const std::vector<RowData>& new_net);
 
 	vector<py::array_t<double>> process_pairs(
 		const std::map<int, std::vector<RowData>>& seq_groups,
@@ -347,7 +366,7 @@ public:
 		const string& weight_name_,
 		const int& num_thread_);
 
-	py::array_t<double>  cost_matrix_to_numpy1(
+	py::array_t<double>  cost_matrix_1(
 		const vector<int>& starts_,
 		const vector<int>& ends_,
 		const string& method_,
@@ -355,7 +374,7 @@ public:
 		const string& weight_name_,
 		const int& num_thread_);
 
-	vector<py::dict> multi_multi_source_cost1(
+	vector<unordered_map<int, double>> multi_multi_source_cost1(
 		const vector<vector<int>>& list_o_,
 		const string& method_,
 		const int & target_,

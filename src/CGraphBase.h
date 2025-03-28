@@ -32,6 +32,7 @@ using NodeMap = unordered_map<int, unordered_map<string, double>>;
 
 struct RowData {
 	int seq;
+	int single_link_id;
 	int from_node;
 	int to_node;
 	double length;

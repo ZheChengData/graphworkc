@@ -1351,3 +1351,74 @@ class CGraph:
 
         return result
 
+    def gotrackit_calc(self,
+                       seq_k_candidate_info: dataframe,
+                       gps_adj_dis_map: dict[int, float],
+                       use_global_cache: bool = False,
+                       not_conn_cost: float = None,
+                       num_thread: int = 1,
+                       cut_off: float = float('inf'),
+                       weight_name:  str = None) -> dict[tuple[int, int], list[int]]:
+        """**类方法 - gotrackit_calc：**
+         - - gotrackit计算状态转移矩阵
+
+        Args:
+            seq_k_candidate_info (dataframe): 输入需要处理的df数据。
+            gps_adj_dis_map (list[int]): gps字典。
+            use_global_cache (bool)： 是否使用全局变量。
+            not_conn_cost (float): 一个常数。
+            num_thread (int): 用于并行计算的线程数。默认值为1。必须是整数。
+            cut_off (float): 截断距离。
+            weight_name (str): 用作寻路权重的边属性的名称算法。默认值为“无”。
+
+        Raises:
+            ValueError: 如果任何输入参数的类型或值无效：<br>
+                -"start_nodes"和"end_nodes"的长度必须一致。<br>
+                -“start_nodes”必须是整数列表。<br>
+                -“end_nodes”必须是整数列表。<br>
+                -“method”必须是“Dijkstra”。<br>
+                -“weight_name”必须是字符串。<br>
+                -“num_thread”必须是整数。
+
+        Returns:
+            dict[tuple[int, int], list[int]]: 字典，其中每个键表示 起点-终点 的路径（作为节点列表），每个值表示最短路径。 例如：<br>
+                [(1,3):[2,3],<br>
+                (1,4):[2,3,4]]
+        """
+        # 检查 seq_k_candidate_info 是否为 dataframe 类型
+        if not isinstance(seq_k_candidate_info, dataframe):
+            raise ValueError(f"Invalid value for 'seq_k_candidate_info': {seq_k_candidate_info}. It must be a dataframe.")
+
+        # 检查 gps_adj_dis_map 是否为整数列表
+        if not isinstance(gps_adj_dis_map, dict):
+            raise ValueError(f"Invalid value for 'gps_adj_dis_map': {gps_adj_dis_map}. It must be a list of dict.")
+
+        # 检查 use_global_cache 是否为布尔值
+        if not isinstance(use_global_cache, bool):
+            raise ValueError(f"Invalid value for 'use_global_cache': {use_global_cache}. It must be a boolean.")
+
+        # 检查 not_conn_cost 是否为浮动数值或 None
+        if not_conn_cost is not None and not isinstance(not_conn_cost, float):
+            raise ValueError(f"Invalid value for 'not_conn_cost': {not_conn_cost}. It must be a float or None.")
+
+        # 检查 num_thread 是否为整数
+        if not isinstance(num_thread, int):
+            raise ValueError(f"Invalid value for 'num_thread': {num_thread}. It must be an integer.")
+
+        # 检查 cut_off 是否为浮动数值
+        if not isinstance(cut_off, float):
+            raise ValueError(f"Invalid value for 'cut_off': {cut_off}. It must be a float.")
+
+        # 检查 weight_name 是否为字符串或 None
+        if weight_name is not None and not isinstance(weight_name, str):
+            raise ValueError(f"Invalid value for 'weight_name': {weight_name}. It must be either a string or None.")
+
+        # 默认情况下，设置 weight_name 为 ""（如果是 None）
+        if weight_name is None:
+            weight_name = ""
+
+        # 调用 graph.path_dict_pairwise 方法来计算结果
+        result = self.graph.gotrackit_calc(seq_k_candidate_info, gps_adj_dis_map, use_global_cache,
+                                               not_conn_cost, num_thread, cut_off, weight_name)
+
+        return result
