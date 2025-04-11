@@ -1,12 +1,13 @@
 import graphwork
 from typing import Optional, Type
 import numpy as np
+import pandas as pd
 
 
 class CGraph:
     def __init__(self):
         # 创建 C++ 图算法对象
-        self.graph = graphwork.GraphAlgorithms()
+        self.graph = graphwork.GraphTrackit()
 
     def get_graph_info(self) -> dict:
         """**类方法 - get_graph_info:** <br>
@@ -1143,11 +1144,11 @@ class CGraph:
                  [1,4,5]]
         """
         if 1:
-            # 检查 source 是否是一个列表
+            # 检查 source 是否是一个整数
             if not isinstance(source, int):
                 raise ValueError(f"Invalid value for 'source': {source}. It must be a int.")
 
-            # 检查 target 是否是一个列表
+            # 检查 target 是否是一个整数
             if not isinstance(target, int):
                 raise ValueError(f"Invalid value for 'target': {target}. It must be a int.")
 
@@ -1188,11 +1189,11 @@ class CGraph:
                2.0
         """
         if 1:
-            # 检查 source 是否是一个列表
+            # 检查 source 是否是一个整数
             if not isinstance(source, int):
                 raise ValueError(f"Invalid value for 'source': {source}. It must be a int.")
 
-            # 检查 target 是否是一个列表
+            # 检查 target 是否是一个整数
             if not isinstance(target, int):
                 raise ValueError(f"Invalid value for 'target': {target}. It must be a int.")
 
@@ -1229,11 +1230,11 @@ class CGraph:
                [1,4,5]
         """
         if 1:
-            # 检查 source 是否是一个列表
+            # 检查 source 是否是一个整数
             if not isinstance(source, int):
                 raise ValueError(f"Invalid value for 'source': {source}. It must be a int.")
 
-            # 检查 target 是否是一个列表
+            # 检查 target 是否是一个整数
             if not isinstance(target, int):
                 raise ValueError(f"Invalid value for 'target': {target}. It must be a int.")
 
@@ -1270,11 +1271,11 @@ class CGraph:
                [2.0, [1, 4, 5]]
         """
         if 1:
-            # 检查 source 是否是一个列表
+            # 检查 source 是否是一个整数
             if not isinstance(source, int):
                 raise ValueError(f"Invalid value for 'source': {source}. It must be a int.")
 
-            # 检查 target 是否是一个列表
+            # 检查 target 是否是一个整数
             if not isinstance(target, int):
                 raise ValueError(f"Invalid value for 'target': {target}. It must be a int.")
 
@@ -1301,7 +1302,7 @@ class CGraph:
             start_nodes (list of ints): 路径搜索的起始节点列表。每个元素都应该可以是表示单个起始节点的整数。
             end_nodes (list of ints): 路径搜索的结束节点列表。每个元素都应该。
             method (str): 用于寻路的算法。有效选项为“Dijkstra”。默认为“Dijkstra”。
-            weight_name (str): 用作寻路权重的边属性的名称算法。默认值为“无”。
+            weight_name (str): 用作寻路权重的边属性的名称。默认值为“无”。
             num_thread (int): 用于并行计算的线程数。默认值为1。必须是整数。
 
         Raises:
@@ -1351,74 +1352,165 @@ class CGraph:
 
         return result
 
-    def gotrackit_calc(self,
-                       seq_k_candidate_info: dataframe,
-                       gps_adj_dis_map: dict[int, float],
-                       use_global_cache: bool = False,
-                       not_conn_cost: float = None,
-                       num_thread: int = 1,
-                       cut_off: float = float('inf'),
-                       weight_name:  str = None) -> dict[tuple[int, int], list[int]]:
-        """**类方法 - gotrackit_calc：**
-         - - gotrackit计算状态转移矩阵
+    def calc_global_cache(self,
+                          o_list: list[int],
+                          cut_off: float = float('inf'),
+                          num_thread: int = 1,
+                          weight_name: str = None) -> bool:
+        """**类方法 - calc_global_cache：**
+         - 计算全局变量 global_cache_result
 
         Args:
-            seq_k_candidate_info (dataframe): 输入需要处理的df数据。
-            gps_adj_dis_map (list[int]): gps字典。
-            use_global_cache (bool)： 是否使用全局变量。
-            not_conn_cost (float): 一个常数。
+            o_list (list[int]): 要计算的单源节点列表。
             num_thread (int): 用于并行计算的线程数。默认值为1。必须是整数。
             cut_off (float): 截断距离。
-            weight_name (str): 用作寻路权重的边属性的名称算法。默认值为“无”。
-
-        Raises:
-            ValueError: 如果任何输入参数的类型或值无效：<br>
-                -"start_nodes"和"end_nodes"的长度必须一致。<br>
-                -“start_nodes”必须是整数列表。<br>
-                -“end_nodes”必须是整数列表。<br>
-                -“method”必须是“Dijkstra”。<br>
-                -“weight_name”必须是字符串。<br>
-                -“num_thread”必须是整数。
+            weight_name (str): 用作寻路权重的边属性的名称。默认值为“无”。
 
         Returns:
-            dict[tuple[int, int], list[int]]: 字典，其中每个键表示 起点-终点 的路径（作为节点列表），每个值表示最短路径。 例如：<br>
-                [(1,3):[2,3],<br>
-                (1,4):[2,3,4]]
+            bool: 全局变量global_cache_result是否生成成功
         """
-        # 检查 seq_k_candidate_info 是否为 dataframe 类型
-        if not isinstance(seq_k_candidate_info, dataframe):
-            raise ValueError(f"Invalid value for 'seq_k_candidate_info': {seq_k_candidate_info}. It must be a dataframe.")
+        if 1:
+            # 检查 o_list 是否为列表类型
+            if not isinstance(o_list, list):
+                raise ValueError(f"Invalid value for 'o_list': {o_list}. It must be a list.")
 
-        # 检查 gps_adj_dis_map 是否为整数列表
-        if not isinstance(gps_adj_dis_map, dict):
-            raise ValueError(f"Invalid value for 'gps_adj_dis_map': {gps_adj_dis_map}. It must be a list of dict.")
+            # 检查 num_thread 是否为整数
+            if not isinstance(num_thread, int):
+                raise ValueError(f"Invalid value for 'num_thread': {num_thread}. It must be an integer.")
 
-        # 检查 use_global_cache 是否为布尔值
-        if not isinstance(use_global_cache, bool):
-            raise ValueError(f"Invalid value for 'use_global_cache': {use_global_cache}. It must be a boolean.")
+            # 检查 cut_off 是否为浮动数值
+            if not isinstance(cut_off, (float, int)):
+                raise ValueError(f"Invalid value for 'cut_off': {cut_off}. It must be a float or int.")
 
-        # 检查 not_conn_cost 是否为浮动数值或 None
-        if not_conn_cost is not None and not isinstance(not_conn_cost, float):
-            raise ValueError(f"Invalid value for 'not_conn_cost': {not_conn_cost}. It must be a float or None.")
-
-        # 检查 num_thread 是否为整数
-        if not isinstance(num_thread, int):
-            raise ValueError(f"Invalid value for 'num_thread': {num_thread}. It must be an integer.")
-
-        # 检查 cut_off 是否为浮动数值
-        if not isinstance(cut_off, float):
-            raise ValueError(f"Invalid value for 'cut_off': {cut_off}. It must be a float.")
-
-        # 检查 weight_name 是否为字符串或 None
-        if weight_name is not None and not isinstance(weight_name, str):
-            raise ValueError(f"Invalid value for 'weight_name': {weight_name}. It must be either a string or None.")
+            # 检查 weight_name 是否为字符串或 None
+            if weight_name is not None and not isinstance(weight_name, str):
+                raise ValueError(f"Invalid value for 'weight_name': {weight_name}. It must be either a string or None.")
 
         # 默认情况下，设置 weight_name 为 ""（如果是 None）
         if weight_name is None:
             weight_name = ""
 
+        # 调用 graph.calc_global_cache 方法来计算结果
+        result = self.graph.calc_global_cache(o_list, cut_off, num_thread, weight_name)
+
+        return result
+
+    def del_temp_cache(self) -> bool:
+        """**类方法 - del_temp_cache：**
+        - 删除临时变量temp_cache_result
+
+        Returns:
+            bool: 局部变量temp_cache_result是否生成成功
+        """
         # 调用 graph.path_dict_pairwise 方法来计算结果
+        result = self.graph.del_temp_cache()
+        return result
+
+    def has_path(self,
+                 start: int,
+                 end: int,
+                 use_cache: bool = False,
+                 cut_off: float = float('inf'),
+                 weight_name: str = None):
+        """**类方法 - has_path：**
+         - 判断是否存在路径
+
+         Args:
+            start (int): 起点节点。
+            end (int): 终点节点。
+            use_cache (float): 是否使用全局变量。
+            cut_off (float): 截断距离。
+            weight_name (str): 如果use_cache==false，则使用此参数，用作寻路权重的边属性的名称。默认值为“无”。
+
+        Returns:
+            tuple(bool, list[int], double): (是否有路径， 节点路径， 路径开销)
+        """
+        if 1:
+            # 检查 start 是否为整数类型
+            if not isinstance(start, int):
+                raise ValueError(f"Invalid value for 'start': {start}. It must be a int.")
+
+            # 检查 end 是否为整数类型
+            if not isinstance(end, int):
+                raise ValueError(f"Invalid value for 'end': {end}. It must be a int.")
+
+            # 检查 use_cache 是否为整数
+            if not isinstance(use_cache, bool):
+                raise ValueError(f"Invalid value for 'use_cache': {use_cache}. It must be an bool.")
+
+            # 检查 cut_off 是否为浮动数值
+            if not isinstance(cut_off, (float, int)):
+                raise ValueError(f"Invalid value for 'cut_off': {cut_off}. It must be a float.")
+
+            # 检查 weight_name 是否为字符串或 None
+            if weight_name is not None and not isinstance(weight_name, str):
+                raise ValueError(f"Invalid value for 'weight_name': {weight_name}. It must be either a string or None.")
+
+        # 默认情况下，设置 weight_name 为 ""（如果是 None）
+        if weight_name is None:
+            weight_name = ""
+        result = self.graph.has_path(start, end, use_cache, cut_off, weight_name)
+        return result
+
+    def gotrackit_calc(self,
+                       seq_k_candidate_info: pd.DataFrame,
+                       gps_adj_dis_map: dict[int, float],
+                       use_global_cache: bool = False,
+                       not_conn_cost: float = None,
+                       num_thread: int = 1,
+                       cut_off: float = float('inf'),
+                       weight_name: str = None) -> pd.DataFrame:
+        """**类方法 - gotrackit_calc：**
+         - gotrackit计算状态转移矩阵
+
+        Args:
+            seq_k_candidate_info (dataframe): 输入需要处理的df数据。
+            gps_adj_dis_map (dict[int, float]): gps字典。
+            use_global_cache (bool)： 是否使用全局变量。
+            not_conn_cost (float or int): 一个常数。
+            num_thread (int): 用于并行计算的线程数。默认值为1。必须是整数。
+            cut_off (float): 截断距离。
+            weight_name (str): 用作寻路权重的边属性的名称。默认值为“无”。
+
+        Returns:
+             pd.Dataframe:
+                返回df数据结构['f', 't', 'fl', 'tl', 'gap', 'rt']
+        """
+        if 1:
+            # 检查 seq_k_candidate_info 是否为 dataframe 类型
+            if not isinstance(seq_k_candidate_info, pd.DataFrame):
+                raise ValueError(f"Invalid value for 'seq_k_candidate_info': {seq_k_candidate_info}. It must be a dataframe.")
+
+            # 检查 gps_adj_dis_map 是否为字典类型
+            if not isinstance(gps_adj_dis_map, dict):
+                raise ValueError(f"Invalid value for 'gps_adj_dis_map': {gps_adj_dis_map}. It must be a dictionary.")
+
+            # 检查 use_global_cache 是否为布尔值
+            if not isinstance(use_global_cache, bool):
+                raise ValueError(f"Invalid value for 'use_global_cache': {use_global_cache}. It must be a boolean.")
+
+            # 检查 not_conn_cost 是否为浮动数值或 int 类型
+            if not_conn_cost is not None and not isinstance(not_conn_cost, (float, int)):
+                raise ValueError(f"Invalid value for 'not_conn_cost': {not_conn_cost}. It must be a float or int.")
+
+            # 检查 num_thread 是否为整数
+            if not isinstance(num_thread, int):
+                raise ValueError(f"Invalid value for 'num_thread': {num_thread}. It must be an integer.")
+
+            # 检查 cut_off 是否为浮动数值
+            if not isinstance(cut_off, (float, int)):
+                raise ValueError(f"Invalid value for 'cut_off': {cut_off}. It must be a float.")
+
+            # 检查 weight_name 是否为字符串或 None
+            if weight_name is not None and not isinstance(weight_name, str):
+                raise ValueError(f"Invalid value for 'weight_name': {weight_name}. It must be either a string or None.")
+
+        # 默认情况下，设置 weight_name 为 ""（如果是 None）
+        if weight_name is None:
+            weight_name = ""
+
+        # 调用 graph.gotrackit_calc 方法来计算结果
         result = self.graph.gotrackit_calc(seq_k_candidate_info, gps_adj_dis_map, use_global_cache,
-                                               not_conn_cost, num_thread, cut_off, weight_name)
+                                           not_conn_cost, num_thread, cut_off, weight_name)
 
         return result

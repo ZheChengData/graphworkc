@@ -1,6 +1,8 @@
 #include <iostream>
 #include "CGraphBase.h"
 #include "GraphAlgorithms.h"
+#include "GraphTrackit.h" 
+#include "GraphAlgorithmInterface.h" 
 
 using namespace std;
 namespace py = pybind11;
@@ -135,8 +137,13 @@ PYBIND11_MODULE(graphwork, m) {
 	py::class_<GraphAlgorithms, CGraph>(m, "GraphAlgorithms")
 		.def(py::init<>())
 
+		;
+
+	py::class_<GraphAlgorithmInterface, GraphAlgorithms>(m, "GraphAlgorithmInterface")
+		.def(py::init<>())
+
 		// 多源最短路径
-		.def("multi_source_cost", &GraphAlgorithms::multi_source_cost,
+		.def("multi_source_cost", &GraphAlgorithmInterface::multi_source_cost,
 			py::arg("start_nodes"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
@@ -144,7 +151,7 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("weight_name") = "")
 
 
-		.def("multi_source_path", &GraphAlgorithms::multi_source_path,
+		.def("multi_source_path", &GraphAlgorithmInterface::multi_source_path,
 			py::arg("start_nodes"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
@@ -152,7 +159,7 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("weight_name") = "")
 
 
-		.def("multi_source_all", &GraphAlgorithms::multi_source_all,
+		.def("multi_source_all", &GraphAlgorithmInterface::multi_source_all,
 			py::arg("start_nodes"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
@@ -161,7 +168,7 @@ PYBIND11_MODULE(graphwork, m) {
 
 
 		// 单源最短路径
-		.def("single_source_cost", &GraphAlgorithms::single_source_cost,
+		.def("single_source_cost", &GraphAlgorithmInterface::single_source_cost,
 			py::arg("start"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
@@ -169,7 +176,7 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("weight_name") = "")
 
 
-		.def("single_source_path", &GraphAlgorithms::single_source_path,
+		.def("single_source_path", &GraphAlgorithmInterface::single_source_path,
 			py::arg("start"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
@@ -177,7 +184,7 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("weight_name") = "")
 
 
-		.def("single_source_all", &GraphAlgorithms::single_source_all,
+		.def("single_source_all", &GraphAlgorithmInterface::single_source_all,
 			py::arg("start"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
@@ -186,7 +193,7 @@ PYBIND11_MODULE(graphwork, m) {
 
 
 		// 多个单源最短路径
-		.def("multi_single_source_cost", &GraphAlgorithms::multi_single_source_cost,
+		.def("multi_single_source_cost", &GraphAlgorithmInterface::multi_single_source_cost,
 			py::arg("start_nodes"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
@@ -195,7 +202,7 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("num_thread") = 1)
 
 
-		.def("multi_single_source_path", &GraphAlgorithms::multi_single_source_path,
+		.def("multi_single_source_path", &GraphAlgorithmInterface::multi_single_source_path,
 			py::arg("start_nodes"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
@@ -204,7 +211,7 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("num_thread") = 1)
 
 
-		.def("multi_single_source_all", &GraphAlgorithms::multi_single_source_all,
+		.def("multi_single_source_all", &GraphAlgorithmInterface::multi_single_source_all,
 			py::arg("start_nodes"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
@@ -214,7 +221,7 @@ PYBIND11_MODULE(graphwork, m) {
 
 
 		// 多个多源最短路径
-		.def("multi_multi_source_cost", &GraphAlgorithms::multi_multi_source_cost,
+		.def("multi_multi_source_cost", &GraphAlgorithmInterface::multi_multi_source_cost,
 			py::arg("start_nodes"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
@@ -224,7 +231,7 @@ PYBIND11_MODULE(graphwork, m) {
 			py::return_value_policy::move)
 
 
-		.def("multi_multi_source_path", &GraphAlgorithms::multi_multi_source_path,
+		.def("multi_multi_source_path", &GraphAlgorithmInterface::multi_multi_source_path,
 			py::arg("start_nodes"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
@@ -234,7 +241,7 @@ PYBIND11_MODULE(graphwork, m) {
 			py::return_value_policy::move)
 
 
-		.def("multi_multi_source_all", &GraphAlgorithms::multi_multi_source_all,
+		.def("multi_multi_source_all", &GraphAlgorithmInterface::multi_multi_source_all,
 			py::arg("start_nodes"),
 			py::arg("method") = "Dijkstra",
 			py::arg("target") = -1,
@@ -244,7 +251,7 @@ PYBIND11_MODULE(graphwork, m) {
 
 
 		// 花费矩阵
-		.def("cost_matrix", &GraphAlgorithms::cost_matrix,
+		.def("cost_matrix", &GraphAlgorithmInterface::cost_matrix,
 			py::arg("starts"),
 			py::arg("ends"),
 			py::arg("method") = "Dijkstra",
@@ -254,7 +261,7 @@ PYBIND11_MODULE(graphwork, m) {
 
 
 		// 路径字典:
-		.def("path_dict", &GraphAlgorithms::path_dict,
+		.def("path_dict", &GraphAlgorithmInterface::path_dict,
 			py::arg("starts"),
 			py::arg("ends"),
 			py::arg("method") = "Dijkstra",
@@ -264,7 +271,7 @@ PYBIND11_MODULE(graphwork, m) {
 
 
 		// 路径字典: 一一对应
-		.def("path_dict_pairwise", &GraphAlgorithms::path_dict_pairwise,
+		.def("path_dict_pairwise", &GraphAlgorithmInterface::path_dict_pairwise,
 			py::arg("starts"),
 			py::arg("ends"),
 			py::arg("method") = "Dijkstra",
@@ -273,7 +280,7 @@ PYBIND11_MODULE(graphwork, m) {
 
 
 		// K条最短路径
-		.def("k_shortest_paths", &GraphAlgorithms::k_shortest_paths,
+		.def("k_shortest_paths", &GraphAlgorithmInterface::k_shortest_paths,
 			py::arg("source"),
 			py::arg("target"),
 			py::arg("num"),
@@ -281,53 +288,39 @@ PYBIND11_MODULE(graphwork, m) {
 
 
 		// 单个OD对最短花费和路径
-		.def("shortest_path_cost", &GraphAlgorithms::shortest_path_cost,
+		.def("shortest_path_cost", &GraphAlgorithmInterface::shortest_path_cost,
 			py::arg("source"),
 			py::arg("target"),
 			py::arg("weight_name") = "")
 
 
-		.def("shortest_path_path", &GraphAlgorithms::shortest_path_path,
+		.def("shortest_path_path", &GraphAlgorithmInterface::shortest_path_path,
 			py::arg("source"),
 			py::arg("target"),
 			py::arg("weight_name") = "")
 
 
-		.def("shortest_path_all", &GraphAlgorithms::shortest_path_all,
+		.def("shortest_path_all", &GraphAlgorithmInterface::shortest_path_all,
 			py::arg("source"),
 			py::arg("target"),
 			py::arg("weight_name") = "")
+		;
+
+	py::class_<GraphTrackit, GraphAlgorithmInterface>(m, "GraphTrackit")
+		.def(py::init<>())
 
 
-		.def("process", [](GraphAlgorithms& self, py::object df) { // 注意这里传入self引用
-			// 通过成员函数处理数据
-			auto net = self.convert_dataframe(df); // 调用成员函数
-			auto new_net = self.process_neg_dir(net);
-			auto seq_groups = self.group_by_seq(new_net);
-
-			// 获取排序后的唯一seq
-			vector<int> unique_sorted_values;
-			for (const auto& pair : seq_groups) {
-				unique_sorted_values.push_back(pair.first);
-			}
-			sort(unique_sorted_values.begin(), unique_sorted_values.end());
-
-			// 处理相邻对
-			return self.process_pairs(seq_groups, unique_sorted_values);
-		})
-
-
-		.def("calc_global_cache", &GraphAlgorithms::calc_global_cache,
+		.def("calc_global_cache", &GraphTrackit::calc_global_cache,
 			py::arg("o_list"),
 			py::arg("cut_off") = numeric_limits<double>::infinity(),
 			py::arg("thread_num") = 1,
 			py::arg("weight_name") = "")
 
 
-		.def("del_temp_cache", &GraphAlgorithms::del_temp_cache)
+		.def("del_temp_cache", &GraphTrackit::del_temp_cache)
 
 
-		.def("has_path", &GraphAlgorithms::has_path,
+		.def("has_path", &GraphTrackit::has_path,
 			py::arg("o"),
 			py::arg("d"),
 			py::arg("use_cache") = true,
@@ -335,7 +328,7 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("weight_name") = "")
 
 
-		.def("gotrackit_calc", &GraphAlgorithms::gotrackit_calc,
+		.def("gotrackit_calc", &GraphTrackit::gotrackit_calc,
 			py::arg("seq_k_candidate_info"),
 			py::arg("gps_adj_dis_map"),
 			py::arg("use_global_cache"),
@@ -343,5 +336,6 @@ PYBIND11_MODULE(graphwork, m) {
 			py::arg("num_thread") = 1,
 			py::arg("cut_off") = numeric_limits<double>::infinity(),
 			py::arg("weight_name") = "")
-	;
+		;
+	
 }

@@ -16,6 +16,7 @@
 #include <iomanip>
 #include <iostream>
 #include <mutex>
+#include <omp.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/numpy.h>
@@ -36,7 +37,7 @@ struct RowData {
 	int from_node;
 	int to_node;
 	double length;
-	int dir;
+	//int dir;
 	double prj_dis;
 	double route_dis;
 };
