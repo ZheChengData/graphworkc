@@ -206,12 +206,14 @@ py::object GraphTrackit::gotrackit_calc(
 
 	// 3.计算临时变量 temp_cache_result
 	if (!use_global_cache) calc_temp_cache(net, num_thread_, cut_off_, weight_name_);
+
+
+	// 4.处理相邻 seq 对, 计算结果
 	struct Result {
 		int f, t, fl, tl;
 		double gap, rt;
 	};
 	vector<Result> results;
-	// 4.处理相邻 seq 对, 计算结果
 	auto process_seq_pairs = [&](auto& result_cache) {
 		// 预计算每个外层循环的偏移量和总长度
 		vector<size_t> offsets;
@@ -272,12 +274,13 @@ py::object GraphTrackit::gotrackit_calc(
 				vector<int> Q = {};
 
 				// 如果路径直接在G中，则直接赋值
+				bool skip_query_cache = false;
 				if (!use_global_cache) {
 					// 检查图中直接连接
-					auto graph_it = G.find(from_link_f);
+					auto graph_it = G.find(from_link_f); // 待修改
 					if (graph_it != G.end()) {
 						auto& adj_nodes = graph_it->second;
-						auto adj_it = adj_nodes.find(to_link_f);
+						auto adj_it = adj_nodes.find(to_link_f); // 待修改
 						if (adj_it != adj_nodes.end()) {
 							// 确保权重存在
 							if (!adj_it->second.count(weight_name)) {
@@ -285,21 +288,25 @@ py::object GraphTrackit::gotrackit_calc(
 							}
 							R = adj_it->second.at(weight_name);
 							Q = { from_link_f, to_link_f };
-							goto skip_query_cache;
+							// 跳过缓存查询
+							skip_query_cache = true; // 设置标志
 						}
 						else {
 							// 起点存在但终点不存在，查询缓存
-							goto query_cache;
+							skip_query_cache = false; // 继续执行缓存查询
 						}
 					}
 					else {
 						// 起点不存在，查询缓存
-						goto query_cache;
+						skip_query_cache = false; // 继续执行缓存查询
 					}
-				query_cache:
+				}
+
+				// 处理缓存查询
+				if (!skip_query_cache) {
 					auto from_node_paths = result_cache.find(from_link_f);
 					if (from_node_paths != result_cache.end()) {
-						auto to_node_path = from_node_paths->second.paths.find(to_link_f);
+						auto to_node_path = from_node_paths->second.paths.find(to_link_f); // 待修改
 						if (to_node_path != from_node_paths->second.paths.end()) {
 							Q = to_node_path->second;
 							R = from_node_paths->second.cost.at(to_link_f);
@@ -313,13 +320,11 @@ py::object GraphTrackit::gotrackit_calc(
 						R = -1.0;
 						Q.clear();
 					}
-
-				skip_query_cache:;
 				}
 				else {
-					auto from_node_paths = result_cache.find(from_link_f);
+					auto from_node_paths = result_cache.find(from_link_f); // 待修改
 					if (from_node_paths != result_cache.end()) {
-						auto to_node_path = from_node_paths->second.paths.find(to_link_f);
+						auto to_node_path = from_node_paths->second.paths.find(to_link_f); // 待修改
 						if (to_node_path != from_node_paths->second.paths.end()) {
 							Q = to_node_path->second;
 							R = result_cache[from_link_f].cost[to_link_f];

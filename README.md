@@ -7,7 +7,6 @@
 
 
 <div align=center>
-
 ![PyPI - Version](https://img.shields.io/pypi/v/graphworkc)
 ![GitHub License](https://img.shields.io/github/license/ZheChengData/graphworkc)
 [![Downloads](https://static.pepy.tech/badge/graphworkc)](https://pepy.tech/project/graphworkc)
@@ -24,7 +23,7 @@ GraphWorkC是一个基于c++实现的图论分析python库，兼具高效与易�
 
 </div>
 
-**💬下一版本v1.2.2预计更新内容**
+**💬下一版本v1.2.3预计更新内容**
 
 - 最短路算法路径返回性能优化
 - A*，Bellman_ford算法等
