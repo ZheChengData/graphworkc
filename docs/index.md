@@ -6,7 +6,6 @@
 <figure markdown="span" align="left">
   ![Image title](./_static/logo.svg){ width="300" }
 </figure>
-
 ![PyPI - Version](https://img.shields.io/pypi/v/graphworkc)
 ![GitHub License](https://img.shields.io/github/license/ZheChengData/graphworkc)
 [![Downloads](https://static.pepy.tech/badge/graphworkc)](https://pepy.tech/project/graphworkc)
@@ -21,13 +20,13 @@ graphworkc支持常用的最短路搜索算法(**持续更新**)，旨在提供�
 
 !!! note 
     
-    这个项目正处在频繁的升级迭代期， 当前版本v1.1.9， 请用户及时更新.
+    这个项目正处在频繁的升级迭代期， 当前版本v1.2.2， 请用户及时更新.
 
+**💬下一版本v1.2.3预计更新内容**
 
-**💬下一版本v1.2.0预计更新内容**
-
-- 支持linux操作系统
-- 单个OD起终点的路径搜索
+- 最短路算法路径返回性能优化
+- A*，Bellman_ford算法等
+- 与gotrackit项目算法联动
 
 ## 性能对比
 
