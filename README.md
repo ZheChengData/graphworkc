@@ -5,14 +5,13 @@
 </a>
 </div>
 
+<div align="center">
 
-<div align=center>
 ![PyPI - Version](https://img.shields.io/pypi/v/graphworkc)
 ![GitHub License](https://img.shields.io/github/license/ZheChengData/graphworkc)
 [![Downloads](https://static.pepy.tech/badge/graphworkc)](https://pepy.tech/project/graphworkc)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/graphworkc)
 ![PyPI - Downloads](https://img.shields.io/pypi/dw/graphworkc)
-
 
 GraphWorkC是一个基于c++实现的图论分析python库，兼具高效与易用性
 
